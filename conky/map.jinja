@@ -1,0 +1,6 @@
+{% set conky = salt['grains.filter_by']({
+    'Debian': {
+        'package': 'conky',
+        'conf': '/etc/conky/conky.conf',
+    },
+}, merge=salt['pillar.get']('conky:lookup')) %}

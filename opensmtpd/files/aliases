@@ -1,0 +1,11 @@
+{% from "opensmtpd/map.jinja" import opensmtpd with context %}
+
+root:       {{ opensmtpd.alias }}
+abuse:      {{ opensmtpd.alias }}
+noc:        {{ opensmtpd.alias }}
+security:   {{ opensmtpd.alias }}
+postmaster: {{ opensmtpd.alias }}
+hostmaster: {{ opensmtpd.alias }}
+webmaster:  {{ opensmtpd.alias }}
+www:        {{ opensmtpd.alias }}
+ftp:        {{ opensmtpd.alias }}

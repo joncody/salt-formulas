@@ -1,0 +1,7 @@
+{% set iptables = salt['grains.filter_by']({
+    'Debian': {
+        'package': 'iptables',
+        'service': 'iptables',
+        'rules': '/etc/iptables.rules',
+    },
+}, merge=salt['pillar.get']('iptables:lookup')) %}

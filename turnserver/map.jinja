@@ -1,0 +1,8 @@
+{% set turnserver = salt['grains.filter_by']({
+    'Debian': {
+        'conf': '/opt/turnserver/etc/turnserver.conf',
+        'userdb': '/opt/turnserver/etc/turnuserdb.conf',
+        'version': '4.4.5.4',
+        'checksum': '9f6db4333cec21bab052c467212bf5da93d630e3',
+    },
+}, merge=salt['pillar.get']('turnserver:lookup')) %}

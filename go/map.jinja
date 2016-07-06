@@ -1,0 +1,6 @@
+{% set go = salt['grains.filter_by']({
+    'Debian': {
+        'version': '1.4.2',
+        'checksum': '460caac03379f746c473814a65223397e9c9a2f6',
+    },
+}, merge=salt['pillar.get']('go:lookup')) %}

@@ -1,0 +1,3 @@
+{% from "opensmtpd/map.jinja" import opensmtpd with context %}
+
+@{{ opensmtpd.domain }} {{ opensmtpd.alias }}

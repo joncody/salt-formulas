@@ -1,0 +1,12 @@
+{% set postgresql = salt['grains.filter_by']({
+    'Debian': {
+        'user': 'postgres',
+        'group': 'postgres',
+        'shell': '/usr/sbin/nologin',
+        'version': '9.5.3',
+        'checksum': '1f070a8e80ce749e687d2162e4a27107e2cc1703a471540e08111bbfb5853f9e',
+        'db_user': 'test',
+        'db_password': 'test',
+        'db': 'test',
+    },
+}, merge=salt['pillar.get']('postgresql:lookup')) %}

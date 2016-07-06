@@ -1,0 +1,6 @@
+{% set riak = salt['grains.filter_by']({
+    'Debian': {
+        'version': '2.1.4',
+        'checksum': 'e442759f96daa8ef42f618cba419bc80abd1fc1b',
+    },
+}, merge=salt['pillar.get']('riak:lookup')) %}

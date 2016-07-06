@@ -1,0 +1,20 @@
+{% set dovecot = salt['grains.filter_by']({
+    'Debian': {
+        'virtual_user': 'myuser',
+        'virtual_passwd': '{SHA512}ozb2cQgPv08qIw8xNWDd8NDBLfzxdB5J6HIqI0ZzA33Ek8qo0pHYAl9xCJ1jzqgJzIrlPlsXBUgGg32+QJnEyg==',
+        'virtual_uid': '3000',
+        'virtual_gid': '3000',
+        'virtual_home': '/var/mail/myuser',
+        'dovecot_user': 'dovecot',
+        'dovecot_group': 'dovecot',
+        'dovenull_user': 'dovenull',
+        'dovenull_group': 'dovenull',
+        'conf': '/opt/dovecot/etc/dovecot/dovecot.conf',
+        'passwd': '/opt/dovecot/etc/dovecot/passwd',
+        'crt': '/opt/dovecot/etc/dovecot/dovecot.crt',
+        'key': '/opt/dovecot/etc/dovecot/dovecot.key',
+        'shell': '/usr/sbin/nologin',
+        'version': '2.2.16',
+        'checksum': '7b267ee939b790ee42809efebc96d6ae78a49432',
+    },
+}, merge=salt['pillar.get']('dovecot:lookup')) %}
