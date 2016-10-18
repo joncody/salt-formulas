@@ -2,7 +2,7 @@
 
 grafana:
   cmd.run:
-    - name: go get github.com/grafana/grafana
+    - name: go get -d github.com/grafana/grafana
     - user: root
     - group: root
     - shell: /bin/bash
