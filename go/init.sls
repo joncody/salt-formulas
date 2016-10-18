@@ -2,9 +2,6 @@
 
 
 go_deps:
-  pkg.installed:
-    - names:
-      - build-essential
   file.directory:
     - name: /opt/src
     - user: root

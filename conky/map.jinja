@@ -2,5 +2,7 @@
     'Debian': {
         'package': 'conky',
         'conf': '/etc/conky/conky.conf',
+        'wired_interface': 'eth0',
+        'wireless_interface': 'wlan0',
     },
 }, merge=salt['pillar.get']('conky:lookup')) %}

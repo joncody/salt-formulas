@@ -39,9 +39,16 @@ dovenull:
     - name: {{ dovecot.dovenull_group }}
     - system: True
 
-dovecot-build:
+dovecot-configure:
   cmd.run:
     - cwd: /opt/src/dovecot-{{ dovecot.version }}
-    - name: ./configure --prefix=/opt/dovecot && make install clean
+    - name: ./configure --prefix=/opt/dovecot
     - require:
       - cmd: dovecot
+
+dovecot-install:
+  cmd.run:
+    - cwd: /opt/src/dovecot-{{ dovecot.version }}
+    - name: make install
+    - require:
+      - cmd: dovecot-configure

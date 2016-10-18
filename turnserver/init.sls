@@ -16,9 +16,16 @@ turnserver:
     - require:
       - file: turnserver
 
-turnserver-build:
+turnserver-configure:
   cmd.run:
     - cwd: /opt/src/turnserver-{{ turnserver.version }}
-    - name: ./configure --prefix=/opt/turnserver && make check install clean
+    - name: ./configure --prefix=/opt/turnserver
     - require:
       - cmd: turnserver
+
+turnserver-install:
+  cmd.run:
+    - cwd: /opt/src/turnserver-{{ turnserver.version }}
+    - name: make install
+    - require:
+      - cmd: turnserver-configure

@@ -20,7 +20,7 @@ rsyslog:
     - require:
       - file: rsyslog
 
-rsyslog-build:
+rsyslog-configure:
   file.directory:
     - name: /var/spool/rsyslog
     - user: root
@@ -31,6 +31,13 @@ rsyslog-build:
       - cmd: rsyslog
   cmd.run:
     - cwd: /opt/src/rsyslog-{{ rsyslog.version }}
-    - name: ./configure --disable-liblogging-stdlog --disable-generate-man-pages && make check install clean
+    - name: ./configure --disable-liblogging-stdlog --disable-generate-man-pages
     - require:
-      - file: rsyslog-build
+      - file: rsyslog-configure
+
+rsyslog-install:
+  cmd.run:
+    - cwd: /opt/src/rsyslog-{{ rsyslog.version }}
+    - name: make install
+    - require:
+      - cmd: rsyslog-configure

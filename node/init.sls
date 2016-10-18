@@ -33,16 +33,9 @@ node-configure:
     - require:
       - cmd: node
 
-node-make:
-  cmd.run:
-    - cwd: /opt/src/node-v{{ node.version }}
-    - name: make
-    - require:
-      - cmd: node-configure
-
 node-install:
   cmd.run:
     - cwd: /opt/src/node-v{{ node.version }}
     - name: make install
     - require:
-      - cmd: node-make
+      - cmd: node-configure
