@@ -1,0 +1,7 @@
+{% set telegraf = salt['grains.filter_by']({
+    'Debian': {
+        'version': '1.0.1',
+        'checksum': '6325f8acf47d17aa3ff309259a042005',
+        'conf': '/etc/telegraf/telegraf.conf',
+    },
+}, merge=salt['pillar.get']('telegraf:lookup')) %}

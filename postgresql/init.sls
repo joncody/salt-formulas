@@ -36,7 +36,7 @@ postgresql:
     - require:
       - file: postgresql
 
-postgresql-build:
+postgresql-configure:
   cmd.run:
     - cwd: /opt/src/postgresql-{{ postgresql.version }}
     - name: ./configure --prefix=/opt/postgresql --with-openssl --with-libxml --with-libxslt --with-python && make install clean
@@ -48,7 +48,7 @@ postgresql-data:
     - cwd: /opt/postgresql
     - name: mkdir /opt/postgresql/data && chown postgres /opt/postgresql/data
     - require:
-      - cmd: postgresql-build
+      - cmd: postgresql-configure
 
 postgresql-init:
   cmd.run:

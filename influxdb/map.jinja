@@ -1,0 +1,7 @@
+{% set influxdb = salt['grains.filter_by']({
+    'Debian': {
+        'version': '1.0.2',
+        'checksum': '3e4c349cb57507913d9abda1459bdbed',
+        'conf': '/etc/influxdb/influxdb.conf',
+    },
+}, merge=salt['pillar.get']('influxdb:lookup')) %}

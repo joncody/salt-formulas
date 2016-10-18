@@ -1,5 +1,6 @@
 {% from "nginx/map.jinja" import nginx with context %}
 
+
 nginx:
   pkg.installed:
     - names:
@@ -34,12 +35,14 @@ nginx:
     - require:
       - file: nginx
 
+
 nginx-configure:
   cmd.run:
     - cwd: /opt/src/nginx-{{ nginx.version }}
     - name: ./configure --prefix=/opt/nginx --with-http_ssl_module --with-http_gzip_static_module --with-http_gunzip_module --with-http_auth_request_module --with-http_stub_status_module --with-http_realip_module --with-http_xslt_module --with-http_geoip_module --with-http_secure_link_module --with-http_random_index_module --with-http_sub_module --with-pcre
     - require:
       - cmd: nginx
+
 
 nginx-install:
   cmd.run:

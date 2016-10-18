@@ -1,17 +1,14 @@
 {% from "node/map.jinja" import node with context %}
 
+
 node_deps:
-  pkg.installed:
-    - names:
-      - build-essential
   file.directory:
     - name: /opt/src
     - user: root
     - group: root
     - mode: 755
     - makedirs: True
-    - require:
-      - pkg: node_deps
+
 
 node:
   file.managed:
@@ -26,12 +23,14 @@ node:
     - require:
       - file: node
 
+
 node-configure:
   cmd.run:
     - cwd: /opt/src/node-v{{ node.version }}
     - name: ./configure --prefix=/opt/node
     - require:
       - cmd: node
+
 
 node-install:
   cmd.run:
