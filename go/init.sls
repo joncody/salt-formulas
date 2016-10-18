@@ -1,11 +1,30 @@
 {% from "go/map.jinja" import go with context %}
 
 
+go_deps:
+  pkg.installed:
+    - names:
+      - build-essential
+  file.directory:
+    - name: /opt/src
+    - user: root
+    - group: root
+    - mode: 755
+    - makedirs: True
+    - recurse:
+      - user
+      - group
+      - mode
+    - require:
+      - pkg: go_deps
+
 go1_4:
   file.managed:
     - name: /opt/src/go1.4.3.src.tar.gz
     - source: https://storage.googleapis.com/golang/go1.4.3.src.tar.gz
     - source_hash: sha1=486db10dc571a55c8d795365070f66d343458c48
+    - require:
+      - file: go_deps
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf go1.4.3.src.tar.gz
