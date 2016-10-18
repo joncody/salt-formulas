@@ -11,10 +11,6 @@ go_deps:
     - group: root
     - mode: 755
     - makedirs: True
-    - recurse:
-      - user
-      - group
-      - mode
     - require:
       - pkg: go_deps
 
