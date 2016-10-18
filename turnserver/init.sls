@@ -13,9 +13,6 @@ turnserver:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf turnserver-{{ turnserver.version }}.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: turnserver
 
@@ -23,8 +20,5 @@ turnserver-build:
   cmd.run:
     - cwd: /opt/src/turnserver-{{ turnserver.version }}
     - name: ./configure --prefix=/opt/turnserver && make check install clean
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: turnserver

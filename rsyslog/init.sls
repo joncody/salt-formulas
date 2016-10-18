@@ -17,9 +17,6 @@ rsyslog:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf rsyslog-{{ rsyslog.version }}.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: rsyslog
 
@@ -35,8 +32,5 @@ rsyslog-build:
   cmd.run:
     - cwd: /opt/src/rsyslog-{{ rsyslog.version }}
     - name: ./configure --disable-liblogging-stdlog --disable-generate-man-pages && make check install clean
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: rsyslog-build

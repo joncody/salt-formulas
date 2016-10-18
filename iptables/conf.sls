@@ -15,8 +15,5 @@ iptables-conf:
   cmd.run:
     - cwd: /
     - name: iptables-restore < {{ iptables.rules }}
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: iptables-conf

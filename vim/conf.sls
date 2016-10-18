@@ -14,8 +14,6 @@ amix_vimrc:
   cmd.run:
     - name: chmod +x install_*.sh && sh install_awesome_vimrc.sh
     - cwd: {{ salt['user.info'](vim.user).home }}/.vim_runtime
-    - user: {{ vim.user }}
-    - group: {{ vim.group }}
-    - shell: /bin/bash
+    - runas: {{ vim.user }}
     - require:
       - git: amix_vimrc

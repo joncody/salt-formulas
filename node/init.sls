@@ -23,9 +23,6 @@ node:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf node-v{{ node.version }}.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: node
 
@@ -33,9 +30,6 @@ node-configure:
   cmd.run:
     - cwd: /opt/src/node-v{{ node.version }}
     - name: ./configure --prefix=/opt/node
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: node
 
@@ -43,9 +37,6 @@ node-make:
   cmd.run:
     - cwd: /opt/src/node-v{{ node.version }}
     - name: make
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: node-configure
 
@@ -53,8 +44,5 @@ node-install:
   cmd.run:
     - cwd: /opt/src/node-v{{ node.version }}
     - name: make install
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: node-make

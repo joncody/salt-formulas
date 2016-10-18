@@ -24,9 +24,6 @@ erlang:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf otp_src_R16B02-basho8.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: erlang
 
@@ -34,9 +31,6 @@ erlang-build:
   cmd.run:
     - cwd: /opt/src/OTP_R16B02_basho8
     - name: ./otp_build autoconf && ./configure && make install
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: erlang
 
@@ -53,9 +47,6 @@ riak:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf riak-{{ riak.version }}.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - file: riak
 
@@ -63,8 +54,5 @@ riak-build:
   cmd.run:
     - cwd: /opt/src/riak-{{ riak.version }}
     - name: make rel
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: riak

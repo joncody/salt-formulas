@@ -19,9 +19,6 @@ postgresql:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf postgresql-{{ postgresql.version }}.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - user: postgresql
   user.present:
@@ -43,9 +40,6 @@ postgresql-build:
   cmd.run:
     - cwd: /opt/src/postgresql-{{ postgresql.version }}
     - name: ./configure --prefix=/opt/postgresql --with-openssl --with-libxml --with-libxslt --with-python && make install clean
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: postgresql
 
@@ -53,9 +47,6 @@ postgresql-data:
   cmd.run:
     - cwd: /opt/postgresql
     - name: mkdir /opt/postgresql/data && chown postgres /opt/postgresql/data
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: postgresql-build
 

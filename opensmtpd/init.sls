@@ -20,9 +20,6 @@ libasr:
   cmd.run:
     - cwd: /opt/src/libasr
     - name: ./bootstrap && ./configure --prefix=/usr && make install clean
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - git: libasr
 
@@ -36,9 +33,6 @@ opensmtpd:
   cmd.run:
     - cwd: /opt/src
     - name: mkdir -p /opt/src/opensmtpd && tar xvzf opensmtpd-{{ opensmtpd.version }}.tar.gz -C /opt/src/opensmtpd --strip-components=1
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - user: opensmtpd-daemon
 
@@ -46,9 +40,6 @@ opensmtpd-build:
   cmd.run:
     - cwd: /opt/src/opensmtpd
     - name: ./configure --prefix=/opt/opensmtpd --with-mailwrapper && make install clean
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: opensmtpd
 

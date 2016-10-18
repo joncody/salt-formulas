@@ -8,9 +8,6 @@ dovecot:
   cmd.run:
     - cwd: /opt/src
     - name: tar xvzf dovecot-{{ dovecot.version }}.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - user: dovecot
   user.present:
@@ -46,8 +43,5 @@ dovecot-build:
   cmd.run:
     - cwd: /opt/src/dovecot-{{ dovecot.version }}
     - name: ./configure --prefix=/opt/dovecot && make install clean
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - cmd: dovecot

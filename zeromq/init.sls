@@ -15,9 +15,6 @@ libsodium:
   cmd.run:
     - cwd: /opt/src/libsodium
     - name: ./autogen.sh && ./configure --prefix=/usr && make install clean && ldconfig
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - git: libsodium
 
@@ -32,9 +29,6 @@ libzmq:
   cmd.run:
     - cwd: /opt/src/libzmq
     - name: ./autogen.sh && ./configure --prefix=/usr && make install clean && ldconfig
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - git: libzmq
 
@@ -49,9 +43,6 @@ czmq:
   cmd.run:
     - cwd: /opt/src/czmq
     - name: ./autogen.sh && ./configure --prefix=/usr && make install clean && ldconfig
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - git: czmq
 
@@ -66,8 +57,5 @@ zyre:
   cmd.run:
     - cwd: /opt/src/zyre
     - name: ./autogen.sh && ./configure --prefix=/usr && make install clean && ldconfig
-    - user: root
-    - group: root
-    - shell: /bin/bash
     - require:
       - git: zyre
