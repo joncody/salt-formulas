@@ -25,6 +25,6 @@ graphite:
 
 graphite-db:
   cmd.run:
-    - name: PYTHONPATH=$GRAPHITE_ROOT/webapp django-admin.py migrate --settings=graphite.settings --run-syncdb
+    - name: PYTHONPATH=/opt/graphite/webapp django-admin.py migrate --settings=graphite.settings --run-syncdb
     - require:
       - cmd: graphite
