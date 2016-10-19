@@ -12,4 +12,4 @@ nginx-conf:
     - template: jinja
     - source: salt://nginx/files/nginx.conf
     - require:
-      - cmd: nginx-build
+      - cmd: nginx-install
