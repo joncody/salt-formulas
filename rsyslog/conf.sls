@@ -11,4 +11,4 @@ rsyslog-conf:
     - mode: 644
     - source: salt://rsyslog/files/rsyslog.conf
     - require:
-      - cmd: rsyslog-build
+      - cmd: rsyslog-install

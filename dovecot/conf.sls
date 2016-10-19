@@ -11,7 +11,7 @@ dovecot-conf:
     - mode: 644
     - source: salt://dovecot/files/dovecot.conf
     - require:
-      - cmd: dovecot-build
+      - cmd: dovecot-install
 
 dovecot-passwd:
   file.managed:
