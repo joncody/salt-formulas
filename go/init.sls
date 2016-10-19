@@ -8,8 +8,6 @@ go_deps:
     - group: root
     - mode: 755
     - makedirs: True
-    - require:
-      - pkg: go_deps
 
 go1_4:
   file.managed:
