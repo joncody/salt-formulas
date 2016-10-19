@@ -7,24 +7,7 @@ install_pip:
       - python-dev
 
 graphite:
-  pkg.installed:
-    - names:
-      - python-cairo
-      - python-django
-      - python-django-tagging
-      - python-twisted
-      - python-memcache
-      - python-pysqlite2
-      - python-simplejson
-    - require:
-      - pkg: install_pip
   cmd.run:
     - name: pip install whisper carbon graphite-web
     - require:
-      - pkg: graphite
-
-graphite-db:
-  cmd.run:
-    - name: PYTHONPATH=/opt/graphite/webapp django-admin.py migrate --settings=graphite.settings --run-syncdb
-    - require:
-      - cmd: graphite
+      - pkg: install_pip
