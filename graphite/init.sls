@@ -14,13 +14,17 @@ install-pip:
       - libcairo2-dev
       - libffi-dev
       - python-cairocffi
+    - require:
+      - file: install-pip
+
 
 install-deps:
   pip.installed:
     - names:
       - django==1.9.10
       - django-tagging==0.4.3
-    - require: install-pip
+    - require:
+      - pkg: install-pip
       
 
 
