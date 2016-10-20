@@ -14,6 +14,7 @@ install-deps:
       - libcairo2-dev
       - libffi-dev
       - python-cairocffi
+      - python-pyparsing
     - require:
       - file: install-deps
   cmd.run:
