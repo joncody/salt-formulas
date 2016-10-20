@@ -44,7 +44,7 @@ carbon:
     - target: /opt/src/carbon
     - user: root
     - require:
-      - git: graphite-web
+      - cmd: graphite-web
   cmd.run:
     - cwd: /opt/src/carbon
     - name: python setup.py install
@@ -79,12 +79,19 @@ ceres:
     - require:
       - git: ceres
 
+local-settings:
+  file.copy:
+    - name: /opt/graphite/webapp/graphite/local_settings.py.example
+    - source: /opt/graphite/webapp/graphite/local_settings.py
+    - require:
+      - cmd: graphite-web
+
 init-db:
   cmd.run:
     - cwd: /opt/graphite
     - name: PYTHONPATH=/opt/graphite/webapp django-admin.py migrate --settings=graphite.settings --run-syncdb
     - require:
-      - cmd: graphite-web
+      - file: local-settings
 
 db-ownership:
   cmd.run:
@@ -93,9 +100,16 @@ db-ownership:
     - require:
       - cmd: init-db
 
-static-file:
+static-files:
   cmd.run:
     - cwd: /opt/graphite
     - name: PYTHONPATH=/opt/graphite/webapp django-admin.py collectstatic --noinput --settings=graphite.settings
+    - require:
+      - cmd: db-ownership
+
+conf-files:
+  cmd.run:
+    - cwd: /opt/graphite/conf
+    - name: for $file in *.example; do cp $file ${file%.example}; done
     - require:
       - cmd: graphite-web
