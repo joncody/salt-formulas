@@ -1,6 +1,6 @@
 {% from "graphite/map.jinja" import graphite with context %}
 
-install_pip:
+install-pip:
   file.directory:
     - name: /opt/src
     - user: root
@@ -13,6 +13,16 @@ install_pip:
       - python-dev
       - libcairo2-dev
       - libffi-dev
+      - python-cairocffi
+
+install-deps:
+  pip.installed:
+    - names:
+      - django==1.9.10
+      - django-tagging==0.4.3
+    - require: install-pip
+      
+
 
 graphite-web:
   git.latest:
@@ -21,7 +31,7 @@ graphite-web:
     - target: /opt/src/graphite-web
     - user: root
     - require:
-      - pkg: install_pip
+      - pip: install-deps
   cmd.run:
     - cwd: /opt/src/graphite-web
     - name: python setup.py install
