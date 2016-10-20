@@ -2,4 +2,4 @@
 
 vim:
   pkg.installed:
-    - name: {{ vim.package }}
+    - name: vim
