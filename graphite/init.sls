@@ -81,8 +81,8 @@ ceres:
 
 local-settings:
   file.copy:
-    - name: /opt/graphite/webapp/graphite/local_settings.py.example
-    - source: /opt/graphite/webapp/graphite/local_settings.py
+    - name: /opt/graphite/webapp/graphite/local_settings.py
+    - source: /opt/graphite/webapp/graphite/local_settings.py.example
     - require:
       - cmd: graphite-web
 
