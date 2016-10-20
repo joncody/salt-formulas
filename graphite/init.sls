@@ -1,6 +1,6 @@
 {% from "graphite/map.jinja" import graphite with context %}
 
-install-pip:
+install-deps:
   file.directory:
     - name: /opt/src
     - user: root
@@ -15,17 +15,12 @@ install-pip:
       - libffi-dev
       - python-cairocffi
     - require:
-      - file: install-pip
-
-
-install-deps:
-  pip.installed:
-    - names:
-      - django==1.9.10
-      - django-tagging==0.4.3
+      - file: install-deps
+  cmd.run:
+    - cwd: /opt/src
+    - name: pip install django==1.9.10 django-tagging==0.4.3
     - require:
-      - pkg: install-pip
-      
+      - pkg: install-deps
 
 
 graphite-web:
@@ -35,7 +30,7 @@ graphite-web:
     - target: /opt/src/graphite-web
     - user: root
     - require:
-      - pip: install-deps
+      - pkg: install-deps
   cmd.run:
     - cwd: /opt/src/graphite-web
     - name: python setup.py install
@@ -49,7 +44,7 @@ carbon:
     - target: /opt/src/carbon
     - user: root
     - require:
-      - pkg: install_pip
+      - git: graphite-web
   cmd.run:
     - cwd: /opt/src/carbon
     - name: python setup.py install
@@ -63,7 +58,7 @@ whisper:
     - target: /opt/src/whisper
     - user: root
     - require:
-      - pkg: install_pip
+      - cmd: carbon
   cmd.run:
     - cwd: /opt/src/whisper
     - name: python setup.py install
@@ -77,7 +72,7 @@ ceres:
     - target: /opt/src/ceres
     - user: root
     - require:
-      - pkg: install_pip
+      - cmd: whisper
   cmd.run:
     - cwd: /opt/src/ceres
     - name: python setup.py install
