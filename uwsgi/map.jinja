@@ -1,4 +1,5 @@
 {% set uwsgi = salt['grains.filter_by']({
     'Debian': {
+        'checksum': '21b3d1ef926d835ff23576193a2c60d4c896d8e21567850cf0677a4764122887',
     },
 }, merge=salt['pillar.get']('uwsgi:lookup')) %}
