@@ -81,9 +81,9 @@ ceres:
       - git: ceres
 
 local-settings:
-  file.copy:
-    - name: /opt/graphite/webapp/graphite/local_settings.py
-    - source: /opt/graphite/webapp/graphite/local_settings.py.example
+  cmd.run:
+    - cwd: /opt/graphite/webapp/graphite
+    - name: cp local_settings.py.example local_settings.py
     - require:
       - cmd: graphite-web
 
@@ -92,7 +92,7 @@ init-db:
     - cwd: /opt/graphite
     - name: PYTHONPATH=/opt/graphite/webapp django-admin.py migrate --settings=graphite.settings --run-syncdb
     - require:
-      - file: local-settings
+      - cmd: local-settings
 
 db-ownership:
   cmd.run:
