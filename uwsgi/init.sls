@@ -27,7 +27,7 @@ uwsgi:
 uwsgi-move-and-rename:
   cmd.run:
     - cwd: /opt/src
-    - name: mv uwsgi*[^.tar.gz] /opt/uwsgi
+    - name: mv uwsgi-[[:digit:]]* /opt/uwsgi
     - require:
       - cmd: uwsgi
 
