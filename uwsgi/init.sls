@@ -10,28 +10,26 @@ opt-src-directory:
     - makedirs: True
 
 
-uwsgi-directory:
-  file.directory:
-    - name: /opt/uwsgi
-    - user: root
-    - group: root
-    - mode: 755
-    - makedirs: True
-    - require:
-      - file: opt-src-directory
-
 uwsgi:
   file.managed:
     - name: /opt/src/uwsgi-lts.tar.gz
     - source: https://projects.unbit.it/downloads/uwsgi-lts.tar.gz
     - source_hash: sha256={{ uwsgi.checksum }}
     - require:
-      - file: uwsgi-directory
+      - file: opt-src-directory
   cmd.run:
     - cwd: /opt/src
-    - name: tar xvzf uwsgi-lts.tar.gz -C /opt/uwsgi
+    - name: tar xvzf uwsgi-lts.tar.gz
     - require:
       - file: uwsgi
+
+
+uwsgi-move-and-rename:
+  cmd.run:
+    - cwd: /opt/src
+    - name: mv uwsgi*[^.tar.gz] /opt/uwsgi
+    - require:
+      - cmd: uwsgi
 
 
 uwsgi-build:
@@ -39,4 +37,4 @@ uwsgi-build:
     - cwd: /opt/uwsgi
     - name: make
     - require:
-      - cmd: uwsgi
+      - cmd: uwsgi-move-and-rename
