@@ -1,19 +1,5 @@
 {% from "rsyslog/map.jinja" import rsyslog with context %}
 
-
-libfastjson:
-  git.latest:
-    - name: git://github.com/rsyslog/libfastjson
-    - rev: master
-    - target: /opt/src/libfastjson
-    - user: root
-  cmd.run:
-    - cwd: /opt/src/libfastjson
-    - name: ./autogen.sh && ./configure && make install
-    - require:
-      - git: libfastjson
-
-
 rsyslog:
   pkg.installed:
     - names:
