@@ -83,7 +83,7 @@ ceres:
 local-settings:
   cmd.run:
     - cwd: /opt/graphite/webapp/graphite
-    - name: cp local_settings.py.example local_settings.py
+    - name: cat local_settings.py.example | tr -d '\200-\377' > local_settings.py
     - require:
       - cmd: graphite-web
 
