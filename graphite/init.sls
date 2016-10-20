@@ -110,6 +110,6 @@ static-files:
 conf-files:
   cmd.run:
     - cwd: /opt/graphite/conf
-    - name: for $file in *.example; do cp $file ${file%.example}; done
+    - name: for file in *.example; do cp $file ${file%.example}; done
     - require:
       - cmd: graphite-web
