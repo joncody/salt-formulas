@@ -25,7 +25,7 @@ postgresql:
     - name: {{ postgresql.user }}
     - gid: {{ postgresql.group }}
     - system: True
-    - home: /var/empty
+    - home: /opt/postgresql/data
     - createhome: False
     - shell: {{ postgresql.shell }}
     - require:
