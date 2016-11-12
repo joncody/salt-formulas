@@ -35,7 +35,7 @@ ffmpeg:
       - pkg: ffmpeg
   cmd.run:
     - cwd: /opt/src/ffmpeg
-    - name: ./configure --prefix=/opt/ffmpeg --enable-gpl --enable-nonfree --enable-libfaac --enable-libmp3lame --enable-libopus --enable-libpulse --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libwebp --enable-libxvidl
+    - name: ./configure --prefix=/opt/ffmpeg --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libopus --enable-libpulse --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libwebp --enable-libxvid
     - require:
       - git: ffmpeg
 
