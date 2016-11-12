@@ -15,6 +15,7 @@ erlang:
       - libwxbase3.0-dev
       - libwxgtk3.0-dev
       - libqt4-opengl-dev
+      - libpam0g-dev
   file.managed:
     - name: /opt/src/otp_src_R16B02-basho8.tar.gz
     - source: http://s3.amazonaws.com/downloads.basho.com/erlang/otp_src_R16B02-basho8.tar.gz
