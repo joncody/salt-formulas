@@ -7,7 +7,7 @@ turnserver:
   file.managed:
     - name: /opt/src/turnserver-{{ turnserver.version }}.tar.gz
     - source: http://turnserver.open-sys.org/downloads/v{{ turnserver.version }}/turnserver-{{ turnserver.version }}.tar.gz
-    - source_hash: sha1={{ turnserver.checksum }}
+    - source_hash: sha256={{ turnserver.checksum }}
     - require:
       - pkg: turnserver
   cmd.run:
