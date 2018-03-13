@@ -11,5 +11,6 @@ conky-conf:
     - mode: 644
     - template: jinja
     - source: salt://conky/files/conky.conf
+    - makedirs: True
     - require:
       - pkg: conky
