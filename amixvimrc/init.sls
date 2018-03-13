@@ -17,13 +17,6 @@ amixvimrc:
       - pkg: amixvimrc
   cmd.run:
     - cwd: /opt/vim_runtime
-    - name: ./install_awesome_parameterized.sh /opt/vim_runtime --all
+    - name: ./install_awesome_parameterized.sh /opt/vim_runtime --all && printf "\nset nowrap\nset nu\nset t_Co=256" >> /opt/vim_runtime/vimrcs/basic.vim
     - require:
       - git: amixvimrc
-
-amixvimrc-custom:
-  cmd.run:
-    - cwd: /opt/vim_runtime
-    - name: printf "\nset nowrap\nset nu\nset t_Co=256" >> /opt/vim_runtime/vimrcs/basic.vim
-    - require:
-      - cmd: amixvimrc

@@ -2,6 +2,7 @@
 
 include:
   - sodium
+  - postgresql
 
 dovecot:
   pkg.installed:
@@ -19,6 +20,7 @@ dovecot:
       - libsodium-dev
     - require:
       - cmd: sodium
+      - cmd: postgresql
   git.latest:
     - name: {{ dovecot.repo }}
     - branch: master
@@ -27,7 +29,7 @@ dovecot:
       - pkg: dovecot
   cmd.run:
     - cwd: /opt/src/dovecot
-    - name: ./autogen.sh && LDFLAGS=-L/opt/sodium/lib CPPFLAGS=-I/opt/sodium/include ./configure --prefix=/opt/dovecot --with-shadow --with-pam --with-ldap=yes --with-sql=yes --with-pgsql --with-sqlite --with-sodium --with-zlib --with-bzlib --with-lzma --with-lz4 --with-libcap --with-libwrap --with-ssl=openssl --with-docs --with-gnu-ld && make && make install && make clean
+    - name: ./autogen.sh && LDFLAGS='-L/opt/sodium/lib -L/opt/postgresql/lib' CPPFLAGS='-I/opt/sodium/include -I/opt/postgresql/include' ./configure --prefix=/opt/dovecot --with-shadow --with-pam --with-ldap=yes --with-sql=yes --with-pgsql --with-sqlite --with-sodium --with-zlib --with-bzlib --with-lzma --with-lz4 --with-libcap --with-libwrap --with-ssl=openssl --with-docs --with-gnu-ld && make && make install && make clean
     - unless: test -d /opt/dovecot
     - require:
       - user: dovecot

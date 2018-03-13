@@ -25,7 +25,7 @@ opensmtpd:
       - pkg: opensmtpd
   cmd.run:
     - cwd: /opt/src/opensmtpd
-    - name: ./bootstrap && LDFLAGS=-L/opt/asr/lib CPPFLAGS=-I/opt/asr/include ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean && ldconfig && source /etc/profile
+    - name: ./bootstrap && LDFLAGS=-L/opt/asr/lib CPPFLAGS=-I/opt/asr/include ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean
     - unless: test -d /opt/opensmtpd
     - require:
       - user: opensmtpd-daemon
@@ -90,7 +90,7 @@ opensmtpd-extras:
       - cmd: opensmtpd
   cmd.run:
     - cwd: /opt/src/opensmtpd-extras
-    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd-extras --libexecdir=/opt/opensmtpd/libexec --with-gnu-ld --with-table-postgres --with-table-passwd --with-table-sqlite && make && make install && make clean && ldconfig && source /etc/profile
+    - name: ./bootstrap && LDFLAGS=-L/opt/postgresql/lib CPPFLAGS=-I/opt/postgresql/include ./configure --prefix=/opt/opensmtpd-extras --libexecdir=/opt/opensmtpd/libexec --with-gnu-ld --with-table-postgres --with-table-passwd --with-table-sqlite && make && make install && make clean
     - unless: test -d /opt/opensmtpd
     - require:
       - git: opensmtpd-extras
