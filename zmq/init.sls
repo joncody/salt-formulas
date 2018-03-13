@@ -30,6 +30,6 @@ zmq:
   cmd.run:
     - cwd: /opt/src/libzmq
     - name: ./autogen.sh && ./configure --prefix=/opt/zmq --enable-debug --enable-valgrind --with-gnu-ld --with-libsodium --with-pgm && make && make install && make clean && ldconfig
-    - unless: salt['file.directory_exists']('/opt/zmq')
+    - unless: test -d /opt/zmq
     - require:
       - git: zmq
