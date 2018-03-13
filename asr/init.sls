@@ -11,6 +11,7 @@ asr:
       - automake
       - autoconf
       - pkg-config
+      - libtool
     - require:
       - file: optsrc
   git.latest:
