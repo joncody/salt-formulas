@@ -1,54 +1,54 @@
 {% from "postgresql/map.jinja" import postgresql with context %}
 
+include:
+  - optsrc
+
 postgresql:
   pkg.installed:
     - names:
-      - python-dev
+      - python-all-dev
+      - python3-all-dev
       - libssl-dev
+      - openssl
       - libxslt1-dev
       - libxml2-dev
       - libreadline-dev
-      - bison
-      - flex
-  file.managed:
-    - name: /opt/src/postgresql-{{ postgresql.version }}.tar.gz
-    - source: https://ftp.postgresql.org/pub/source/v{{ postgresql.version }}/postgresql-{{ postgresql.version }}.tar.gz
-    - source_hash: sha256={{ postgresql.checksum }}
+      - libpam0g-dev
+      - libldap2-dev
+      - libperl-dev
     - require:
+      - file: optsrc
+  git.latest:
+    - name: {{ postgresql.repo }}
+    - branch: master
+    - target: /opt/src/postgresql
       - pkg: postgresql
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf postgresql-{{ postgresql.version }}.tar.gz
+    - cwd: /opt/src/postgresql
+    - name: ./configure --prefix=/opt/postgresql --enable-debug --with-perl --with-python --with-pam --with-ldap --with-openssl --with-libxml --with-libxslt --with-gnu-ld && make && make install && make clean
     - require:
       - user: postgresql
   user.present:
-    - name: {{ postgresql.user }}
-    - gid: {{ postgresql.group }}
+    - name: postgres
+    - gid: postgres
     - system: True
     - home: /opt/postgresql/data
     - createhome: False
-    - shell: {{ postgresql.shell }}
+    - shell: /usr/sbin/nologin
     - require:
-      - group: {{ postgresql.group }}
+      - group: postgresql
   group.present:
-    - name: {{ postgresql.group }}
+    - name: postgres
     - system: True
     - require:
-      - file: postgresql
-
-postgresql-configure:
-  cmd.run:
-    - cwd: /opt/src/postgresql-{{ postgresql.version }}
-    - name: ./configure --prefix=/opt/postgresql --with-openssl --with-libxml --with-libxslt --with-python && make install clean
-    - require:
-      - cmd: postgresql
+      - git: postgresql
 
 postgresql-data:
   cmd.run:
     - cwd: /opt/postgresql
     - name: mkdir /opt/postgresql/data && chown postgres /opt/postgresql/data
     - require:
-      - cmd: postgresql-configure
+      - cmd: postgresql
 
 postgresql-init:
   cmd.run:

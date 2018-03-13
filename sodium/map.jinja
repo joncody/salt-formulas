@@ -1,0 +1,5 @@
+{% set sodium = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/jedisct1/libsodium',
+    },
+}, merge=salt['pillar.get']('sodium:lookup')) %}

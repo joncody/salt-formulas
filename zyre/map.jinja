@@ -1,0 +1,5 @@
+{% set zyre = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/zeromq/zyre',
+    },
+}, merge=salt['pillar.get']('zyre:lookup')) %}

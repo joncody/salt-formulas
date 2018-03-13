@@ -1,93 +1,93 @@
 {% from "opensmtpd/map.jinja" import opensmtpd with context %}
 
-libasr:
+include:
+  - optsrc
+
+opensmtpd:
   pkg.installed:
     - names:
       - autoconf
       - automake
+      - libbison-dev
       - bison
       - libevent-dev
       - libtool
+      - libssl-dev
       - openssl
-      - libdb-dev
+      - libasr-dev
+    - require:
+      - file: optsrc
   git.latest:
-    - name: git://github.com/OpenSMTPD/libasr.git
-    - rev: master
-    - target: /opt/src/libasr
-    - user: root
+    - name: {{ opensmtpd.repo }}
+    - branch: portable
+    - target: /opt/src/opensmtpd
     - require:
-      - pkg: libasr
+      - pkg: opensmtpd
   cmd.run:
-    - cwd: /opt/src/libasr
-    - name: ./bootstrap && ./configure --prefix=/usr && make install clean
-    - require:
-      - git: libasr
-
-opensmtpd:
-  file.managed:
-    - name: /opt/src/opensmtpd-{{ opensmtpd.version }}.tar.gz
-    - source: http://www.opensmtpd.org/archives/opensmtpd-{{ opensmtpd.version }}.tar.gz
-    - source_hash: sha256={{ opensmtpd.checksum }}
-    - require:
-      - cmd: libasr
-  cmd.run:
-    - cwd: /opt/src
-    - name: mkdir -p /opt/src/opensmtpd && tar xvzf opensmtpd-{{ opensmtpd.version }}.tar.gz -C /opt/src/opensmtpd --strip-components=1
+    - cwd: /opt/src/opensmtpd
+    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean
     - require:
       - user: opensmtpd-daemon
 
-opensmtpd-build:
-  cmd.run:
-    - cwd: /opt/src/opensmtpd
-    - name: ./configure --prefix=/opt/opensmtpd --with-mailwrapper && make install clean
-    - require:
-      - cmd: opensmtpd
-
 opensmtpd-daemon:
   user.present:
-    - name: {{ opensmtpd.daemon_user }} 
-    - gid: {{ opensmtpd.daemon_group }}
+    - name: _smtpd
+    - gid: _smtpd
     - system: True
     - home: /var/empty
     - createhome: False
-    - shell: {{ opensmtpd.shell }}
+    - shell: /usr/sbin/nologin
     - loginclass: "SMTP Daemon"
     - require:
       - group: opensmtpd-daemon
   group.present:
-    - name: {{ opensmtpd.daemon_group }}
+    - name: _smtpd
     - system: True
     - require:
       - user: opensmtpd-queue
 
 opensmtpd-queue:
   user.present:
-    - name: {{ opensmtpd.queue_user }} 
-    - gid: {{ opensmtpd.queue_group }}
+    - name: _smtpq 
+    - gid: _smtpq
     - system: True
     - home: /var/empty
     - createhome: False
-    - shell: {{ opensmtpd.shell }}
+    - shell: /usr/sbin/nologin
     - loginclass: "SMTPD Queue"
     - require:
       - group: opensmtpd-queue
   group.present:
-    - name: {{ opensmtpd.queue_group }}
+    - name: _smtpq
     - system: True
     - require:
       - user: opensmtpd-filter
 
 opensmtpd-filter:
   user.present:
-    - name: {{ opensmtpd.filter_user }} 
-    - gid: {{ opensmtpd.filter_group }}
+    - name: _smtpf 
+    - gid: _smtpf
     - system: True
     - home: /var/empty
     - createhome: False
-    - shell: {{ opensmtpd.shell }}
+    - shell: /usr/sbin/nologin
     - loginclass: "SMTPD Filter"
     - require:
       - group: opensmtpd-filter
   group.present:
-    - name: {{ opensmtpd.filter_group }}
+    - name: _smtpf
     - system: True
+    - require:
+      - git: opensmtpd
+
+opensmtpd-extras:
+  git.latest:
+    - name: {{ opensmtpd.extras_repo }}
+    - branch: master
+    - target: /opt/src/opensmtpd-extras
+    - require:
+      - cmd: opensmtpd
+  cmd.run:
+    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd-extras --libexecdir=/opt/opensmtpd/libexec --with-gnu-ld --with-table-postgres --with-table-passwd --with-table-sqlite && make && make install && make clean
+    - require:
+      - git: opensmtpd-extras

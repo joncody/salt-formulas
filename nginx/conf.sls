@@ -5,7 +5,7 @@ include:
 
 nginx-conf:
   file.managed:
-    - name: {{ nginx.conf }}
+    - name: /opt/nginx/conf/nginx.conf
     - user: root
     - group: root
     - mode: 644

@@ -1,7 +1,6 @@
 {% set conky = salt['grains.filter_by']({
     'Debian': {
-        'package': 'conky',
-        'conf': '/etc/conky/conky.conf',
+        'repo': 'https://github.com/brndnmtthws/conky',
         'wired_interface': 'eth0',
         'wireless_interface': 'wlan0',
     },

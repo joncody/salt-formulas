@@ -1,54 +1,62 @@
 {% from "dovecot/map.jinja" import dovecot with context %}
 
+include:
+  - optsrc
+
 dovecot:
-  file.managed:
-    - name: /opt/src/dovecot-{{ dovecot.version }}.tar.gz
-    - source: http://www.dovecot.org/releases/2.2/dovecot-{{ dovecot.version }}.tar.gz
-    - source_hash: sha1={{ dovecot.checksum }}
+  pkg.installed:
+    - names:
+      - libldap2-dev
+      - libpam0g-dev
+      - zlib1g-dev
+      - liblzma-dev
+      - liblz4-dev
+      - libarchive-dev
+      - libcap-dev
+      - libwrap0-dev
+      - libssl-dev
+      - openssl
+      - libsodium-dev
+    - require:
+      - file: optsrc
+  git.latest:
+    - name: {{ dovecot.repo }}
+    - branch: master
+    - target: /opt/src/dovecot
+    - require:
+      - pkg: dovecot
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf dovecot-{{ dovecot.version }}.tar.gz
+    - cwd: /opt/src/dovecot
+    - name: ./autogen.sh && ./configure --prefix=/opt/dovecot --with-shadow --with-pam --with-ldap=yes --with-sql=yes --with-pgsql --with-sqlite --with-sodium --with-zlib --with-bzlib --with-lzma --with-lz4 --with-libcap --with-libwrap --with-ssl=openssl --with-docs --with-gnu-ld && make && make install && make clean
     - require:
       - user: dovecot
   user.present:
-    - name: {{ dovecot.dovecot_user }} 
-    - gid: {{ dovecot.dovecot_group }}
+    - name: dovecot
+    - gid: dovecot
     - system: True
     - home: /var/empty
     - createhome: False
-    - shell: {{ dovecot.shell }}
+    - shell: /usr/sbin/nologin
     - require:
       - group: dovecot
   group.present:
-    - name: {{ dovecot.dovecot_group }}
+    - name: dovecot
     - system: True
     - require:
       - user: dovenull
 
 dovenull:
   user.present:
-    - name: {{ dovecot.dovenull_user }} 
-    - gid: {{ dovecot.dovenull_group }}
+    - name: dovenull
+    - gid: dovenull
     - system: True
     - home: /var/empty
     - createhome: False
-    - shell: {{ dovecot.shell }}
+    - shell: /usr/sbin/nologin
     - require:
       - group: dovenull
   group.present:
-    - name: {{ dovecot.dovenull_group }}
+    - name: dovenull
     - system: True
-
-dovecot-configure:
-  cmd.run:
-    - cwd: /opt/src/dovecot-{{ dovecot.version }}
-    - name: ./configure --prefix=/opt/dovecot
     - require:
-      - cmd: dovecot
-
-dovecot-install:
-  cmd.run:
-    - cwd: /opt/src/dovecot-{{ dovecot.version }}
-    - name: make install
-    - require:
-      - cmd: dovecot-configure
+      - git: dovecot

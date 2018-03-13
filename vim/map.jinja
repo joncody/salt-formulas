@@ -1,7 +1,0 @@
-{% set vim = salt['grains.filter_by']({
-    'Debian': {
-        'url': 'https://github.com/amix/vimrc.git',
-        'user': 'jon',
-        'group': 'jon',
-    },
-}, merge=salt['pillar.get']('vim:lookup')) %}

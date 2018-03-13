@@ -1,57 +1,30 @@
 {% from "go/map.jinja" import go with context %}
 
+include:
+  - optsrc
 
-go_deps:
-  file.directory:
-    - name: /opt/src
-    - user: root
-    - group: root
-    - mode: 755
-    - makedirs: True
-
-go1_4:
-  file.managed:
-    - name: /opt/src/go1.4.3.src.tar.gz
-    - source: https://storage.googleapis.com/golang/go1.4.3.src.tar.gz
-    - source_hash: sha1=486db10dc571a55c8d795365070f66d343458c48
+go_bootstrap:
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: release-branch.go1.4
+    - target: /opt/src/go_bootstrap
     - require:
-      - file: go_deps
+      - file: optsrc
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf go1.4.3.src.tar.gz
+    - cwd: /opt/src/go_bootstrap
+    - name: ./make.bash
     - require:
-      - file: go1_4
-
-go1_4-build:
-  cmd.run:
-    - cwd: /opt/src/go/src
-    - name: CGO_ENABLED=0 ./make.bash
-    - require:
-      - cmd: go1_4
-
-go1_4-rename:
-  cmd.run:
-    - cwd: /opt/src
-    - name: mv /opt/src/go /opt/src/go1.4.3
-    - require:
-      - cmd: go1_4-build
+      - git: go_bootstrap
 
 go:
-  file.managed:
-    - name: /opt/src/go{{ go.version }}.src.tar.gz
-    - source: https://storage.googleapis.com/golang/go{{ go.version }}.src.tar.gz
-    - source_hash: sha256={{ go.checksum }}
+  git.latest
+    - name: {{ go.repo }}
+    - branch: master
+    - target: /opt/src/go
     - require:
-      - cmd: go1_4-rename
+      - cmd: go_bootstrap
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf go{{ go.version }}.src.tar.gz
+    - cwd: /opt/src/go
+    - name: GOROOT_BOOTSTRAP=/opt/src/go_bootstrap ./all.bash
     - require:
-      - file: go
-
-go-build:
-  cmd.run:
-    - cwd: /opt/src/go/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.4.3 ./make.bash
-    - require:
-      - cmd: go
+      - git: go

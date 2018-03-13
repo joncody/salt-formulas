@@ -1,5 +1,15 @@
 {% from "nginx/map.jinja" import nginx with context %}
 
+include:
+  - optsrc
+
+nginscript:
+  git.latest:
+    - name: {{ nginx.njs_repo }}
+    - branch: master
+    - target: /opt/src/njs
+    - require:
+      - file: optsrc
 
 nginx:
   pkg.installed:
@@ -9,15 +19,21 @@ nginx:
       - libxslt1-dev
       - libxml2-dev
       - libgeoip-dev
-  file.managed:
-    - name: /opt/src/nginx-{{ nginx.version }}.tar.gz
-    - source: http://nginx.org/download/nginx-{{ nginx.version }}.tar.gz
-    - source_hash: sha1={{ nginx.checksum }}
+      - zlib1g-dev
+      - libaio-dev
+      - libperl-dev
+      - libgd-dev
+    - require:
+      - git: nginscript
+  git.latest:
+    - name: {{ nginx.repo }}
+    - branch: master
+    - target: /opt/src/nginx
     - require:
       - pkg: nginx
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf nginx-{{ nginx.version }}.tar.gz
+    - cwd: /opt/src/nginx
+    - name: /opt/src/nginx ./auto/configure --prefix=/opt/nginx --add-module=/opt/src/njs/nginx --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_geoip_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module --with-http_stub_status_module --with-threads --with-pcre --with-debug --with-mail --with-mail_ssl_module --with-file-aio --with-libatomic --with-compat --with-stream --with-stream_ssl_module --with-stream_realip_module --with-stream_geoip_module --with-stream_ssl_preread_module --with-http_perl_module --with-select_module && make && make install && make clean
     - require:
       - user: nginx
   user.present:
@@ -26,27 +42,11 @@ nginx:
     - system: True
     - home: /var/empty
     - createhome: False
-    - shell: {{ nginx.shell }}
+    - shell: /usr/sbin/nologin
     - require:
-      - group: {{ nginx.group }}
+      - group: nginx
   group.present:
     - name: {{ nginx.group }}
     - system: True
     - require:
-      - file: nginx
-
-
-nginx-configure:
-  cmd.run:
-    - cwd: /opt/src/nginx-{{ nginx.version }}
-    - name: ./configure --prefix=/opt/nginx --with-http_ssl_module --with-http_gzip_static_module --with-http_gunzip_module --with-http_auth_request_module --with-http_stub_status_module --with-http_realip_module --with-http_xslt_module --with-http_geoip_module --with-http_secure_link_module --with-http_random_index_module --with-http_sub_module --with-pcre
-    - require:
-      - cmd: nginx
-
-
-nginx-install:
-  cmd.run:
-    - cwd: /opt/src/nginx-{{ nginx.version }}
-    - name: make install
-    - require:
-      - cmd: nginx-configure
+      - git: nginx

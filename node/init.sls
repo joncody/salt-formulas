@@ -1,40 +1,17 @@
 {% from "node/map.jinja" import node with context %}
 
-
-node_deps:
-  file.directory:
-    - name: /opt/src
-    - user: root
-    - group: root
-    - mode: 755
-    - makedirs: True
-
+include:
+  - optsrc
 
 node:
-  file.managed:
-    - name: /opt/src/node-v{{ node.version }}.tar.gz
-    - source: https://nodejs.org/dist/v{{ node.version }}/node-v{{ node.version }}.tar.gz
-    - source_hash: sha256={{ node.checksum }}
+  git.latest;
+    - name: {{ node.repo }}
+    - branch: master
+    - target: /opt/src/node
     - require:
-      - file: node_deps
+      - file: optsrc
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf node-v{{ node.version }}.tar.gz
+    - cwd: /opt/src/node
+    - name: ./configure --prefix=/opt/node --debug --gdb && make && make install && make clean
     - require:
-      - file: node
-
-
-node-configure:
-  cmd.run:
-    - cwd: /opt/src/node-v{{ node.version }}
-    - name: ./configure --prefix=/opt/node
-    - require:
-      - cmd: node
-
-
-node-install:
-  cmd.run:
-    - cwd: /opt/src/node-v{{ node.version }}
-    - name: make install
-    - require:
-      - cmd: node-configure
+      - git: node

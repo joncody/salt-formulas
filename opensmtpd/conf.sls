@@ -3,7 +3,7 @@
 include:
   - opensmtpd
 
-smtpd-conf:
+opensmtpd-conf:
   file.managed:
     - name: {{ opensmtpd.smtpd }}
     - user: root
@@ -14,79 +14,23 @@ smtpd-conf:
     - require:
       - cmd: opensmtpd
 
-aliases-conf:
-  file.managed:
-    - name: {{ opensmtpd.aliases }}
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - source: salt://opensmtpd/files/aliases
+opensmtpd-mkdir:
+  cmd.run:
+    - cwd: /opt/opensmtpd/etc
+    - name: mkdir ssl
     - require:
-      - file: smtpd-conf
+      - file: opensmtpd-conf
 
-domains-conf:
-  file.managed:
-    - name: {{ opensmtpd.domains }}
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - source: salt://opensmtpd/files/domains
+opensmtpd-ssl:
+  cmd.run:
+    - cwd: /opt/opensmtpd/etc/ssl
+    - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout opensmtpd.key -out opensmtpd.crt
     - require:
-      - file: aliases-conf
+      - cmd: opensmtpd-mkdir
 
-users-conf:
-  file.managed:
-    - name: {{ opensmtpd.users }}
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - source: salt://opensmtpd/files/users
+opensmtpd-files:
+  cmd.run:
+    - cwd: /opt/opensmtpd/etc
+    - name: printf "vmail:    /dev/null\r\nroot:     root" > aliases && touch {domains,passwd,vusers}
     - require:
-      - file: domains-conf
-
-vusers-conf:
-  file.managed:
-    - name: {{ opensmtpd.vusers }}
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - source: salt://opensmtpd/files/vusers
-    - require:
-      - file: users-conf
-
-secrets-conf:
-  file.managed:
-    - name: {{ opensmtpd.secrets }}
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
-    - source: salt://opensmtpd/files/secrets
-    - require:
-      - file: vusers-conf
-
-crt-conf:
-  file.managed:
-    - name: {{ opensmtpd.crt }}
-    - user: root
-    - group: root
-    - mode: 600
-    - template: jinja
-    - source: salt://opensmtpd/files/mail.crt
-    - require:
-      - file: secrets-conf
-
-key-conf:
-  file.managed:
-    - name: {{ opensmtpd.key }}
-    - user: root
-    - group: root
-    - mode: 600
-    - template: jinja
-    - source: salt://opensmtpd/files/mail.key
-    - require:
-      - file: crt-conf
+      - cmd: opensmtpd-ssl

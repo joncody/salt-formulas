@@ -1,4 +1,0 @@
-{% set graphite = salt['grains.filter_by']({
-    'Debian': {
-    },
-}, merge=salt['pillar.get']('graphite:lookup')) %}

@@ -1,6 +1,5 @@
 {% set node = salt['grains.filter_by']({
     'Debian': {
-        'version': '6.10.2',
-        'checksum': '9b897dd6604d50ae5fff25fd14b1c4035462d0598735799e0cfb4f17cb6e0d19',
+        'repo': 'https://github.com/nodejs/node',
     },
 }, merge=salt['pillar.get']('node:lookup')) %}

@@ -1,16 +1,19 @@
 base:
   '*':
+    - amixvimrc
+    - asr
+    - bashrc
     - conky
+    - czmq
     - dovecot
-    - git
+    - ffmpeg
+    - filemq
     - go
-    - iptables
     - nginx
     - node
     - opensmtpd
+    - optsrc
     - postgresql
-    - riak
-    - rsyslog
-    - turnserver
-    - vim
-    - zeromq
+    - sodium
+    - zmq
+    - zyre

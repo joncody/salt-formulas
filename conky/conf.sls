@@ -5,7 +5,7 @@ include:
 
 conky-conf:
   file.managed:
-    - name: {{ conky.conf }}
+    - name: /etc/conky/conky.conf
     - user: root
     - group: root
     - mode: 644

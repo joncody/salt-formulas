@@ -5,7 +5,7 @@ include:
 
 dovecot-conf:
   file.managed:
-    - name: {{ dovecot.conf }}
+    - name: /opt/dovecot/etc/dovecot/dovecot.conf
     - user: root
     - group: root
     - mode: 644
@@ -13,32 +13,23 @@ dovecot-conf:
     - require:
       - cmd: dovecot-install
 
-dovecot-passwd:
-  file.managed:
-    - name: {{ dovecot.passwd }}
-    - user: root
-    - group: root
-    - mode: 644
-    - source: salt://dovecot/files/passwd
+dovecot-mkdir:
+  cmd.run:
+    - cwd: /opt/dovecot/etc/dovecot
+    - name: mkdir ssl
     - require:
       - file: dovecot-conf
 
-dovecot-crt:
-  file.managed:
-    - name: {{ dovecot.crt }}
-    - user: root
-    - group: root
-    - mode: 644
-    - source: salt://dovecot/files/dovecot.crt
+dovecot-ssl:
+  cmd.run:
+    - cwd: /opt/dovecot/etc/dovecot/ssl
+    - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout dovecot.key -out dovecot.crt
     - require:
-      - file: dovecot-passwd
+      - cmd: dovecot-mkdir
 
-dovecot-key:
-  file.managed:
-    - name: {{ dovecot.key }}
-    - user: root
-    - group: root
-    - mode: 644
-    - source: salt://dovecot/files/dovecot.key
+dovecot-dhparams:
+  cmd.run:
+    - cwd: /opt/dovecot/etc/dovecot/ssl
+    - name: openssl dhparam 4096 -out dh_params.pem
     - require:
-      - file: dovecot-crt
+      - cmd: dovecot-ssl

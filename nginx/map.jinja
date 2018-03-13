@@ -1,11 +1,9 @@
 {% set nginx = salt['grains.filter_by']({
     'Debian': {
-        'conf': '/opt/nginx/conf/nginx.conf',
         'user': 'web',
         'group': 'web',
-        'shell': '/usr/sbin/nologin',
         'webroot': '/www',
-        'version': '1.11.5',
-        'checksum': '3658724f3c6d049cd1d24f02f1acb7f9be250886',
+        'njs_repo': 'https://github.com/nginx/njs',
+        'repo': 'https://github.com/nginx/nginx',
     },
 }, merge=salt['pillar.get']('nginx:lookup')) %}
