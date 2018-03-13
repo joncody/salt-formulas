@@ -19,6 +19,7 @@ zmq:
       - valgrind
       - asciidoc
       - liblz4-dev
+      - libpgm-dev
     - require:
       - cmd: sodium
   git.latest:
