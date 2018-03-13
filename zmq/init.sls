@@ -30,7 +30,7 @@ zmq:
       - pkg: zmq
   cmd.run:
     - cwd: /opt/src/libzmq
-    - name: ./autogen.sh && ./configure --prefix=/opt/zmq --enable-debug --enable-valgrind --with-gnu-ld --with-libsodium --with-pgm && make && make install && make clean && ldconfig
+    - name: ./autogen.sh && ./configure --prefix=/opt/zmq --enable-debug --enable-valgrind --with-gnu-ld --with-libsodium --with-pgm && make && make install && make clean && ldconfig && source /etc/profile
     - unless: test -d /opt/zmq
     - require:
       - git: zmq

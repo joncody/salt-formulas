@@ -12,6 +12,6 @@ node:
       - file: optsrc
   cmd.run:
     - cwd: /opt/src/node
-    - name: ./configure --prefix=/opt/node --debug --gdb && make && make install && make clean
+    - name: ./configure --prefix=/opt/node --debug --gdb && make && make install && make clean && ldconfig && source /etc/profile
     - require:
       - git: node

@@ -1,7 +1,7 @@
 {% from "opensmtpd/map.jinja" import opensmtpd with context %}
 
 include:
-  - optsrc
+  - asr
 
 opensmtpd:
   pkg.installed:
@@ -16,7 +16,7 @@ opensmtpd:
       - openssl
       - libasr-dev
     - require:
-      - file: optsrc
+      - cmd: asr
   git.latest:
     - name: {{ opensmtpd.repo }}
     - branch: portable
@@ -25,7 +25,8 @@ opensmtpd:
       - pkg: opensmtpd
   cmd.run:
     - cwd: /opt/src/opensmtpd
-    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean
+    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean && ldconfig && source /etc/profile
+    - unless: test -d /opt/opensmtpd
     - require:
       - user: opensmtpd-daemon
 
@@ -88,6 +89,8 @@ opensmtpd-extras:
     - require:
       - cmd: opensmtpd
   cmd.run:
-    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd-extras --libexecdir=/opt/opensmtpd/libexec --with-gnu-ld --with-table-postgres --with-table-passwd --with-table-sqlite && make && make install && make clean
+    - cwd: /opt/src/opensmtpd-extras
+    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd-extras --libexecdir=/opt/opensmtpd/libexec --with-gnu-ld --with-table-postgres --with-table-passwd --with-table-sqlite && make && make install && make clean && ldconfig && source /etc/profile
+    - unless: test -d /opt/opensmtpd
     - require:
       - git: opensmtpd-extras

@@ -29,6 +29,7 @@ ffmpeg:
       - pkg: ffmpeg
   cmd.run:
     - cwd: /opt/src/ffmpeg
-    - name: ./configure --prefix=/opt/ffmpeg --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libopus --enable-libpulse --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libwebp --enable-libxvid && make && make install && make clean
+    - name: ./configure --prefix=/opt/ffmpeg --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libopus --enable-libpulse --enable-libspeex --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libwebp --enable-libxvid && make && make install && make clean && ldconfig && source /etc/profile
+    - unless: test -d /opt/ffmpeg
     - require:
       - git: ffmpeg

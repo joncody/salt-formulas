@@ -22,7 +22,7 @@ asr:
       - pkg: asr
   cmd.run:
     - cwd: /opt/src/libasr
-    - name: ./bootstrap && ./configure --prefix=/opt/asr --with-gnu-ld && make && make install && make clean && ldconfig
+    - name: ./bootstrap && ./configure --prefix=/opt/asr --with-gnu-ld && make && make install && make clean && ldconfig && source /etc/profile
     - unless: test -d /opt/asr
     - require:
       - git: asr

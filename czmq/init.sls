@@ -29,7 +29,7 @@ czmq:
       - pkg: czmq
   cmd.run:
     - cwd: /opt/src/czmq
-    - name: ./autogen.sh && ./configure --prefix=/opt/czmq --with-gnu-ld --with-libzmq --with-uuid --with-liblz4 --with-docs && make && make install && make clean && ldconfig
+    - name: ./autogen.sh && ./configure --prefix=/opt/czmq --with-gnu-ld --with-libzmq --with-uuid --with-liblz4 --with-docs && make && make install && make clean && ldconfig && source /etc/profile
     - unless: test -d /opt/czmq
     - require:
       - git: czmq

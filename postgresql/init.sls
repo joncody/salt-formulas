@@ -25,7 +25,8 @@ postgresql:
       - pkg: postgresql
   cmd.run:
     - cwd: /opt/src/postgresql
-    - name: ./configure --prefix=/opt/postgresql --enable-debug --with-perl --with-python --with-pam --with-ldap --with-openssl --with-libxml --with-libxslt --with-gnu-ld && make && make install && make clean
+    - name: ./configure --prefix=/opt/postgresql --enable-debug --with-perl --with-python --with-pam --with-ldap --with-openssl --with-libxml --with-libxslt --with-gnu-ld && make && make install && make clean && ldconfig && source /etc/profile
+    - unless: test -d /opt/postgresql
     - require:
       - user: postgresql
   user.present:
