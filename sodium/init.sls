@@ -19,5 +19,6 @@ sodium:
   cmd.run:
     - cwd: /opt/src/libsodium
     - name: ./autogen.sh && ./configure --prefix=/opt/sodium --enable-debug --enable-opt --enable-valgrind --with-pthreads --with-gnu-ld && make && make install && make clean && ldconfig
+    - unless: salt['file.directory_exists']('/opt/sodium')
     - require:
       - git: sodium

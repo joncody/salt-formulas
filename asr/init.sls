@@ -23,5 +23,6 @@ asr:
   cmd.run:
     - cwd: /opt/src/libasr
     - name: ./bootstrap && ./configure --prefix=/opt/asr --with-gnu-ld && make && make install && make clean && ldconfig
+    - unless: salt['file.directory_exists']('/opt/asr')
     - require:
       - git: asr

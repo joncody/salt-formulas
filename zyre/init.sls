@@ -30,5 +30,6 @@ zyre:
   cmd.run:
     - cwd: /opt/src/zyre
     - name: ./autogen.sh && ./configure --prefix=/opt/zyre --with-gnu-ld --with-libzmq --with-libczmq --with-docs && make && make install && make clean && ldconfig
+    - unless: salt['file.directory_exists']('/opt/zyre')
     - require:
       - git: zyre

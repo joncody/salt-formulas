@@ -30,5 +30,6 @@ czmq:
   cmd.run:
     - cwd: /opt/src/czmq
     - name: ./autogen.sh && ./configure --prefix=/opt/czmq --with-gnu-ld --with-libzmq --with-uuid --with-liblz4 --with-docs && make && make install && make clean && ldconfig
+    - unless: salt['file.directory_exists']('/opt/czmq')
     - require:
       - git: czmq

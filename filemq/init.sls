@@ -30,5 +30,6 @@ filemq:
   cmd.run:
     - cwd: /opt/src/filemq
     - name: ./autogen.sh && ./configure --prefix=/opt/filemq --with-gnu-ld --with-libsodium --with-libzmq --with-libczmq --with-docs && make && make install && make clean
+    - unless: salt['file.directory_exists']('/opt/filemq')
     - require:
       - git: filemq
