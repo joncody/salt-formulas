@@ -7,6 +7,7 @@ conky:
   pkg.installed:
     - names:
       - cmake
+      - libimlib2-dev
       - libtolua-dev
       - libtolua++5.1-dev
       - libx11-dev
