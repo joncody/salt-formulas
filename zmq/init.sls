@@ -1,7 +1,7 @@
 {% from "zmq/map.jinja" import zmq with context %}
 
 include:
-  - optsrc
+  - sodium
 
 zmq:
   pkg.installed:
@@ -20,7 +20,7 @@ zmq:
       - asciidoc
       - liblz4-dev
     - require:
-      - file: optsrc
+      - cmd: sodium
   git.latest:
     - name: {{ zmq.repo }}
     - branch: master
@@ -29,6 +29,6 @@ zmq:
       - pkg: zmq
   cmd.run:
     - cwd: /opt/src/zmq
-    - name: ./autogen.sh && ./configure --prefix=/opt/zmq --enable-debug --enable-valgrind --with-gnu-ld --with-libsodium --with-pgm && make && make install && make clean
+    - name: ./autogen.sh && ./configure --prefix=/opt/zmq --enable-debug --enable-valgrind --with-gnu-ld --with-libsodium --with-pgm && make && make install && make clean && ldconfig
     - require:
       - git: zmq

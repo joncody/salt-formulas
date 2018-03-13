@@ -1,7 +1,7 @@
 {% from "czmq/map.jinja" import czmq with context %}
 
 include:
-  - optsrc
+  - zmq
 
 czmq:
   pkg.installed:
@@ -20,7 +20,7 @@ czmq:
       - asciidoc
       - liblz4-dev
     - require:
-      - file: optsrc
+      - cmd: zmq
   git.latest:
     - name: {{ czmq.repo }}
     - branch: master
@@ -29,6 +29,6 @@ czmq:
       - pkg: czmq
   cmd.run:
     - cwd: /opt/src/czmq
-    - name: ./autogen.sh && ./configure --prefix=/opt/czmq --with-gnu-ld --with-libzmq --with-uuid --with-liblz4 --with-docs && make && make install && make clean
+    - name: ./autogen.sh && ./configure --prefix=/opt/czmq --with-gnu-ld --with-libzmq --with-uuid --with-liblz4 --with-docs && make && make install && make clean && ldconfig
     - require:
       - git: czmq

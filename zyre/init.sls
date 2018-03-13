@@ -1,7 +1,7 @@
 {% from "zyre/map.jinja" import zyre with context %}
 
 include:
-  - optsrc
+  - czmq
 
 zyre:
   pkg.installed:
@@ -20,7 +20,7 @@ zyre:
       - asciidoc
       - liblz4-dev
     - require:
-      - file: optsrc
+      - cmd: czmq
   git.latest:
     - name: {{ zyre.repo }}
     - branch: master
@@ -29,6 +29,6 @@ zyre:
       - pkg: zyre
   cmd.run:
     - cwd: /opt/src/zyre
-    - name: ./autogen.sh && ./configure --prefix=/opt/zyre --with-gnu-ld --with-libzmq --with-libczmq --with-docs && make && make install && make clean
+    - name: ./autogen.sh && ./configure --prefix=/opt/zyre --with-gnu-ld --with-libzmq --with-libczmq --with-docs && make && make install && make clean && ldconfig
     - require:
       - git: zyre

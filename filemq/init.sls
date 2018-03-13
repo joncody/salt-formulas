@@ -1,7 +1,7 @@
 {% from "filemq/map.jinja" import filemq with context %}
 
 include:
-  - optsrc
+  - czmq
 
 filemq:
   pkg.installed:
@@ -20,7 +20,7 @@ filemq:
       - asciidoc
       - liblz4-dev
     - require:
-      - file: optsrc
+      - cmd: czmq
   git.latest:
     - name: {{ filemq.repo }}
     - branch: master

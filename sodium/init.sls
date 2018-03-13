@@ -18,6 +18,6 @@ sodium:
       - pkg: sodium
   cmd.run:
     - cwd: /opt/src/libsodium
-    - name: ./autogen.sh && ./configure --prefix=/opt/sodium --enable-debug --enable-opt --enable-valgrind --with-pthreads --with-gnu-ld && make && make install && make clean
+    - name: ./autogen.sh && ./configure --prefix=/opt/sodium --enable-debug --enable-opt --enable-valgrind --with-pthreads --with-gnu-ld && make && make install && make clean && ldconfig
     - require:
       - git: sodium
