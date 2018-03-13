@@ -25,7 +25,7 @@ opensmtpd:
       - pkg: opensmtpd
   cmd.run:
     - cwd: /opt/src/opensmtpd
-    - name: ./bootstrap && ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean && ldconfig && source /etc/profile
+    - name: ./bootstrap && LDFLAGS=-L/opt/asr/lib CPPFLAGS=-I/opt/asr/include ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean && ldconfig && source /etc/profile
     - unless: test -d /opt/opensmtpd
     - require:
       - user: opensmtpd-daemon
