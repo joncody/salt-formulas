@@ -16,6 +16,8 @@ postgresql:
       - libpam0g-dev
       - libldap2-dev
       - libperl-dev
+      - libbison-dev
+      - bison
     - require:
       - file: optsrc
   git.latest:
