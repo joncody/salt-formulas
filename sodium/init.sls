@@ -1,6 +1,6 @@
 {% from "sodium/map.jinja" import sodium with context %}
 
-incldue:
+include:
   - optsrc
 
 sodium:
