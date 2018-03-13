@@ -25,7 +25,7 @@ conky:
     - require:
       - pkg: conky
   cmd.run:
-    - name: mkdir build
+    - name: mkdir -p build
     - cwd: /opt/src/conky
     - require:
       - git: conky
