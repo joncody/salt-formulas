@@ -22,6 +22,7 @@ postgresql:
     - name: {{ postgresql.repo }}
     - branch: master
     - target: /opt/src/postgresql
+    - require:
       - pkg: postgresql
   cmd.run:
     - cwd: /opt/src/postgresql
