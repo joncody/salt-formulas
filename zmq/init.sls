@@ -5,7 +5,7 @@ include:
 
 zmq:
   pkg.installed:
-    - name:
+    - names:
       - git
       - build-essential
       - libtool

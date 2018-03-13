@@ -5,7 +5,7 @@ include:
 
 filemq:
   pkg.installed:
-    - name:
+    - names:
       - git
       - build-essential
       - libtool

@@ -5,7 +5,7 @@ include:
 
 czmq:
   pkg.installed:
-    - name:
+    - names:
       - git
       - build-essential
       - libtool
