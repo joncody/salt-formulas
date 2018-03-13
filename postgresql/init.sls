@@ -18,6 +18,8 @@ postgresql:
       - libperl-dev
       - libbison-dev
       - bison
+      - libfl-dev
+      - flex
     - require:
       - file: optsrc
   git.latest:
