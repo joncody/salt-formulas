@@ -23,6 +23,7 @@ nginx:
       - libaio-dev
       - libperl-dev
       - libgd-dev
+      - libatomic-ops-dev
     - require:
       - git: nginscript
   git.latest:
