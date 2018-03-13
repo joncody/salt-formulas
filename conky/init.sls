@@ -23,14 +23,14 @@ conky:
     - target: /opt/src/conky
     - require:
       - pkg: conky
-  cmd:
+  cmd.run:
     - name: mkdir build
     - cwd: /opt/src/conky
     - require:
       - git: conky
 
 conky-build:
-  cmd:
+  cmd.run:
     - cwd: /opt/src/conky/build
     - name: cmake .. && make && make install && make clean
     - require:
