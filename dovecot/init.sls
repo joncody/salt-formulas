@@ -2,7 +2,7 @@
 
 include:
   - sodium
-  - postgresql.postgresql
+  - postgresql
 
 dovecot:
   pkg.installed:
