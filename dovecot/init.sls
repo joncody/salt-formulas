@@ -19,6 +19,7 @@ dovecot:
       - openssl
       - sqlite3
       - libsqlite3-dev
+      - pandoc
     - require:
       - cmd: sodium
       - cmd: postgresql
