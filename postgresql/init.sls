@@ -52,7 +52,7 @@ postgresql:
 postgresql-data:
   cmd.run:
     - cwd: /opt/postgresql
-    - name: mkdir /opt/postgresql/data && chown postgres /opt/postgresql/data
+    - name: mkdir -p /opt/postgresql/data && chown postgres /opt/postgresql/data
     - require:
       - cmd: postgresql
 
@@ -63,5 +63,6 @@ postgresql-init:
     - user: postgres
     - group: postgres
     - shell: /bin/bash
+    - unless: test -d /opt/postgresql/data
     - require:
       - cmd: postgresql-data
