@@ -29,10 +29,53 @@ opensmtpd-ssl:
     - require:
       - cmd: opensmtpd-mkdir
 
-opensmtpd-files:
-  cmd.run:
-    - cwd: /opt/opensmtpd/etc
-    - name: printf "vmail:    /dev/null\r\nroot:     root" > aliases && touch {domains,passwd,vusers}
-    - unless: test -f /opt/opensmtpd/etc/aliases && test -f /opt/opensmtpd/etc/domains && test -f /opt/opensmtpd/etc/passwd && test -f /opt/opensmtpd/etc/vusers
+opensmtpd-aliases:
+  file.managed:
+    - name: /opt/opensmtpd/etc/aliases
+    - makedirs: True
+    - create: True
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - mode: 644
+    - contents:
+      - vmail:    /dev/null
+      - root:     root
     - require:
       - cmd: opensmtpd-ssl
+
+opensmtpd-domains:
+  file.managed:
+    - name: /opt/opensmtpd/etc/domains
+    - makedirs: True
+    - create: True
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - mode: 644
+    - require:
+      - file: opensmtpd-aliases
+
+opensmtpd-passwd:
+  file.managed:
+    - name: /opt/opensmtpd/etc/passwd
+    - makedirs: True
+    - create: True
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - mode: 644
+    - require:
+      - file: opensmtpd-domains
+
+opensmtpd-vusers:
+  file.managed:
+    - name: /opt/opensmtpd/etc/vusers
+    - makedirs: True
+    - create: True
+    - user: root
+    - group: root
+    - dir_mode: 755
+    - mode: 644
+    - require:
+      - file: opensmtpd-passwd
