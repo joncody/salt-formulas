@@ -4,6 +4,10 @@ include:
   - sodium
   - postgresql
 
+exclude:
+  - id: postgresql-data
+  - id: postgresql-init
+
 dovecot:
   pkg.installed:
     - names:
