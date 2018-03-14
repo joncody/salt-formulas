@@ -17,7 +17,8 @@ dovecot:
       - libwrap0-dev
       - libssl-dev
       - openssl
-      - libsodium-dev
+      - sqlite3
+      - libsqlite3-dev
     - require:
       - cmd: sodium
       - cmd: postgresql
