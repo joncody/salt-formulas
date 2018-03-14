@@ -17,7 +17,7 @@ opensmtpd-conf:
 opensmtpd-mkdir:
   cmd.run:
     - cwd: /opt/opensmtpd/etc
-    - name: mkdir ssl
+    - name: mkdir -p ssl
     - require:
       - file: opensmtpd-conf
 

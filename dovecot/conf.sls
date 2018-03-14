@@ -11,12 +11,12 @@ dovecot-conf:
     - mode: 644
     - source: salt://dovecot/files/dovecot.conf
     - require:
-      - cmd: dovecot-install
+      - cmd: dovecot
 
 dovecot-mkdir:
   cmd.run:
     - cwd: /opt/dovecot/etc/dovecot
-    - name: mkdir ssl
+    - name: mkdir -p ssl
     - require:
       - file: dovecot-conf
 
