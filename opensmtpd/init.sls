@@ -14,6 +14,7 @@ opensmtpd:
       - libtool
       - libssl-dev
       - openssl
+      - libdb-dev
       - sqlite3
       - libsqlite3-dev
     - require:
