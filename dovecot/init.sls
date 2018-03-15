@@ -11,19 +11,15 @@ exclude:
 dovecot:
   pkg.installed:
     - names:
-      - libldap2-dev
-      - libpam0g-dev
-      - zlib1g-dev
-      - liblzma-dev
-      - liblz4-dev
       - libarchive-dev
       - libcap-dev
-      - libwrap0-dev
-      - libssl-dev
-      - openssl
-      - sqlite3
+      - liblz4-dev
+      - liblzma-dev
       - libsqlite3-dev
+      - libwrap0-dev
       - pandoc
+      - sqlite3
+      - zlib1g-dev
     - require:
       - cmd: sodium
       - cmd: postgresql

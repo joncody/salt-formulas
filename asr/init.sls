@@ -6,12 +6,18 @@ include:
 asr:
   pkg.installed:
     - names:
-      - build-essential
-      - autotools-dev
-      - automake
       - autoconf
-      - pkg-config
+      - automake
+      - autotools-dev
+      - build-essential
+      - cmake
+      - git
+      - libevent-dev
+      - libssl-dev
       - libtool
+      - openssl
+      - pkg-config
+      - valgrind
     - require:
       - file: optsrc
   git.latest:

@@ -6,20 +6,30 @@ include:
 postgresql:
   pkg.installed:
     - names:
-      - python-all-dev
-      - python3-all-dev
+      - autoconf
+      - automake
+      - autotools-dev
+      - bison
+      - build-essential
+      - cmake
+      - flex
+      - git
+      - libbison-dev
+      - libevent-dev
+      - libfl-dev
+      - libldap2-dev
+      - libpam0g-dev
+      - libperl-dev
+      - libreadline-dev
       - libssl-dev
-      - openssl
+      - libtool
       - libxslt1-dev
       - libxml2-dev
-      - libreadline-dev
-      - libpam0g-dev
-      - libldap2-dev
-      - libperl-dev
-      - libbison-dev
-      - bison
-      - libfl-dev
-      - flex
+      - openssl
+      - pkg-config
+      - python-all-dev
+      - python3-all-dev
+      - valgrind
     - require:
       - file: optsrc
   git.latest:

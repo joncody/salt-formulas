@@ -2,23 +2,21 @@
 
 include:
   - asr
+  - postgresql
+
+exclude:
+  - id: postgresql-data
+  - id: postgresql-init
 
 opensmtpd:
   pkg.installed:
     - names:
-      - autoconf
-      - automake
-      - libbison-dev
-      - bison
-      - libevent-dev
-      - libtool
-      - libssl-dev
-      - openssl
       - libdb-dev
-      - sqlite3
       - libsqlite3-dev
+      - sqlite3
     - require:
       - cmd: asr
+      - cmd: postgresql
   git.latest:
     - name: {{ opensmtpd.repo }}
     - branch: portable

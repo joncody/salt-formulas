@@ -4,29 +4,12 @@ include:
   - czmq
 
 filemq:
-  pkg.installed:
-    - names:
-      - git
-      - build-essential
-      - libtool
-      - pkg-config
-      - autotools-dev
-      - autoconf
-      - automake
-      - cmake
-      - uuid-dev
-      - libpcre3-dev
-      - valgrind
-      - asciidoc
-      - liblz4-dev
-    - require:
-      - cmd: czmq
   git.latest:
     - name: {{ filemq.repo }}
     - branch: master
     - target: /opt/src/filemq
     - require:
-      - pkg: filemq
+      - cmd: czmq
   cmd.run:
     - cwd: /opt/src/filemq
     - name: ./autogen.sh && ./configure --prefix=/opt/filemq --with-gnu-ld --with-libsodium=/opt/sodium --with-libzmq=/opt/zmq --with-libczmq=/opt/czmq --with-docs && make && make install && make clean

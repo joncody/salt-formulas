@@ -6,15 +6,31 @@ include:
 conky:
   pkg.installed:
     - names:
+      - autoconf
+      - automake
+      - autotools-dev
+      - build-essential
       - cmake
+      - curl
+      - git
+      - libcurl3
+      - libcurl4-openssl-dev
+      - libevent-dev
+      - libglib2.0-dev
       - libimlib2-dev
+      - libncurses5-dev
+      - libssl-dev
+      - libtool
       - libtolua-dev
       - libtolua++5.1-dev
       - libx11-dev
-      - libxft-dev
       - libxdamage-dev
-      - libncurses5-dev
+      - libxft-dev
       - libxinerama-dev
+      - libxml2-dev
+      - openssl
+      - pkg-config
+      - valgrind
       - xfonts-terminus
     - require:
       - file: optsrc

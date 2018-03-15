@@ -6,7 +6,17 @@ include:
 sodium:
   pkg.installed:
     - names:
+      - autoconf
+      - automake
+      - autotools-dev
+      - build-essential
+      - cmake
+      - git
       - libevent-dev
+      - libssl-dev
+      - libtool
+      - openssl
+      - pkg-config
       - valgrind
     - require:
       - file: optsrc

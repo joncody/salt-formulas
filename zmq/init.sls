@@ -6,20 +6,11 @@ include:
 zmq:
   pkg.installed:
     - names:
-      - git
-      - build-essential
-      - libtool
-      - pkg-config
-      - autotools-dev
-      - autoconf
-      - automake
-      - cmake
-      - uuid-dev
-      - libpcre3-dev
-      - valgrind
       - asciidoc
       - liblz4-dev
+      - libpcre3-dev
       - libpgm-dev
+      - uuid-dev
     - require:
       - cmd: sodium
   git.latest:

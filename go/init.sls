@@ -4,12 +4,28 @@ include:
   - optsrc
 
 go_bootstrap:
+  pkg.installed:
+    - names:
+      - autoconf
+      - automake
+      - autotools-dev
+      - build-essential
+      - cmake
+      - git
+      - libevent-dev
+      - libssl-dev
+      - libtool
+      - openssl
+      - pkg-config
+      - valgrind
+    - require:
+      - file: optsrc
   git.latest:
     - name: {{ go.repo }}
     - branch: release-branch.go1.4
     - target: /opt/src/go_bootstrap
     - require:
-      - file: optsrc
+      - pkg: go_bootstrap
   cmd.run:
     - cwd: /opt/src/go_bootstrap
     - name: ./make.bash

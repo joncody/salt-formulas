@@ -6,18 +6,30 @@ include:
 ffmpeg:
   pkg.installed:
     - names:
-      - libmp3lame-dev
-      - libvorbis-dev
-      - libogg-dev
-      - libxvidcore-dev
-      - libtheora-dev
-      - libx264-dev
+      - autoconf
+      - automake
+      - autotools-dev
+      - build-essential
+      - cmake
+      - git
+      - libevent-dev
       - libfaac-dev
+      - libmp3lame-dev
+      - libogg-dev
       - libopus-dev
       - libpulse-dev
       - libspeex-dev
+      - libssl-dev
+      - libtheora-dev
+      - libtool
+      - libvorbis-dev
       - libvpx-dev
       - libwebp-dev
+      - libx264-dev
+      - libxvidcore-dev
+      - openssl
+      - pkg-config
+      - valgrind
       - yasm
     - require:
       - file: optsrc

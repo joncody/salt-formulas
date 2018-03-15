@@ -14,16 +14,27 @@ nginscript:
 nginx:
   pkg.installed:
     - names:
-      - libssl-dev
+      - autoconf
+      - automake
+      - autotools-dev
+      - build-essential
+      - cmake
+      - git
+      - libaio-dev
+      - libatomic-ops-dev
+      - libevent-dev
+      - libgd-dev
+      - libgeoip-dev
       - libpcre3-dev
+      - libperl-dev
+      - libssl-dev
+      - libtool
       - libxslt1-dev
       - libxml2-dev
-      - libgeoip-dev
+      - openssl
+      - pkg-config
+      - valgrind
       - zlib1g-dev
-      - libaio-dev
-      - libperl-dev
-      - libgd-dev
-      - libatomic-ops-dev
     - require:
       - git: nginscript
   git.latest:

@@ -4,6 +4,24 @@ include:
   - optsrc
 
 node:
+  pkg.installed:
+    - names:
+      - autoconf
+      - automake
+      - autotools-dev
+      - build-essential
+      - cmake
+      - gdb
+      - git
+      - libevent-dev
+      - libssl-dev
+      - libtool
+      - openssl
+      - pkg-config
+      - python3-all-dev
+      - python-all-dev
+      - valgrind
+      - zlib1g-dev
   git.latest;
     - name: {{ node.repo }}
     - branch: master
