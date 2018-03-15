@@ -2,7 +2,9 @@ for dir in $(sudo find /opt -mindepth 1 -maxdepth 2 -type d -path /opt/src -prun
     if [ -z "$PATH" ] ; then
         export PATH=$dir
     else
-        export PATH=$PATH:$dir
+        if [[ ":$PATH:" != *":$dir:"* ]] ; then
+            export PATH=$PATH:$dir
+        fi
     fi
 done
 
@@ -10,7 +12,9 @@ for dir in $(sudo find /opt -mindepth 1 -maxdepth 2 -type d -path /opt/src -prun
     if [ -z "$PATH" ] ; then
         export PATH=$dir
     else
-        export PATH=$PATH:$dir
+        if [[ ":$PATH:" != *":$dir:"* ]] ; then
+            export PATH=$PATH:$dir
+        fi
     fi
 done
 
@@ -18,12 +22,16 @@ for dir in $(sudo find /opt -mindepth 1 -maxdepth 2 -type d -path /opt/src -prun
     if [ -z "$LIBRARY_PATH" ] ; then
         export LIBRARY_PATH=$dir
     else
-        export LIBRARY_PATH=$dir:$LIBRARY_PATH
+        if [[ ":$LIBRARY_PATH:" != *":$dir:"* ]] ; then
+            export LIBRARY_PATH=$dir:$LIBRARY_PATH
+        fi
     fi
     if [ -z "$LD_LIBRARY_PATH" ] ; then
         export LD_LIBRARY_PATH=$dir
     else
-        export LD_LIBRARY_PATH=$dir:$LD_LIBRARY_PATH
+        if [[ ":$LD_LIBRARY_PATH:" != *":$dir:"* ]] ; then
+            export LD_LIBRARY_PATH=$dir:$LD_LIBRARY_PATH
+        fi
     fi
 done
 
@@ -31,7 +39,9 @@ for dir in $(sudo find /opt -mindepth 1 -maxdepth 2 -type d -path /opt/src -prun
     if [ -z "$CPATH" ] ; then
         export CPATH=$dir
     else
-        export CPATH=$dir:$CPATH
+        if [[ ":$CPATH:" != *":$dir:"* ]] ; then
+            export CPATH=$dir:$CPATH
+        fi
     fi
 done
 
@@ -39,6 +49,8 @@ for dir in $(sudo find /opt -mindepth 1 -maxdepth 3 -type d -path /opt/src -prun
     if [ -z "$PKG_CONFIG_PATH" ] ; then
         export PKG_CONFIG_PATH=$dir
     else
-        export PKG_CONFIG_PATH=$dir:$PKG_CONFIG_PATH
+        if [[ ":$PKG_CONFIG_PATH:" != *":$dir:"* ]] ; then
+            export PKG_CONFIG_PATH=$dir:$PKG_CONFIG_PATH
+        fi
     fi
 done
