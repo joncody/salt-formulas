@@ -42,3 +42,7 @@ for dir in $(sudo find /opt -mindepth 1 -maxdepth 3 -type d -path /opt/src -prun
         export PKG_CONFIG_PATH=$dir:$PKG_CONFIG_PATH
     fi
 done
+
+export GOROOT_BOOTSTRAP=/opt/src/go_bootstrap
+export GOPATH=/opt/go
+export PATH=/opt/src/go/bin:$PATH
