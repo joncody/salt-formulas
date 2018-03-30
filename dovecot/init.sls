@@ -11,7 +11,9 @@ exclude:
 dovecot:
   pkg.installed:
     - names:
+      - gettext
       - libarchive-dev
+      - libbz2-dev
       - libcap-dev
       - liblz4-dev
       - liblzma-dev
