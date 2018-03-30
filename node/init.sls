@@ -22,7 +22,7 @@ node:
       - python-all-dev
       - valgrind
       - zlib1g-dev
-  git.latest;
+  git.latest:
     - name: {{ node.repo }}
     - branch: master
     - rev: master
