@@ -11,6 +11,7 @@ amixvimrc:
   git.latest:
     - name: {{ amixvimrc.repo }}
     - branch: master
+    - rev: master
     - target: /opt/vim_runtime
     - depth: 1
     - require:

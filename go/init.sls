@@ -23,6 +23,7 @@ go_bootstrap:
   git.latest:
     - name: {{ go.repo }}
     - branch: release-branch.go1.4
+    - rev: release-branch.go1.4
     - target: /opt/src/go_bootstrap
     - require:
       - pkg: go_bootstrap
@@ -36,6 +37,7 @@ go:
   git.latest:
     - name: {{ go.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/go
     - require:
       - cmd: go_bootstrap

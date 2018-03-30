@@ -23,6 +23,7 @@ sodium:
   git.latest:
     - name: {{ sodium.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/libsodium
     - require:
       - pkg: sodium

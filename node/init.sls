@@ -25,6 +25,7 @@ node:
   git.latest;
     - name: {{ node.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/node
     - require:
       - file: optsrc

@@ -23,6 +23,7 @@ asr:
   git.latest:
     - name: {{ asr.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/libasr
     - require:
       - pkg: asr

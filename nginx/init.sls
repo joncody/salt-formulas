@@ -7,6 +7,7 @@ nginscript:
   git.latest:
     - name: {{ nginx.njs_repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/njs
     - require:
       - file: optsrc
@@ -40,6 +41,7 @@ nginx:
   git.latest:
     - name: {{ nginx.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/nginx
     - require:
       - pkg: nginx

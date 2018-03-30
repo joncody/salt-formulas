@@ -7,6 +7,7 @@ filemq:
   git.latest:
     - name: {{ filemq.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/filemq
     - require:
       - cmd: czmq

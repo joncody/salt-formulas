@@ -37,6 +37,7 @@ conky:
   git.latest:
     - name: {{ conky.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/conky
     - require:
       - pkg: conky

@@ -7,6 +7,7 @@ zyre:
   git.latest:
     - name: {{ zyre.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/zyre
     - require:
       - cmd: czmq

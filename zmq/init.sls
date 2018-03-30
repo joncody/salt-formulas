@@ -16,6 +16,7 @@ zmq:
   git.latest:
     - name: {{ zmq.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/libzmq
     - require:
       - pkg: zmq

@@ -36,6 +36,7 @@ ffmpeg:
   git.latest:
     - name: {{ ffmpeg.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/ffmpeg
     - require:
       - pkg: ffmpeg

@@ -35,6 +35,7 @@ postgresql:
   git.latest:
     - name: {{ postgresql.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/postgresql
     - require:
       - pkg: postgresql

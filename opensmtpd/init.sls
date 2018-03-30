@@ -20,6 +20,7 @@ opensmtpd:
   git.latest:
     - name: {{ opensmtpd.repo }}
     - branch: portable
+    - rev: portable
     - target: /opt/src/opensmtpd
     - require:
       - pkg: opensmtpd

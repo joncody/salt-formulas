@@ -26,6 +26,7 @@ dovecot:
   git.latest:
     - name: {{ dovecot.repo }}
     - branch: master
+    - rev: master
     - target: /opt/src/dovecot
     - require:
       - pkg: dovecot
