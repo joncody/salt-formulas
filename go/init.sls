@@ -27,7 +27,7 @@ go_bootstrap:
     - require:
       - pkg: go_bootstrap
   cmd.run:
-    - cwd: /opt/src/go_bootstrap
+    - cwd: /opt/src/go_bootstrap/src
     - name: ./make.bash
     - require:
       - git: go_bootstrap
@@ -40,7 +40,7 @@ go:
     - require:
       - cmd: go_bootstrap
   cmd.run:
-    - cwd: /opt/src/go
+    - cwd: /opt/src/go/src
     - name: GOROOT_BOOTSTRAP=/opt/src/go_bootstrap ./all.bash
     - require:
       - git: go
