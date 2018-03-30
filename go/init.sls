@@ -33,7 +33,7 @@ go_bootstrap:
       - git: go_bootstrap
 
 go:
-  git.latest
+  git.latest:
     - name: {{ go.repo }}
     - branch: master
     - target: /opt/src/go
