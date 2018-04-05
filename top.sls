@@ -14,6 +14,7 @@ base:
     - opensmtpd
     - optsrc
     - postgresql
+    - pureftpd
     - sodium
     - zmq
     - zyre

@@ -1,0 +1,5 @@
+{% set pureftpd = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/jedisct1/pure-ftpd',
+    },
+}, merge=salt['pillar.get']('pureftpd:lookup')) %}

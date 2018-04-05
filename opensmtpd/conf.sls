@@ -24,7 +24,7 @@ opensmtpd-mkdir:
 opensmtpd-ssl:
   cmd.run:
     - cwd: /opt/opensmtpd/etc/ssl
-    - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout opensmtpd.key -out opensmtpd.crt
+    - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout opensmtpd.key -out opensmtpd.crt && chmod 600 opensmtpd.key opensmtpd.crt
     - unless: test -f /opt/opensmtpd/etc/ssl/opensmtpd.key && test -f /opt/opensmtpd/etc/ssl/opensmtpd.crt
     - require:
       - cmd: opensmtpd-mkdir

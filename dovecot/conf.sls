@@ -23,7 +23,7 @@ dovecot-mkdir:
 dovecot-ssl:
   cmd.run:
     - cwd: /opt/dovecot/etc/dovecot/ssl
-    - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout dovecot.key -out dovecot.crt
+    - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout dovecot.key -out dovecot.crt && chmod 600 dovecot.key dovecot.crt
     - unless: test -f /opt/dovecot/etc/dovecot/ssl/dovecot.key && test -f /opt/dovecot/etc/dovecot/ssl/dovecot.crt
     - require:
       - cmd: dovecot-mkdir
