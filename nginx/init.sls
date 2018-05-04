@@ -6,8 +6,8 @@ include:
 nginscript:
   git.latest:
     - name: {{ nginx.njs_repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ nginx.njs_branch }}
+    - rev: {{ nginx.njs_rev }}
     - target: /opt/src/njs
     - require:
       - file: optsrc
@@ -40,8 +40,8 @@ nginx:
       - git: nginscript
   git.latest:
     - name: {{ nginx.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ nginx.branch }}
+    - rev: {{ nginx.rev }}
     - target: /opt/src/nginx
     - require:
       - pkg: nginx

@@ -34,8 +34,8 @@ postgresql:
       - file: optsrc
   git.latest:
     - name: {{ postgresql.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ postgresql.branch }}
+    - rev: {{ postgresql.rev }}
     - target: /opt/src/postgresql
     - require:
       - pkg: postgresql

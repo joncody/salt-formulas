@@ -4,6 +4,10 @@
         'group': 'web',
         'webroot': '/www',
         'njs_repo': 'https://github.com/nginx/njs',
+        'njs_branch': 'master',
+        'njs_rev': 'master',
         'repo': 'https://github.com/nginx/nginx',
+        'branch': 'master',
+        'rev': 'master',
     },
 }, merge=salt['pillar.get']('nginx:lookup')) %}

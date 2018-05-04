@@ -6,8 +6,8 @@ include:
 czmq:
   git.latest:
     - name: {{ czmq.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ czmq.branch }}
+    - rev: {{ czmq.rev }}
     - target: /opt/src/czmq
     - require:
       - cmd: zmq

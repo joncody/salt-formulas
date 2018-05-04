@@ -19,8 +19,8 @@ opensmtpd:
       - cmd: postgresql
   git.latest:
     - name: {{ opensmtpd.repo }}
-    - branch: portable
-    - rev: portable
+    - branch: {{ opensmtpd.branch }}
+    - rev: {{ opensmtpd.rev }}
     - target: /opt/src/opensmtpd
     - require:
       - pkg: opensmtpd
@@ -85,7 +85,8 @@ opensmtpd-filter:
 opensmtpd-extras:
   git.latest:
     - name: {{ opensmtpd.extras_repo }}
-    - branch: master
+    - branch: {{ opensmtpd.extras_branch }}
+    - rev: {{ opensmtpd.extras_rev }}
     - target: /opt/src/opensmtpd-extras
     - require:
       - cmd: opensmtpd

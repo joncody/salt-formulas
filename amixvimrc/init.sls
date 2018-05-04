@@ -10,8 +10,8 @@ amixvimrc:
       - file: optsrc
   git.latest:
     - name: {{ amixvimrc.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ amixvimrc.branch }}
+    - rev: {{ amixvimrc.rev }}
     - target: /opt/vim_runtime
     - depth: 1
     - require:

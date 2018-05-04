@@ -22,8 +22,8 @@ asr:
       - file: optsrc
   git.latest:
     - name: {{ asr.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ asr.branch }}
+    - rev: {{ asr.rev }}
     - target: /opt/src/libasr
     - require:
       - pkg: asr

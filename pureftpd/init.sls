@@ -19,8 +19,8 @@ pureftpd:
       - libldap2-dev
   git.latest:
     - name: {{ pureftpd.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ pureftpd.branch }}
+    - rev: {{ pureftpd.rev }}
     - target: /opt/src/pureftpd
     - require:
       - pkg: pureftpd

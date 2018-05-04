@@ -15,8 +15,8 @@ zmq:
       - cmd: sodium
   git.latest:
     - name: {{ zmq.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ zmq.branch }}
+    - rev: {{ zmq.rev }}
     - target: /opt/src/libzmq
     - require:
       - pkg: zmq

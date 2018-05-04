@@ -27,8 +27,8 @@ dovecot:
       - cmd: postgresql
   git.latest:
     - name: {{ dovecot.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ dovecot.branch }}
+    - rev: {{ dovecot.rev }}
     - target: /opt/src/dovecot
     - require:
       - pkg: dovecot

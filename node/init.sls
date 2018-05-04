@@ -24,8 +24,8 @@ node:
       - zlib1g-dev
   git.latest:
     - name: {{ node.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ node.branch }}
+    - rev: {{ node.rev }}
     - target: /opt/src/node
     - require:
       - file: optsrc

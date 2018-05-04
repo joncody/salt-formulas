@@ -6,8 +6,8 @@ include:
 zyre:
   git.latest:
     - name: {{ zyre.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ zyre.branch }}
+    - rev: {{ zyre.rev }}
     - target: /opt/src/zyre
     - require:
       - cmd: czmq

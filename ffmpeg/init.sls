@@ -35,8 +35,8 @@ ffmpeg:
       - file: optsrc
   git.latest:
     - name: {{ ffmpeg.repo }}
-    - branch: master
-    - rev: master
+    - branch: {{ ffmpeg.branch }}
+    - rev: {{ ffmpeg.rev }}
     - target: /opt/src/ffmpeg
     - require:
       - pkg: ffmpeg

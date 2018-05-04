@@ -1,5 +1,7 @@
 {% set go = salt['grains.filter_by']({
     'Debian': {
-        'repo': 'https://go.googlesource.com/go',
+        'repo': 'https://github.com/golang/go',
+        'branch': 'master',
+        'rev': 'master',
     },
 }, merge=salt['pillar.get']('go:lookup')) %}
