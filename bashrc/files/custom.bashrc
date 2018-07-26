@@ -45,4 +45,5 @@ done
 
 export GOROOT_BOOTSTRAP=/opt/src/go_bootstrap
 export GOPATH=/opt/go
-export PATH=/opt/src/go/bin:$PATH
+export GOBIN=/opt/go/bin
+export PATH=/opt/src/go/bin:$GOBIN:$PATH
