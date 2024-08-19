@@ -1,9 +1,0 @@
-{% set conky = salt['grains.filter_by']({
-    'Debian': {
-        'repo': 'https://github.com/brndnmtthws/conky',
-        'branch': 'master',
-        'rev': 'master',
-        'wired_interface': 'enp0s31f6',
-        'wireless_interface': 'wlp4s0',
-    },
-}, merge=salt['pillar.get']('conky:lookup')) %}
