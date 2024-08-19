@@ -53,7 +53,6 @@ go1.17:
     - require:
       - git: go1.17
 
-
 go1.20:
   git.latest:
     - name: {{ go.repo }}
@@ -63,7 +62,7 @@ go1.20:
     - require:
       - cmd: go1.17
   cmd.run:
-    - cwd: /opt/src/go/src1.20
+    - cwd: /opt/src/go1.20/src
     - name: GOROOT_BOOTSTRAP=/opt/src/go1.17 ./make.bash
     - user: root
     - group: root
