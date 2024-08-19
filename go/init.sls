@@ -29,12 +29,12 @@ go_bootstrap:
       - pkg: go_bootstrap
   cmd.run:
     - cwd: /opt/src/go_bootstrap/src
-    - name: ./make.bash
+    - name: GOPATH=/opt/src/go_bootstrap ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
     - require:
-      - cmd: go_bootstrap
+      - git: go_bootstrap
 
 go1.17:
   git.latest:
@@ -80,7 +80,7 @@ go:
       - cmd: go1.20
   cmd.run:
     - cwd: /opt/src/go/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 ./all.bash
+    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
