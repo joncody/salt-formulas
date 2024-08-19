@@ -20,24 +20,15 @@ go_bootstrap:
       - valgrind
     - require:
       - file: optsrc
-  file.managed:
-    - name: /opt/src/go1.4-bootstrap-20171003.tar.gz
-    - source: https://dl.google.com/go/go1.4-bootstrap-20171003.tar.gz
-    - source_hash: sha256=f4ff5b5eb3a3cae1c993723f3eab519c5bae18866b5e5f96fe1102f0cb5c3e52
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: release-branch.go1.4
+    - rev: release-branch.go1.4
+    - target: /opt/src/go_bootstrap
     - require:
       - pkg: go_bootstrap
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf go1.4-bootstrap-20171003.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - file: go_bootstrap
-
-go_bootstrap-build:
-  cmd.run:
-    - cwd: /opt/src/go/src
+    - cwd: /opt/src/go_bootstrap/src
     - name: ./make.bash
     - user: root
     - group: root
@@ -45,105 +36,49 @@ go_bootstrap-build:
     - require:
       - cmd: go_bootstrap
 
-go_bootstrap-move:
-  cmd.run:
-    - cwd: /opt/src
-    - name: mv go go_bootstrap
-    - user: root
-    - group: root
-    - shell: /bin/bash
+go1.17:
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: release-branch.go1.17
+    - rev: release-branch.go1.17
+    - target: /opt/src/go1.17
     - require:
-      - cmd: go_bootstrap-build
-
-go_1.17:
-  file.managed:
-    - name: /opt/src/go1.17.13.src.tar.gz
-    - source: https://go.dev/dl/go1.17.13.src.tar.gz
-    - source_hash: sha256=a1a48b23afb206f95e7bbaa9b898d965f90826f6f1d1fc0c1d784ada0cd300fd
-    - require:
-      - cmd: go_bootstrap-move
+      - cmd: go_bootstrap
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf go1.17.13.src.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - file: go_1.17
-
-go_1.17-build:
-  cmd.run:
-    - cwd: /opt/src/go/src
+    - cwd: /opt/src/go1.17/src
     - name: GOROOT_BOOTSTRAP=/opt/src/go_bootstrap ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
     - require:
-      - cmd: go_1.17
+      - git: go1.17
 
-go_1.17-move:
-  cmd.run:
-    - cwd: /opt/src
-    - name: mv go go1.17
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - cmd: go_1.17-build
 
-go_1.20:
-  file.managed:
-    - name: /opt/src/go1.20.14.src.tar.gz
-    - source: https://go.dev/dl/go1.20.14.src.tar.gz
-    - source_hash: sha256=1aef321a0e3e38b7e91d2d7eb64040666cabdcc77d383de3c9522d0d69b67f4e
+go1.20:
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: release-branch.go1.20
+    - rev: release-branch.go1.20
+    - target: /opt/src/go1.20
     - require:
-      - cmd: go_1.17-move
+      - cmd: go1.17
   cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf go1.20.14.src.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - file: go_1.20
-
-go_1.20-build:
-  cmd.run:
-    - cwd: /opt/src/go/src
+    - cwd: /opt/src/go/src1.20
     - name: GOROOT_BOOTSTRAP=/opt/src/go1.17 ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
     - require:
-      - cmd: go_1.20
-
-go_1.20-move:
-  cmd.run:
-    - cwd: /opt/src
-    - name: mv go go1.20
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - cmd: go_1.20-build
+      - git: go1.20
 
 go:
-  file.managed:
-    - name: /opt/src/go{{ go.version }}.src.tar.gz
-    - source: https://go.dev/dl/go{{ go.version }}.src.tar.gz
-    - source_hash: sha256={{ go.hash }}
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: {{ go.branch }}
+    - rev: {{ go.rev }}
+    - target: /opt/src/go
     - require:
-      - cmd: go_1.20-move
-  cmd.run:
-    - cwd: /opt/src
-    - name: tar xvzf go{{ go.version }}.src.tar.gz
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - file: go
-
-go-build:
+      - cmd: go1.20
   cmd.run:
     - cwd: /opt/src/go/src
     - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 ./all.bash
@@ -151,4 +86,4 @@ go-build:
     - group: root
     - shell: /bin/bash
     - require:
-      - cmd: go
+      - git: go
