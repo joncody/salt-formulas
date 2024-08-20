@@ -29,7 +29,7 @@ go_bootstrap:
       - pkg: go_bootstrap
   cmd.run:
     - cwd: /opt/src/go_bootstrap/src
-    - name: GOPATH=/opt/src/go_bootstrap ./make.bash
+    - name: GOPATH=/opt/src/go_bootstrap GOPATH=/opt/src/go_bootstrap ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
@@ -46,7 +46,7 @@ go1.17:
       - cmd: go_bootstrap
   cmd.run:
     - cwd: /opt/src/go1.17/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go_bootstrap ./make.bash
+    - name: GOROOT_BOOTSTRAP=/opt/src/go_bootstrap GOPATH=/opt/src/go1.17 ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
@@ -63,7 +63,7 @@ go1.20:
       - cmd: go1.17
   cmd.run:
     - cwd: /opt/src/go1.20/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.17 ./make.bash
+    - name: GOROOT_BOOTSTRAP=/opt/src/go1.17 GOPATH=/opt/src/go1.20 ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
@@ -80,7 +80,7 @@ go:
       - cmd: go1.20
   cmd.run:
     - cwd: /opt/src/go/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 ./make.bash
+    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 GOPATH=/opt/src/go ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
