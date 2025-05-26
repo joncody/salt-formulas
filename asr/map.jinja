@@ -1,0 +1,7 @@
+{% set asr = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/OpenSMTPD/libasr',
+        'branch': 'master',
+        'rev': 'master',
+    },
+}, merge=salt['pillar.get']('asr:lookup')) %}

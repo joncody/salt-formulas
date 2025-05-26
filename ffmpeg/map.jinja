@@ -1,0 +1,7 @@
+{% set ffmpeg = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/FFmpeg/FFmpeg',
+        'branch': 'master',
+        'rev': 'master',
+    },
+}, merge=salt['pillar.get']('ffmpeg:lookup')) %}

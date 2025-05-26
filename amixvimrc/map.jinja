@@ -1,0 +1,7 @@
+{% set amixvimrc = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/amix/vimrc',
+        'branch': 'master',
+        'rev': 'master',
+    },
+}, merge=salt['pillar.get']('amixvimrc:lookup')) %}

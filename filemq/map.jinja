@@ -1,0 +1,7 @@
+{% set filemq = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/zeromq/filemq',
+        'branch': 'master',
+        'rev': 'master',
+    },
+}, merge=salt['pillar.get']('filemq:lookup')) %}

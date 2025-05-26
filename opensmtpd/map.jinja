@@ -1,0 +1,11 @@
+{% set opensmtpd = salt['grains.filter_by']({
+    'Debian': {
+        'iface': 'eth0',
+        'repo': 'https://github.com/OpenSMTPD/OpenSMTPD',
+        'branch': 'portable',
+        'rev': 'portable',
+        'extras_repo': 'https://github.com/OpenSMTPD/OpenSMTPD-extras',
+        'extras_branch': 'master',
+        'extras_rev': 'master',
+    },
+}, merge=salt['pillar.get']('opensmtpd:lookup')) %}
