@@ -27,7 +27,6 @@ postgresql:
       - libxml2-dev
       - openssl
       - pkg-config
-      - python-all-dev
       - python3-all-dev
       - valgrind
     - require:
