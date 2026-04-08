@@ -70,6 +70,40 @@ go1.20:
     - require:
       - git: go1.20
 
+go1.22:
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: release-branch.go1.22
+    - rev: release-branch.go1.22
+    - target: /opt/src/go1.22
+    - require:
+      - cmd: go1.20
+  cmd.run:
+    - cwd: /opt/src/go1.22/src
+    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 GOPATH=/opt/src/go1.22 ./make.bash
+    - user: root
+    - group: root
+    - shell: /bin/bash
+    - require:
+      - git: go1.22
+
+go1.24:
+  git.latest:
+    - name: {{ go.repo }}
+    - branch: release-branch.go1.24
+    - rev: release-branch.go1.24
+    - target: /opt/src/go1.24
+    - require:
+      - cmd: go1.22
+  cmd.run:
+    - cwd: /opt/src/go1.24/src
+    - name: GOROOT_BOOTSTRAP=/opt/src/go1.22 GOPATH=/opt/src/go1.24 ./make.bash
+    - user: root
+    - group: root
+    - shell: /bin/bash
+    - require:
+      - git: go1.24
+
 go:
   git.latest:
     - name: {{ go.repo }}
@@ -77,10 +111,10 @@ go:
     - rev: {{ go.rev }}
     - target: /opt/src/go
     - require:
-      - cmd: go1.20
+      - cmd: go1.24
   cmd.run:
     - cwd: /opt/src/go/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 GOPATH=/opt/src/go ./make.bash
+    - name: GOROOT_BOOTSTRAP=/opt/src/go1.24 GOPATH=/opt/src/go ./make.bash
     - user: root
     - group: root
     - shell: /bin/bash
