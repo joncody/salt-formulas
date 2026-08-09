@@ -3,5 +3,6 @@
         'repo': 'https://github.com/jedisct1/pure-ftpd',
         'branch': 'master',
         'rev': 'master',
+        'prefix': '/opt/pureftpd',
     },
 }, merge=salt['pillar.get']('pureftpd:lookup')) %}

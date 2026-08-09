@@ -3,17 +3,35 @@
 include:
   - czmq
 
-zyre:
+zyre_deps:
+  pkg.installed:
+    - names:
+      - build-essential
+      - pkg-config
+
+zyre_git:
   git.latest:
     - name: {{ zyre.repo }}
     - branch: {{ zyre.branch }}
     - rev: {{ zyre.rev }}
     - target: /opt/src/zyre
     - require:
-      - cmd: czmq
+      - cmd: czmq_build
+      - pkg: zyre_deps
+
+zyre_build:
   cmd.run:
     - cwd: /opt/src/zyre
-    - name: ./autogen.sh && ./configure --prefix=/opt/zyre --with-gnu-ld --with-libzmq=/opt/zmq --with-libczmq=/opt/czmq --with-docs && make && make install && make clean
-    - unless: test -d /opt/zyre
-    - require:
-      - git: zyre
+    - name: |
+        ./autogen.sh
+        ./configure --prefix={{ zyre.prefix }} --with-gnu-ld --with-libzmq=/opt/zmq --with-libczmq=/opt/czmq
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - env:
+      - PKG_CONFIG_PATH: "/opt/czmq/lib/pkgconfig:/opt/zmq/lib/pkgconfig"
+      - LDFLAGS: "-L/opt/czmq/lib -L/opt/zmq/lib"
+      - CPPFLAGS: "-I/opt/czmq/include -I/opt/zmq/include"
+    - onchanges:
+      - git: zyre_git
+    - creates: {{ zyre.prefix }}/lib/libzyre.so

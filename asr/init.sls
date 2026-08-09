@@ -3,33 +3,37 @@
 include:
   - optsrc
 
-asr:
+asr_deps:
   pkg.installed:
     - names:
       - autoconf
       - automake
-      - autotools-dev
       - build-essential
-      - cmake
-      - git
       - libevent-dev
       - libssl-dev
       - libtool
-      - openssl
       - pkg-config
-      - valgrind
     - require:
       - file: optsrc
+
+asr_git:
   git.latest:
     - name: {{ asr.repo }}
     - branch: {{ asr.branch }}
     - rev: {{ asr.rev }}
     - target: /opt/src/libasr
     - require:
-      - pkg: asr
+      - pkg: asr_deps
+
+asr_build:
   cmd.run:
     - cwd: /opt/src/libasr
-    - name: ./bootstrap && ./configure --prefix=/opt/asr --with-gnu-ld && make && make install && make clean
-    - unless: test -d /opt/asr
-    - require:
-      - git: asr
+    - name: |
+        ./bootstrap
+        ./configure --prefix={{ asr.prefix }} --with-gnu-ld
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - onchanges:
+      - git: asr_git
+    - creates: {{ asr.prefix }}/lib/libasr.so

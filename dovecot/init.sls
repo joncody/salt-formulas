@@ -4,11 +4,39 @@ include:
   - sodium
   - postgresql
 
-exclude:
-  - id: postgresql-data
-  - id: postgresql-init
+dovecot_group:
+  group.present:
+    - name: dovecot
+    - system: True
 
-dovecot:
+dovecot_user:
+  user.present:
+    - name: dovecot
+    - gid: dovecot
+    - system: True
+    - home: /var/empty
+    - createhome: False
+    - shell: /usr/sbin/nologin
+    - require:
+      - group: dovecot_group
+
+dovenull_group:
+  group.present:
+    - name: dovenull
+    - system: True
+
+dovenull_user:
+  user.present:
+    - name: dovenull
+    - gid: dovenull
+    - system: True
+    - home: /var/empty
+    - createhome: False
+    - shell: /usr/sbin/nologin
+    - require:
+      - group: dovenull_group
+
+dovecot_deps:
   pkg.installed:
     - names:
       - gettext
@@ -19,52 +47,37 @@ dovecot:
       - liblzma-dev
       - libsqlite3-dev
       - libwrap0-dev
-      - pandoc
-      - sqlite3
+      - pkg-config
       - zlib1g-dev
     - require:
-      - cmd: sodium
-      - cmd: postgresql
+      - cmd: sodium_build
+      - cmd: postgresql_build
+
+dovecot_git:
   git.latest:
     - name: {{ dovecot.repo }}
     - branch: {{ dovecot.branch }}
     - rev: {{ dovecot.rev }}
     - target: /opt/src/dovecot
     - require:
-      - pkg: dovecot
+      - pkg: dovecot_deps
+
+dovecot_build:
   cmd.run:
     - cwd: /opt/src/dovecot
-    - name: ./autogen.sh && LDFLAGS='-L/opt/sodium/lib -L/opt/postgresql/lib' CPPFLAGS='-I/opt/sodium/include -I/opt/postgresql/include' ./configure --prefix=/opt/dovecot --with-shadow --with-pam --with-ldap=yes --with-sql=yes --with-pgsql --with-sqlite --with-sodium --with-zlib --with-bzlib --with-lzma --with-lz4 --with-libcap --with-libwrap --with-ssl=openssl --with-docs --with-gnu-ld && make && make install && make clean
-    - unless: test -d /opt/dovecot
+    - name: |
+        ./autogen.sh
+        ./configure --prefix={{ dovecot.prefix }} --with-shadow --with-pam --with-sql=yes --with-pgsql --with-sqlite --with-sodium --with-zlib --with-bzlib --with-lzma --with-lz4 --with-ssl=openssl --with-gnu-ld
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - env:
+      - PKG_CONFIG_PATH: "/opt/sodium/lib/pkgconfig:/opt/postgresql/lib/pkgconfig"
+      - LDFLAGS: "-L/opt/sodium/lib -L/opt/postgresql/lib"
+      - CPPFLAGS: "-I/opt/sodium/include -I/opt/postgresql/include"
+    - onchanges:
+      - git: dovecot_git
+    - creates: {{ dovecot.prefix }}/sbin/dovecot
     - require:
-      - user: dovecot
-  user.present:
-    - name: dovecot
-    - gid: dovecot
-    - system: True
-    - home: /var/empty
-    - createhome: False
-    - shell: /usr/sbin/nologin
-    - require:
-      - group: dovecot
-  group.present:
-    - name: dovecot
-    - system: True
-    - require:
-      - user: dovenull
-
-dovenull:
-  user.present:
-    - name: dovenull
-    - gid: dovenull
-    - system: True
-    - home: /var/empty
-    - createhome: False
-    - shell: /usr/sbin/nologin
-    - require:
-      - group: dovenull
-  group.present:
-    - name: dovenull
-    - system: True
-    - require:
-      - git: dovecot
+      - user: dovecot_user
+      - user: dovenull_user

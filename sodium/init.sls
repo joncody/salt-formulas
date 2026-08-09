@@ -3,33 +3,35 @@
 include:
   - optsrc
 
-sodium:
+sodium_deps:
   pkg.installed:
     - names:
       - autoconf
       - automake
-      - autotools-dev
       - build-essential
-      - cmake
-      - git
-      - libevent-dev
-      - libssl-dev
       - libtool
-      - openssl
       - pkg-config
-      - valgrind
     - require:
       - file: optsrc
+
+sodium_git:
   git.latest:
     - name: {{ sodium.repo }}
     - branch: {{ sodium.branch }}
     - rev: {{ sodium.rev }}
     - target: /opt/src/libsodium
     - require:
-      - pkg: sodium
+      - pkg: sodium_deps
+
+sodium_build:
   cmd.run:
     - cwd: /opt/src/libsodium
-    - name: ./autogen.sh && ./configure --prefix=/opt/sodium --enable-debug --enable-opt --enable-valgrind --with-pthreads --with-gnu-ld && make && make install && make clean
-    - unless: test -d /opt/sodium
-    - require:
-      - git: sodium
+    - name: |
+        ./autogen.sh
+        ./configure --prefix={{ sodium.prefix }} --enable-debug --enable-opt --with-pthreads --with-gnu-ld
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - onchanges:
+      - git: sodium_git
+    - creates: {{ sodium.prefix }}/lib/libsodium.so

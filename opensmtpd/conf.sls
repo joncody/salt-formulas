@@ -12,12 +12,15 @@ opensmtpd-conf:
     - template: jinja
     - source: salt://opensmtpd/files/smtpd.conf
     - require:
-      - cmd: opensmtpd
+      - cmd: opensmtpd_build
 
-opensmtpd-mkdir:
-  cmd.run:
-    - cwd: /opt/opensmtpd/etc
-    - name: mkdir -p ssl
+opensmtpd-ssl-dir:
+  file.directory:
+    - name: /opt/opensmtpd/etc/ssl
+    - user: root
+    - group: root
+    - mode: 700
+    - makedirs: True
     - require:
       - file: opensmtpd-conf
 
@@ -25,9 +28,9 @@ opensmtpd-ssl:
   cmd.run:
     - cwd: /opt/opensmtpd/etc/ssl
     - name: openssl req -x509 -nodes -days 365 -sha256 -subj '/C=US' -newkey rsa:4096 -keyout opensmtpd.key -out opensmtpd.crt && chmod 600 opensmtpd.key opensmtpd.crt
-    - unless: test -f /opt/opensmtpd/etc/ssl/opensmtpd.key && test -f /opt/opensmtpd/etc/ssl/opensmtpd.crt
+    - creates: /opt/opensmtpd/etc/ssl/opensmtpd.key
     - require:
-      - cmd: opensmtpd-mkdir
+      - file: opensmtpd-ssl-dir
 
 opensmtpd-aliases:
   file.managed:
@@ -36,46 +39,9 @@ opensmtpd-aliases:
     - create: True
     - user: root
     - group: root
-    - dir_mode: 755
     - mode: 644
     - contents:
       - vmail:    /dev/null
       - root:     root
     - require:
       - cmd: opensmtpd-ssl
-
-opensmtpd-domains:
-  file.managed:
-    - name: /opt/opensmtpd/etc/domains
-    - makedirs: True
-    - create: True
-    - user: root
-    - group: root
-    - dir_mode: 755
-    - mode: 644
-    - require:
-      - file: opensmtpd-aliases
-
-opensmtpd-passwd:
-  file.managed:
-    - name: /opt/opensmtpd/etc/passwd
-    - makedirs: True
-    - create: True
-    - user: root
-    - group: root
-    - dir_mode: 755
-    - mode: 644
-    - require:
-      - file: opensmtpd-domains
-
-opensmtpd-vusers:
-  file.managed:
-    - name: /opt/opensmtpd/etc/vusers
-    - makedirs: True
-    - create: True
-    - user: root
-    - group: root
-    - dir_mode: 755
-    - mode: 644
-    - require:
-      - file: opensmtpd-passwd

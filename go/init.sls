@@ -3,120 +3,41 @@
 include:
   - optsrc
 
-go_bootstrap:
+go_deps:
   pkg.installed:
     - names:
-      - autoconf
-      - automake
-      - autotools-dev
       - build-essential
-      - cmake
       - git
-      - libevent-dev
-      - libssl-dev
-      - libtool
-      - openssl
-      - pkg-config
-      - valgrind
     - require:
       - file: optsrc
-  git.latest:
-    - name: {{ go.repo }}
-    - branch: release-branch.go1.4
-    - rev: release-branch.go1.4
-    - target: /opt/src/go_bootstrap
-    - require:
-      - pkg: go_bootstrap
-  cmd.run:
-    - cwd: /opt/src/go_bootstrap/src
-    - name: GOPATH=/opt/src/go_bootstrap GOPATH=/opt/src/go_bootstrap ./make.bash
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - git: go_bootstrap
 
-go1.17:
-  git.latest:
-    - name: {{ go.repo }}
-    - branch: release-branch.go1.17
-    - rev: release-branch.go1.17
-    - target: /opt/src/go1.17
-    - require:
-      - cmd: go_bootstrap
-  cmd.run:
-    - cwd: /opt/src/go1.17/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go_bootstrap GOPATH=/opt/src/go1.17 ./make.bash
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - git: go1.17
+# 1. Download an older Go compiler binary strictly for bootstrapping
+go_bootstrap_archive:
+  archive.extracted:
+    - name: /opt/src/go_bootstrap_bin
+    - source: https://go.dev/dl/go{{ go.bootstrap_version }}.linux-amd64.tar.gz
+    - source_hash: {{ go.bootstrap_hash }}
+    - archive_format: tar
+    - enforce_ownership_on: /opt/src/go_bootstrap_bin
 
-go1.20:
-  git.latest:
-    - name: {{ go.repo }}
-    - branch: release-branch.go1.20
-    - rev: release-branch.go1.20
-    - target: /opt/src/go1.20
-    - require:
-      - cmd: go1.17
-  cmd.run:
-    - cwd: /opt/src/go1.20/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.17 GOPATH=/opt/src/go1.20 ./make.bash
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - git: go1.20
-
-go1.22:
-  git.latest:
-    - name: {{ go.repo }}
-    - branch: release-branch.go1.22
-    - rev: release-branch.go1.22
-    - target: /opt/src/go1.22
-    - require:
-      - cmd: go1.20
-  cmd.run:
-    - cwd: /opt/src/go1.22/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.20 GOPATH=/opt/src/go1.22 ./make.bash
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - git: go1.22
-
-go1.24:
-  git.latest:
-    - name: {{ go.repo }}
-    - branch: release-branch.go1.24
-    - rev: release-branch.go1.24
-    - target: /opt/src/go1.24
-    - require:
-      - cmd: go1.22
-  cmd.run:
-    - cwd: /opt/src/go1.24/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.22 GOPATH=/opt/src/go1.24 ./make.bash
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - git: go1.24
-
-go:
+# 2. Clone Go 1.26.5 source code
+go_git:
   git.latest:
     - name: {{ go.repo }}
     - branch: {{ go.branch }}
     - rev: {{ go.rev }}
     - target: /opt/src/go
     - require:
-      - cmd: go1.24
+      - pkg: go_deps
+
+# 3. Build Go 1.26.5 binaries from source code
+go_build:
   cmd.run:
     - cwd: /opt/src/go/src
-    - name: GOROOT_BOOTSTRAP=/opt/src/go1.24 GOPATH=/opt/src/go ./make.bash
-    - user: root
-    - group: root
-    - shell: /bin/bash
-    - require:
-      - git: go
+    - name: ./make.bash
+    - env:
+      - GOROOT_BOOTSTRAP: /opt/src/go_bootstrap_bin/go
+      - GOPATH: /opt/src/go_work
+    - onchanges:
+      - git: go_git
+    - creates: /opt/src/go/bin/go

@@ -1,7 +1,8 @@
 {% set dovecot = salt['grains.filter_by']({
     'Debian': {
         'repo': 'https://github.com/dovecot/core',
-        'branch': 'master',
-        'rev': 'master',
+        'branch': 'release-2.4.4',
+        'rev': 'release-2.4.4',
+        'prefix': '/opt/dovecot',
     },
 }, merge=salt['pillar.get']('dovecot:lookup')) %}

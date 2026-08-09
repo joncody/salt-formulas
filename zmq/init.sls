@@ -3,26 +3,39 @@
 include:
   - sodium
 
-zmq:
+zmq_deps:
   pkg.installed:
     - names:
       - asciidoc
       - liblz4-dev
-      - libpcre3-dev
       - libpgm-dev
+      - pkg-config
       - uuid-dev
     - require:
-      - cmd: sodium
+      - cmd: sodium_build
+
+zmq_git:
   git.latest:
     - name: {{ zmq.repo }}
     - branch: {{ zmq.branch }}
     - rev: {{ zmq.rev }}
     - target: /opt/src/libzmq
     - require:
-      - pkg: zmq
+      - pkg: zmq_deps
+
+zmq_build:
   cmd.run:
     - cwd: /opt/src/libzmq
-    - name: ./autogen.sh && LDFLAGS=-L/opt/sodium/lib CPPFLAGS=-I/opt/sodium/include ./configure --prefix=/opt/zmq --enable-debug --enable-valgrind --with-gnu-ld --with-libsodium --with-pgm && make && make install && make clean
-    - unless: test -d /opt/zmq
-    - require:
-      - git: zmq
+    - name: |
+        ./autogen.sh
+        ./configure --prefix={{ zmq.prefix }} --enable-debug --with-gnu-ld --with-libsodium --with-pgm
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - env:
+      - PKG_CONFIG_PATH: "/opt/sodium/lib/pkgconfig:/opt/sodium/lib64/pkgconfig"
+      - LDFLAGS: "-L/opt/sodium/lib -L/opt/sodium/lib64"
+      - CPPFLAGS: "-I/opt/sodium/include"
+    - onchanges:
+      - git: zmq_git
+    - creates: {{ zmq.prefix }}/lib/libzmq.so

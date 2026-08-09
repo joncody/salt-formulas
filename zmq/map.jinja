@@ -3,5 +3,6 @@
         'repo': 'https://github.com/zeromq/libzmq',
         'branch': 'master',
         'rev': 'master',
+        'prefix': '/opt/zmq',
     },
 }, merge=salt['pillar.get']('zmq:lookup')) %}

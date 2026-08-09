@@ -3,76 +3,79 @@
 include:
   - optsrc
 
-postgresql:
-  pkg.installed:
-    - names:
-      - autoconf
-      - automake
-      - autotools-dev
-      - bison
-      - build-essential
-      - cmake
-      - flex
-      - git
-      - libbison-dev
-      - libevent-dev
-      - libfl-dev
-      - libldap2-dev
-      - libpam0g-dev
-      - libperl-dev
-      - libreadline-dev
-      - libssl-dev
-      - libtool
-      - libxslt1-dev
-      - libxml2-dev
-      - openssl
-      - pkg-config
-      - python3-all-dev
-      - valgrind
-    - require:
-      - file: optsrc
-  git.latest:
-    - name: {{ postgresql.repo }}
-    - branch: {{ postgresql.branch }}
-    - rev: {{ postgresql.rev }}
-    - target: /opt/src/postgresql
-    - require:
-      - pkg: postgresql
-  cmd.run:
-    - cwd: /opt/src/postgresql
-    - name: ./configure --prefix=/opt/postgresql --enable-debug --with-perl --with-python --with-pam --with-ldap --with-openssl --with-libxml --with-libxslt --with-gnu-ld && make && make install && make clean
-    - unless: test -d /opt/postgresql
-    - require:
-      - user: postgresql
+postgres_group:
+  group.present:
+    - name: postgres
+    - system: True
+
+postgres_user:
   user.present:
     - name: postgres
     - gid: postgres
     - system: True
     - home: /opt/postgresql/data
     - createhome: False
-    - shell: /usr/sbin/nologin
+    - shell: /bin/bash
     - require:
-      - group: postgresql
-  group.present:
-    - name: postgres
-    - system: True
-    - require:
-      - git: postgresql
+      - group: postgres_group
 
-postgresql-data:
-  cmd.run:
-    - cwd: /opt/postgresql
-    - name: mkdir -p /opt/postgresql/data && chown postgres /opt/postgresql/data
+postgresql_deps:
+  pkg.installed:
+    - names:
+      - bison
+      - build-essential
+      - flex
+      - git
+      - libldap2-dev
+      - libpam0g-dev
+      - libperl-dev
+      - libreadline-dev
+      - libssl-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - pkg-config
+      - python3-all-dev
     - require:
-      - cmd: postgresql
+      - file: optsrc
 
-postgresql-init:
+postgresql_git:
+  git.latest:
+    - name: {{ postgresql.repo }}
+    - branch: {{ postgresql.branch }}
+    - rev: {{ postgresql.rev }}
+    - target: /opt/src/postgresql
+    - require:
+      - pkg: postgresql_deps
+
+postgresql_build:
   cmd.run:
-    - cwd: /opt/postgresql/data
-    - name: /opt/postgresql/bin/initdb -D /opt/postgresql/data && /opt/postgresql/bin/pg_ctl start -D /opt/postgresql/data -l logfile
+    - cwd: /opt/src/postgresql
+    - name: |
+        ./configure --prefix={{ postgresql.prefix }} --enable-debug --with-perl --with-python --with-pam --with-ldap --with-openssl --with-libxml --with-libxslt --with-gnu-ld
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - onchanges:
+      - git: postgresql_git
+    - creates: {{ postgresql.prefix }}/bin/postgres
+    - require:
+      - user: postgres_user
+
+postgresql-data-dir:
+  file.directory:
+    - name: /opt/postgresql/data
     - user: postgres
     - group: postgres
-    - shell: /bin/bash
-    - unless: test -d /opt/postgresql/data
+    - mode: 700
+    - makedirs: True
     - require:
-      - cmd: postgresql-data
+      - cmd: postgresql_build
+
+postgresql-initdb:
+  cmd.run:
+    - name: /opt/postgresql/bin/initdb -D /opt/postgresql/data
+    - user: postgres
+    - group: postgres
+    - creates: /opt/postgresql/data/PG_VERSION
+    - require:
+      - file: postgresql-data-dir

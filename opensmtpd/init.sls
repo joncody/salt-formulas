@@ -4,34 +4,12 @@ include:
   - asr
   - postgresql
 
-exclude:
-  - id: postgresql-data
-  - id: postgresql-init
+smtpd_group:
+  group.present:
+    - name: _smtpd
+    - system: True
 
-opensmtpd:
-  pkg.installed:
-    - names:
-      - libdb-dev
-      - libsqlite3-dev
-      - sqlite3
-    - require:
-      - cmd: asr
-      - cmd: postgresql
-  git.latest:
-    - name: {{ opensmtpd.repo }}
-    - branch: {{ opensmtpd.branch }}
-    - rev: {{ opensmtpd.rev }}
-    - target: /opt/src/opensmtpd
-    - require:
-      - pkg: opensmtpd
-  cmd.run:
-    - cwd: /opt/src/opensmtpd
-    - name: ./bootstrap && LDFLAGS=-L/opt/asr/lib CPPFLAGS=-I/opt/asr/include ./configure --prefix=/opt/opensmtpd --with-gnu-ld --with-table-db && make && make install && make clean
-    - unless: test -d /opt/opensmtpd
-    - require:
-      - user: opensmtpd-daemon
-
-opensmtpd-daemon:
+smtpd_user:
   user.present:
     - name: _smtpd
     - gid: _smtpd
@@ -39,60 +17,78 @@ opensmtpd-daemon:
     - home: /var/empty
     - createhome: False
     - shell: /usr/sbin/nologin
-    - loginclass: "SMTP Daemon"
     - require:
-      - group: opensmtpd-daemon
-  group.present:
-    - name: _smtpd
-    - system: True
-    - require:
-      - user: opensmtpd-queue
+      - group: smtpd_group
 
-opensmtpd-queue:
+smtpq_group:
+  group.present:
+    - name: _smtpq
+    - system: True
+
+smtpq_user:
   user.present:
-    - name: _smtpq 
+    - name: _smtpq
     - gid: _smtpq
     - system: True
     - home: /var/empty
     - createhome: False
     - shell: /usr/sbin/nologin
-    - loginclass: "SMTPD Queue"
     - require:
-      - group: opensmtpd-queue
-  group.present:
-    - name: _smtpq
-    - system: True
-    - require:
-      - user: opensmtpd-filter
+      - group: smtpq_group
 
-opensmtpd-filter:
+smtpf_group:
+  group.present:
+    - name: _smtpf
+    - system: True
+
+smtpf_user:
   user.present:
-    - name: _smtpf 
+    - name: _smtpf
     - gid: _smtpf
     - system: True
     - home: /var/empty
     - createhome: False
     - shell: /usr/sbin/nologin
-    - loginclass: "SMTPD Filter"
     - require:
-      - group: opensmtpd-filter
-  group.present:
-    - name: _smtpf
-    - system: True
-    - require:
-      - git: opensmtpd
+      - group: smtpf_group
 
-opensmtpd-extras:
+opensmtpd_deps:
+  pkg.installed:
+    - names:
+      - libdb-dev
+      - libsqlite3-dev
+      - pkg-config
+      - sqlite3
+    - require:
+      - cmd: asr_build
+      - cmd: postgresql_build
+
+opensmtpd_git:
   git.latest:
-    - name: {{ opensmtpd.extras_repo }}
-    - branch: {{ opensmtpd.extras_branch }}
-    - rev: {{ opensmtpd.extras_rev }}
-    - target: /opt/src/opensmtpd-extras
+    - name: {{ opensmtpd.repo }}
+    - branch: {{ opensmtpd.branch }}
+    - rev: {{ opensmtpd.rev }}
+    - target: /opt/src/opensmtpd
     - require:
-      - cmd: opensmtpd
+      - pkg: opensmtpd_deps
+
+opensmtpd_build:
   cmd.run:
-    - cwd: /opt/src/opensmtpd-extras
-    - name: ./bootstrap && LDFLAGS=-L/opt/postgresql/lib CPPFLAGS=-I/opt/postgresql/include ./configure --prefix=/opt/opensmtpd-extras --libexecdir=/opt/opensmtpd/libexec --with-gnu-ld --with-table-postgres --with-table-passwd --with-table-sqlite && make && make install && make clean
-    - unless: test -d /opt/opensmtpd
+    - cwd: /opt/src/opensmtpd
+    - name: |
+        ./bootstrap
+        ./configure --prefix={{ opensmtpd.prefix }} --with-gnu-ld --with-table-db
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - env:
+      - PKG_CONFIG_PATH: "/opt/asr/lib/pkgconfig:/opt/postgresql/lib/pkgconfig"
+      - LDFLAGS: "-L/opt/asr/lib -L/opt/postgresql/lib"
+      - CPPFLAGS: "-I/opt/asr/include -I/opt/postgresql/include"
+    - onchanges:
+      - git: opensmtpd_git
+    - creates: {{ opensmtpd.prefix }}/sbin/smtpd
     - require:
-      - git: opensmtpd-extras
+      - user: smtpd_user
+      - user: smtpq_user
+      - user: smtpf_user

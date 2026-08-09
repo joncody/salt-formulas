@@ -1,35 +1,14 @@
 {% from "pureftpd/map.jinja" import pureftpd with context %}
 
-pureftpd:
-  pkg.installed:
-    - names:
-      - autoconf
-      - automake
-      - autotools-dev
-      - build-essential
-      - cmake
-      - git
-      - libevent-dev
-      - libssl-dev
-      - libtool
-      - openssl
-      - pkg-config
-      - valgrind
-      - libpam0g-dev
-      - libldap2-dev
-  git.latest:
-    - name: {{ pureftpd.repo }}
-    - branch: {{ pureftpd.branch }}
-    - rev: {{ pureftpd.rev }}
-    - target: /opt/src/pureftpd
-    - require:
-      - pkg: pureftpd
-  cmd.run:
-    - cwd: /opt/src/pureftpd
-    - name: ./autogen.sh && ./configure --prefix=/opt/pureftpd --with-pam --with-puredb --with-ftpwho --with-ldap --with-debug --with-tls && make && make install && make clean
-    - unless: test -d /opt/pureftpd
-    - require:
-      - user: pureftpd
+include:
+  - optsrc
+
+pureftpd_group:
+  group.present:
+    - name: pureftpd
+    - system: True
+
+pureftpd_user:
   user.present:
     - name: pureftpd
     - gid: pureftpd
@@ -38,14 +17,14 @@ pureftpd:
     - createhome: False
     - shell: /usr/sbin/nologin
     - require:
-      - group: pureftpd
-  group.present:
-    - name: pureftpd
-    - system: True
-    - require:
-      - user: ftp
+      - group: pureftpd_group
 
-ftp:
+ftp_group:
+  group.present:
+    - name: ftp
+    - system: True
+
+ftp_user:
   user.present:
     - name: ftp
     - gid: ftp
@@ -54,9 +33,42 @@ ftp:
     - createhome: False
     - shell: /usr/sbin/nologin
     - require:
-      - group: ftp
-  group.present:
-    - name: ftp
-    - system: True
+      - group: ftp_group
+
+pureftpd_deps:
+  pkg.installed:
+    - names:
+      - autoconf
+      - automake
+      - build-essential
+      - git
+      - libldap2-dev
+      - libpam0g-dev
+      - libssl-dev
     - require:
-      - git: pureftpd
+      - file: optsrc
+
+pureftpd_git:
+  git.latest:
+    - name: {{ pureftpd.repo }}
+    - branch: {{ pureftpd.branch }}
+    - rev: {{ pureftpd.rev }}
+    - target: /opt/src/pureftpd
+    - require:
+      - pkg: pureftpd_deps
+
+pureftpd_build:
+  cmd.run:
+    - cwd: /opt/src/pureftpd
+    - name: |
+        ./autogen.sh
+        ./configure --prefix={{ pureftpd.prefix }} --with-pam --with-puredb --with-ftpwho --with-ldap --with-tls
+        make -j{{ grains['num_cpus'] }}
+        make install
+        make clean
+    - onchanges:
+      - git: pureftpd_git
+    - creates: {{ pureftpd.prefix }}/sbin/pure-ftpd
+    - require:
+      - user: pureftpd_user
+      - user: ftp_user

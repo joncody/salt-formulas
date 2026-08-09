@@ -2,10 +2,8 @@
     'Debian': {
         'iface': 'eth0',
         'repo': 'https://github.com/OpenSMTPD/OpenSMTPD',
-        'branch': 'portable',
-        'rev': 'portable',
-        'extras_repo': 'https://github.com/OpenSMTPD/OpenSMTPD-extras',
-        'extras_branch': 'master',
-        'extras_rev': 'master',
+        'branch': 'master',
+        'rev': 'master',
+        'prefix': '/opt/opensmtpd',
     },
 }, merge=salt['pillar.get']('opensmtpd:lookup')) %}

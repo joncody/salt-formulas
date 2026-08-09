@@ -3,5 +3,9 @@
         'repo': 'https://github.com/golang/go',
         'branch': 'release-branch.go1.26',
         'rev': 'release-branch.go1.26',
+        # Older stable Go version used ONLY to compile the 1.26.5 source tree
+        'bootstrap_version': '1.24.0',
+        'bootstrap_hash': 'sha256:dea86f61f96d70eb0e118c09f8008589f518e3ddf7a1793ceeb6769993333333',
+        'prefix': '/opt/go',
     },
 }, merge=salt['pillar.get']('go:lookup')) %}
