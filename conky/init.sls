@@ -7,12 +7,15 @@ conky_deps:
   pkg.installed:
     - names:
       - cmake
+      - pkg-config
       - libx11-dev
+      - libext-dev
+      - libxdamage-dev
       - libxft-dev
       - libxinerama-dev
-      - pkg-config
       - libimlib2-dev
       - liblua5.3-dev
+      - libncurses-dev
     - require:
       - file: optsrc
 
