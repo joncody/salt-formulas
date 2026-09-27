@@ -7,9 +7,11 @@ conky_deps:
   pkg.installed:
     - names:
       - cmake
+      - gperf
       - pkg-config
       - libx11-dev
       - libxext-dev
+      - libxi-dev
       - libxdamage-dev
       - libxft-dev
       - libxinerama-dev
@@ -31,11 +33,16 @@ conky_build:
   cmd.run:
     - cwd: /opt/src/conky
     - name: |
-        mkdir -p build
-        cd build
-        cmake -DCMAKE_INSTALL_PREFIX={{ conky.prefix }} ..
-        make -j{{ grains['num_cpus'] }}
-        make install
-        make clean
-    - onchanges:
+        rm -rf build
+        cmake -B build -DCMAKE_INSTALL_PREFIX={{ conky.prefix }}
+        cmake --build build -j{{ grains['num_cpus'] }}
+        cmake --install build
+        rm -rf build
+        mkdir -p {{ conky.prefix }}
+        git -C /opt/src/conky rev-parse HEAD > {{ conky.prefix }}/.git_commit
+    - unless: |
+        [ -x {{ conky.prefix }}/bin/conky ] && \
+        [ -f {{ conky.prefix }}/.git_commit ] && \
+        [ "$(git -C /opt/src/conky rev-parse HEAD)" = "$(cat {{ conky.prefix }}/.git_commit)" ]
+    - require:
       - git: conky_git
