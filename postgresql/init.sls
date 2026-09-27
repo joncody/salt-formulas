@@ -74,6 +74,7 @@ postgresql-initdb:
   cmd.run:
     - name: /opt/postgresql/bin/initdb -D /opt/postgresql/data
     - runas: postgres
+    - env:
       - HOME: /opt/postgresql
     - creates: /opt/postgresql/data/PG_VERSION
     - require:
