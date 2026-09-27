@@ -9,7 +9,7 @@ nftables_conf:
     - user: root
     - group: root
     - mode: '0644'
-    - check_cmd: /usr/sbin/nft -c -f %s
+    - check_cmd: /usr/sbin/nft -c -f
     - require:
       - pkg: nftables_pkg
 
