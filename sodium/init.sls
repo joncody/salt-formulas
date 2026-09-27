@@ -17,8 +17,7 @@ sodium_deps:
 sodium_git:
   git.latest:
     - name: {{ sodium.repo }}
-    - branch: {{ sodium.branch }}
-    - rev: {{ sodium.rev }}
+    - rev: {{ sodium.version }}
     - target: /opt/src/libsodium
     - require:
       - pkg: sodium_deps
@@ -34,4 +33,3 @@ sodium_build:
         make clean
     - onchanges:
       - git: sodium_git
-    - creates: {{ sodium.prefix }}/lib/libsodium.so

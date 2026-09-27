@@ -1,0 +1,6 @@
+{% set nushell = salt['grains.filter_by']({
+    'Debian': {
+        'version': '0.116.0',
+        'prefix': '/opt/nu',
+    },
+}, merge=salt['pillar.get']('nushell:lookup')) %}

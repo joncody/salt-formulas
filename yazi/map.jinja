@@ -1,0 +1,6 @@
+{% set yazi = salt['grains.filter_by']({
+    'Debian': {
+        'version': '26.9.1',
+        'prefix': '/opt/yazi',
+    },
+}, merge=salt['pillar.get']('yazi:lookup')) %}

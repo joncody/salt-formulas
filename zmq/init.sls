@@ -17,8 +17,7 @@ zmq_deps:
 zmq_git:
   git.latest:
     - name: {{ zmq.repo }}
-    - branch: {{ zmq.branch }}
-    - rev: {{ zmq.rev }}
+    - rev: v{{ zmq.version }}
     - target: /opt/src/libzmq
     - require:
       - pkg: zmq_deps
@@ -38,4 +37,3 @@ zmq_build:
       - CPPFLAGS: "-I/opt/sodium/include"
     - onchanges:
       - git: zmq_git
-    - creates: {{ zmq.prefix }}/lib/libzmq.so

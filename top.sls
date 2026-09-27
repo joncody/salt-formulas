@@ -1,18 +1,24 @@
 base:
   '*':
-    - amixvimrc
+    - optsrc
+    - rust
+    - go
+    - node
+    - docker
+    - shell_env
+    - alacritty
+    - helix
+    - nushell
+    - yazi
+    - zellij
     - asr
-    - bashrc
     - conky
     - czmq
     - dovecot
     - ffmpeg
     - filemq
-    - go
     - nginx
-    - node
     - opensmtpd
-    - optsrc
     - postgresql
     - pureftpd
     - sodium

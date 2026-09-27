@@ -57,7 +57,7 @@ dovecot_git:
   git.latest:
     - name: {{ dovecot.repo }}
     - branch: {{ dovecot.branch }}
-    - rev: {{ dovecot.rev }}
+    - rev: {{ dovecot.branch }}
     - target: /opt/src/dovecot
     - require:
       - pkg: dovecot_deps
@@ -77,7 +77,6 @@ dovecot_build:
       - CPPFLAGS: "-I/opt/sodium/include -I/opt/postgresql/include"
     - onchanges:
       - git: dovecot_git
-    - creates: {{ dovecot.prefix }}/sbin/dovecot
     - require:
       - user: dovecot_user
       - user: dovenull_user

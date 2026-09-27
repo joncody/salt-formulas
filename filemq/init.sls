@@ -13,7 +13,7 @@ filemq_git:
   git.latest:
     - name: {{ filemq.repo }}
     - branch: {{ filemq.branch }}
-    - rev: {{ filemq.rev }}
+    - rev: {{ filemq.branch }}
     - target: /opt/src/filemq
     - require:
       - cmd: czmq_build
@@ -34,4 +34,3 @@ filemq_build:
       - CPPFLAGS: "-I/opt/czmq/include -I/opt/zmq/include -I/opt/sodium/include"
     - onchanges:
       - git: filemq_git
-    - creates: {{ filemq.prefix }}/lib/libfilemq.so

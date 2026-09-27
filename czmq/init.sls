@@ -14,8 +14,7 @@ czmq_deps:
 czmq_git:
   git.latest:
     - name: {{ czmq.repo }}
-    - branch: {{ czmq.branch }}
-    - rev: {{ czmq.rev }}
+    - rev: v{{ czmq.version }}
     - target: /opt/src/czmq
     - require:
       - cmd: zmq_build
@@ -36,4 +35,3 @@ czmq_build:
       - CPPFLAGS: "-I/opt/zmq/include"
     - onchanges:
       - git: czmq_git
-    - creates: {{ czmq.prefix }}/lib/libczmq.so

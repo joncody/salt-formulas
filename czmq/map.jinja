@@ -1,8 +1,7 @@
 {% set czmq = salt['grains.filter_by']({
     'Debian': {
         'repo': 'https://github.com/zeromq/czmq',
-        'branch': 'master',
-        'rev': 'master',
+        'version': '4.2.1',
         'prefix': '/opt/czmq',
     },
 }, merge=salt['pillar.get']('czmq:lookup')) %}

@@ -4,11 +4,9 @@
         'group': 'web',
         'webroot': '/www',
         'njs_repo': 'https://github.com/nginx/njs',
-        'njs_branch': 'master',
         'njs_rev': 'master',
         'repo': 'https://github.com/nginx/nginx',
         'branch': 'stable-1.30',
-        'rev': 'stable-1.30',
         'prefix': '/opt/nginx',
     },
 }, merge=salt['pillar.get']('nginx:lookup')) %}

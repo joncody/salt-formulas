@@ -1,0 +1,117 @@
+# ==============================================================================
+# Declarative Upstream Registry for salt-bump
+# ==============================================================================
+
+[[packages]]
+name = "helix"
+file = "helix/map.jinja"
+key = "version"
+type = "github_release"
+repo = "helix-editor/helix"
+
+[[packages]]
+name = "nushell"
+file = "nushell/map.jinja"
+key = "version"
+type = "github_release"
+repo = "nushell/nushell"
+
+[[packages]]
+name = "zellij"
+file = "zellij/map.jinja"
+key = "version"
+type = "github_release"
+repo = "zellij-org/zellij"
+
+[[packages]]
+name = "yazi"
+file = "yazi/map.jinja"
+key = "version"
+type = "github_release"
+repo = "sxyazi/yazi"
+
+[[packages]]
+name = "conky"
+file = "conky/map.jinja"
+key = "version"
+type = "github_release"
+repo = "brndnmtthws/conky"
+
+[[packages]]
+name = "alacritty"
+file = "alacritty/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "alacritty/alacritty"
+
+[[packages]]
+name = "go"
+file = "go/map.jinja"
+key = "version"
+type = "go_api"
+
+[[packages]]
+name = "node"
+file = "node/map.jinja"
+key = "version"
+type = "node_api"
+
+[[packages]]
+name = "nginx"
+file = "nginx/map.jinja"
+key = "branch"
+type = "nginx_branch"
+
+[[packages]]
+name = "postgresql"
+file = "postgresql/map.jinja"
+key = "branch"
+type = "postgres_branch"
+
+[[packages]]
+name = "ffmpeg"
+file = "ffmpeg/map.jinja"
+key = "branch"
+type = "ffmpeg_branch"
+
+[[packages]]
+name = "sodium"
+file = "sodium/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "jedisct1/libsodium"
+
+[[packages]]
+name = "zmq"
+file = "zmq/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "zeromq/libzmq"
+
+[[packages]]
+name = "czmq"
+file = "czmq/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "zeromq/czmq"
+
+[[packages]]
+name = "zyre"
+file = "zyre/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "zeromq/zyre"
+
+[[packages]]
+name = "opensmtpd"
+file = "opensmtpd/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "OpenSMTPD/OpenSMTPD"
+
+[[packages]]
+name = "pureftpd"
+file = "pureftpd/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "jedisct1/pure-ftpd"

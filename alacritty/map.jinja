@@ -1,0 +1,7 @@
+{% set alacritty = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/alacritty/alacritty',
+        'version': '0.17.0',
+        'prefix': '/opt/alacritty',
+    },
+}, merge=salt['pillar.get']('alacritty:lookup')) %}

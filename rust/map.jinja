@@ -1,0 +1,5 @@
+{% set rust = salt['grains.filter_by']({
+    'Debian': {
+        'prefix': '/opt/rust',
+    },
+}, merge=salt['pillar.get']('rust:lookup')) %}

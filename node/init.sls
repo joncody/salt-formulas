@@ -3,35 +3,22 @@
 include:
   - optsrc
 
-node_deps:
-  pkg.installed:
-    - names:
-      - build-essential
-      - git
-      - libssl-dev
-      - pkg-config
-      - python3-all-dev
-      - zlib1g-dev
-    - require:
-      - file: optsrc
+node_dir:
+  file.directory:
+    - name: {{ node.prefix }}
+    - user: root
+    - group: root
+    - mode: '0755'
+    - makedirs: True
 
-node_git:
-  git.latest:
-    - name: {{ node.repo }}
-    - branch: {{ node.branch }}
-    - rev: {{ node.rev }}
-    - target: /opt/src/node
-    - require:
-      - pkg: node_deps
-
-node_build:
-  cmd.run:
-    - cwd: /opt/src/node
-    - name: |
-        ./configure --prefix={{ node.prefix }}
-        make -j{{ grains['num_cpus'] }}
-        make install
-        make clean
-    - onchanges:
-      - git: node_git
+node_archive:
+  archive.extracted:
+    - name: {{ node.prefix }}
+    - source: https://nodejs.org/dist/v{{ node.version }}/node-v{{ node.version }}-linux-x64.tar.xz
+    - skip_verify: True
+    - archive_format: tar
+    - options: "--strip-components=1"
+    - enforce_ownership_on: {{ node.prefix }}
     - creates: {{ node.prefix }}/bin/node
+    - require:
+      - file: node_dir

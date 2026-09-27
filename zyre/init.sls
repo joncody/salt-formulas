@@ -12,8 +12,7 @@ zyre_deps:
 zyre_git:
   git.latest:
     - name: {{ zyre.repo }}
-    - branch: {{ zyre.branch }}
-    - rev: {{ zyre.rev }}
+    - rev: v{{ zyre.version }}
     - target: /opt/src/zyre
     - require:
       - cmd: czmq_build
@@ -34,4 +33,3 @@ zyre_build:
       - CPPFLAGS: "-I/opt/czmq/include -I/opt/zmq/include"
     - onchanges:
       - git: zyre_git
-    - creates: {{ zyre.prefix }}/lib/libzyre.so

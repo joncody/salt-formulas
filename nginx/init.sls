@@ -22,7 +22,6 @@ nginx_user:
 nginscript_git:
   git.latest:
     - name: {{ nginx.njs_repo }}
-    - branch: {{ nginx.njs_branch }}
     - rev: {{ nginx.njs_rev }}
     - target: /opt/src/njs
     - require:
@@ -44,7 +43,7 @@ nginx_git:
   git.latest:
     - name: {{ nginx.repo }}
     - branch: {{ nginx.branch }}
-    - rev: {{ nginx.rev }}
+    - rev: {{ nginx.branch }}
     - target: /opt/src/nginx
     - require:
       - pkg: nginx_deps
@@ -68,6 +67,5 @@ nginx_build:
     - onchanges:
       - git: nginx_git
       - git: nginscript_git
-    - creates: {{ nginx.prefix }}/sbin/nginx
     - require:
       - user: nginx_user

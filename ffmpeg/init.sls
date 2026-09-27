@@ -35,7 +35,7 @@ ffmpeg_git:
   git.latest:
     - name: {{ ffmpeg.repo }}
     - branch: {{ ffmpeg.branch }}
-    - rev: {{ ffmpeg.rev }}
+    - rev: {{ ffmpeg.branch }}
     - target: /opt/src/ffmpeg
     - require:
       - pkg: ffmpeg_deps
@@ -50,4 +50,3 @@ ffmpeg_build:
         make clean
     - onchanges:
       - git: ffmpeg_git
-    - creates: {{ ffmpeg.prefix }}/bin/ffmpeg

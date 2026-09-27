@@ -51,8 +51,7 @@ pureftpd_deps:
 pureftpd_git:
   git.latest:
     - name: {{ pureftpd.repo }}
-    - branch: {{ pureftpd.branch }}
-    - rev: {{ pureftpd.rev }}
+    - rev: {{ pureftpd.version }}
     - target: /opt/src/pureftpd
     - require:
       - pkg: pureftpd_deps
@@ -68,7 +67,6 @@ pureftpd_build:
         make clean
     - onchanges:
       - git: pureftpd_git
-    - creates: {{ pureftpd.prefix }}/sbin/pure-ftpd
     - require:
       - user: pureftpd_user
       - user: ftp_user

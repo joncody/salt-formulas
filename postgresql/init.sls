@@ -42,7 +42,7 @@ postgresql_git:
   git.latest:
     - name: {{ postgresql.repo }}
     - branch: {{ postgresql.branch }}
-    - rev: {{ postgresql.rev }}
+    - rev: {{ postgresql.branch }}
     - target: /opt/src/postgresql
     - require:
       - pkg: postgresql_deps
@@ -57,7 +57,6 @@ postgresql_build:
         make clean
     - onchanges:
       - git: postgresql_git
-    - creates: {{ postgresql.prefix }}/bin/postgres
     - require:
       - user: postgres_user
 

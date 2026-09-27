@@ -19,8 +19,7 @@ asr_deps:
 asr_git:
   git.latest:
     - name: {{ asr.repo }}
-    - branch: {{ asr.branch }}
-    - rev: {{ asr.rev }}
+    - rev: {{ asr.version }}
     - target: /opt/src/libasr
     - require:
       - pkg: asr_deps
@@ -36,4 +35,3 @@ asr_build:
         make clean
     - onchanges:
       - git: asr_git
-    - creates: {{ asr.prefix }}/lib/libasr.so

@@ -3,41 +3,22 @@
 include:
   - optsrc
 
-go_deps:
-  pkg.installed:
-    - names:
-      - build-essential
-      - git
-    - require:
-      - file: optsrc
+go_dir:
+  file.directory:
+    - name: {{ go.prefix }}
+    - user: root
+    - group: root
+    - dir_mode: '1777'
+    - makedirs: True
 
-# 1. Download an older Go compiler binary strictly for bootstrapping
-go_bootstrap_archive:
+go_archive:
   archive.extracted:
-    - name: /opt/src/go_bootstrap_bin
-    - source: https://go.dev/dl/go{{ go.bootstrap_version }}.linux-amd64.tar.gz
-    - source_hash: {{ go.bootstrap_hash }}
+    - name: {{ go.prefix }}
+    - source: https://go.dev/dl/go{{ go.version }}.linux-amd64.tar.gz
+    - skip_verify: True
     - archive_format: tar
-    - enforce_ownership_on: /opt/src/go_bootstrap_bin
-
-# 2. Clone Go 1.26.5 source code
-go_git:
-  git.latest:
-    - name: {{ go.repo }}
-    - branch: {{ go.branch }}
-    - rev: {{ go.rev }}
-    - target: /opt/src/go
+    - options: "--strip-components=1"
+    - enforce_ownership_on: {{ go.prefix }}
+    - creates: {{ go.prefix }}/bin/go
     - require:
-      - pkg: go_deps
-
-# 3. Build Go 1.26.5 binaries from source code
-go_build:
-  cmd.run:
-    - cwd: /opt/src/go/src
-    - name: ./make.bash
-    - env:
-      - GOROOT_BOOTSTRAP: /opt/src/go_bootstrap_bin/go
-      - GOPATH: /opt/src/go_work
-    - onchanges:
-      - git: go_git
-    - creates: /opt/src/go/bin/go
+      - file: go_dir

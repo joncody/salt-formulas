@@ -2,16 +2,28 @@ salt-formulas
 =============
 
 [![SaltStack](https://img.shields.io/badge/SaltStack-Formula-57BCAD?style=flat&logo=saltstack&logoColor=white)](https://saltproject.io/)
-[![Jinja2](https://img.shields.io/badge/Templates-Jinja2-B41717?style=flat&logo=jinja&logoColor=white)](https://jinja.palletsprojects.com/)
+[![Rust](https://img.shields.io/badge/Updater-Rust-orange?style=flat&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![Platform: Linux](https://img.shields.io/badge/Platform-Linux-FCC624?style=flat&logo=linux&logoColor=black)](https://www.kernel.org/)
-[![Type: IaC](https://img.shields.io/badge/Type-Infrastructure%20as%20Code-blue?style=flat)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A collection of high-performance Salt formulas for building tools and services from source.
+A high-performance, deterministic SaltStack repository for provisioning workstations and server infrastructure.
 
 ### Architecture Highlights
-- Builds source trees in `/opt/src/<tool>` and installs binaries to `/opt/<tool>`.
-- Uses `map.jinja` to support version pinning and pillar overrides.
-- Idempotent execution using `creates:` and `onchanges:` guards.
-- Automatic CPU core detection (`make -j{{ grains['num_cpus'] }}`) for speed.
-- Configures global binary and library paths via `bashrc`.
+- **Prefix Isolation:** Software installs under dedicated `/opt/<tool>` hierarchies.
+- **Dual-Shell Dynamic Environment:** Dynamic path discovery for POSIX shells (`/etc/profile.d/opt_env.sh`) and Nushell (`/etc/nushell/env.nu`).
+- **Deterministic & Fast:** Salt formulas pin versions in `map.jinja`. Highstates finish in seconds with zero network probing.
+- **Automated GitOps Upgrades:** Bundled with `salt-bump`, an asynchronous Rust CLI that checks upstream APIs and bumps `map.jinja` files in-place.
+
+### Checking for Updates
+```bash
+# Check upstream releases across all formulas
+cargo run --manifest-path updater/Cargo.toml -- check
+
+# Update map.jinja files in-place
+cargo run --manifest-path updater/Cargo.toml -- update
+
+# Inspect diff, commit, and apply
+git diff
+git commit -am "chore: bump formulas"
+sudo salt-call --local state.apply
+```

@@ -1,0 +1,6 @@
+{% set zellij = salt['grains.filter_by']({
+    'Debian': {
+        'version': '0.45.1',
+        'prefix': '/opt/zellij',
+    },
+}, merge=salt['pillar.get']('zellij:lookup')) %}

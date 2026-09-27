@@ -2,7 +2,6 @@
     'Debian': {
         'repo': 'https://github.com/postgres/postgres',
         'branch': 'REL_19_STABLE',
-        'rev': 'REL_19_STABLE',
         'prefix': '/opt/postgresql',
     },
 }, merge=salt['pillar.get']('postgresql:lookup')) %}

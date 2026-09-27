@@ -66,8 +66,7 @@ opensmtpd_deps:
 opensmtpd_git:
   git.latest:
     - name: {{ opensmtpd.repo }}
-    - branch: {{ opensmtpd.branch }}
-    - rev: {{ opensmtpd.rev }}
+    - rev: {{ opensmtpd.version }}
     - target: /opt/src/opensmtpd
     - require:
       - pkg: opensmtpd_deps
@@ -87,7 +86,6 @@ opensmtpd_build:
       - CPPFLAGS: "-I/opt/asr/include -I/opt/postgresql/include"
     - onchanges:
       - git: opensmtpd_git
-    - creates: {{ opensmtpd.prefix }}/sbin/smtpd
     - require:
       - user: smtpd_user
       - user: smtpq_user
