@@ -9,7 +9,7 @@ alacritty_deps:
     - names:
       - cmake
       - pkg-config
-      - libfreetype6-dev
+      - libfreetype-dev
       - libfontconfig1-dev
       - libxcb-xfixes0-dev
       - libxkbcommon-dev

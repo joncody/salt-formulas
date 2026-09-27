@@ -6,6 +6,7 @@ dovecot-conf:
     - user: root
     - group: root
     - mode: '0644'
+    - makedirs: True
     - source: salt://dovecot/files/dovecot.conf
     - require:
       - cmd: dovecot_build
@@ -31,7 +32,7 @@ dovecot-ssl:
 dovecot-dhparams:
   cmd.run:
     - cwd: /opt/dovecot/etc/dovecot/ssl
-    - name: openssl dhparam 2048 -out dh_params.pem
+    - name: openssl dhparam -out dh_params.pem 2048
     - creates: /opt/dovecot/etc/dovecot/ssl/dh_params.pem
     - require:
       - cmd: dovecot-ssl

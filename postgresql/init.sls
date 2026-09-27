@@ -13,7 +13,7 @@ postgres_user:
     - name: postgres
     - gid: postgres
     - system: True
-    - home: /opt/postgresql/data
+    - home: /opt/postgresql
     - createhome: False
     - shell: /bin/bash
     - require:
@@ -73,8 +73,7 @@ postgresql-data-dir:
 postgresql-initdb:
   cmd.run:
     - name: /opt/postgresql/bin/initdb -D /opt/postgresql/data
-    - user: postgres
-    - group: postgres
+    - runas: postgres
     - creates: /opt/postgresql/data/PG_VERSION
     - require:
       - file: postgresql-data-dir
