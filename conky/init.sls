@@ -9,7 +9,7 @@ conky_deps:
       - cmake
       - pkg-config
       - libx11-dev
-      - libext-dev
+      - libxext-dev
       - libxdamage-dev
       - libxft-dev
       - libxinerama-dev
