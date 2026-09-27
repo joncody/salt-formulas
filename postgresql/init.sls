@@ -65,7 +65,7 @@ postgresql-data-dir:
     - name: /opt/postgresql/data
     - user: postgres
     - group: postgres
-    - mode: 700
+    - mode: '0700'
     - makedirs: True
     - require:
       - cmd: postgresql_build

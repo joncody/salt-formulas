@@ -1,15 +1,12 @@
 {% from "pureftpd/map.jinja" import pureftpd with context %}
 
-include:
-  - pureftpd
-
 pureftpd-conf:
   file.managed:
     - name: /opt/pureftpd/etc/pure-ftpd.conf
     - user: root
     - group: root
-    - mode: 644
-    - source: salt://pureftpd/files/pure-ftpd.conf
+    - mode: '0644'
+    - source: salt://pureftpd/files/pureftpd.conf
     - require:
       - cmd: pureftpd_build
 
@@ -18,7 +15,7 @@ pureftpd-mkdir-ssl:
     - name: /opt/pureftpd/etc/ssl
     - user: root
     - group: root
-    - mode: 700
+    - mode: '0700'
     - makedirs: True
     - require:
       - file: pureftpd-conf

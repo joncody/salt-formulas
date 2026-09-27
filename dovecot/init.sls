@@ -3,6 +3,7 @@
 include:
   - sodium
   - postgresql
+  - .conf
 
 dovecot_group:
   group.present:

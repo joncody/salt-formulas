@@ -3,6 +3,7 @@
 include:
   - asr
   - postgresql
+  - .conf
 
 smtpd_group:
   group.present:

@@ -1,14 +1,11 @@
 {% from "dovecot/map.jinja" import dovecot with context %}
 
-include:
-  - dovecot
-
 dovecot-conf:
   file.managed:
     - name: /opt/dovecot/etc/dovecot/dovecot.conf
     - user: root
     - group: root
-    - mode: 644
+    - mode: '0644'
     - source: salt://dovecot/files/dovecot.conf
     - require:
       - cmd: dovecot_build
@@ -18,7 +15,7 @@ dovecot-ssl-dir:
     - name: /opt/dovecot/etc/dovecot/ssl
     - user: root
     - group: root
-    - mode: 700
+    - mode: '0700'
     - makedirs: True
     - require:
       - file: dovecot-conf

@@ -6,9 +6,12 @@ if ('/opt' | path exists) {
     $env.PATH = ($env.PATH | split row (char esep) | prepend $opt_bins | uniq)
 }
 
-# 2. Go Toolchain Workspace and Destination
-$env.GOPATH = "/opt/go"
+# 2. Rust Toolchain: Share system-wide compiler components
+$env.RUSTUP_HOME = "/opt/rust/rustup"
+
+# 3. Go Toolchain: Binaries to /opt/go/bin, keep GOPATH separate from GOROOT
 $env.GOBIN = "/opt/go/bin"
+$env.GOPATH = $"($env.HOME)/.local/share/go"
 
 # Guarantee high-priority PATH for Go binaries
 $env.PATH = ($env.PATH | prepend "/opt/go/bin" | uniq)

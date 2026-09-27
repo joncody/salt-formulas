@@ -39,9 +39,13 @@ if [ -d "/opt" ]; then
 
 fi
 
-# Go Toolchain Workspace and Destination
-export GOPATH="/opt/go"
+# Rust Toolchain: Share system-wide compiler components
+export RUSTUP_HOME="/opt/rust/rustup"
+
+# Go Toolchain: Binaries to /opt/go/bin, keep GOPATH separate from GOROOT
 export GOBIN="/opt/go/bin"
+export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
+
 case ":$PATH:" in
     *":/opt/go/bin:"*) ;;
     *) export PATH="/opt/go/bin:$PATH" ;;

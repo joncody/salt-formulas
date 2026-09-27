@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 nginx_group:
   group.present:

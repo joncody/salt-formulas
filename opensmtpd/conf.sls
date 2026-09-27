@@ -1,14 +1,11 @@
 {% from "opensmtpd/map.jinja" import opensmtpd with context %}
 
-include:
-  - opensmtpd
-
 opensmtpd-conf:
   file.managed:
     - name: /opt/opensmtpd/etc/smtpd.conf
     - user: root
     - group: root
-    - mode: 644
+    - mode: '0644'
     - template: jinja
     - source: salt://opensmtpd/files/smtpd.conf
     - require:
@@ -19,7 +16,7 @@ opensmtpd-ssl-dir:
     - name: /opt/opensmtpd/etc/ssl
     - user: root
     - group: root
-    - mode: 700
+    - mode: '0700'
     - makedirs: True
     - require:
       - file: opensmtpd-conf
@@ -39,7 +36,7 @@ opensmtpd-aliases:
     - create: True
     - user: root
     - group: root
-    - mode: 644
+    - mode: '0644'
     - contents:
       - vmail:    /dev/null
       - root:     root

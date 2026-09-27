@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 pureftpd_group:
   group.present:
