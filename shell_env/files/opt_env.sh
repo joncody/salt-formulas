@@ -9,19 +9,7 @@ if [ -d "/opt" ]; then
         esac
     done
 
-    # 2. LIBRARY_PATH & LD_LIBRARY_PATH (lib & lib64)
-    for dir in $(find /opt -mindepth 1 -maxdepth 2 -type d \( -name lib -o -name lib64 \) ! -path '/opt/src/*' 2>/dev/null); do
-        case ":$LIBRARY_PATH:" in
-            *":$dir:"*) ;;
-            *) export LIBRARY_PATH="${dir}${LIBRARY_PATH:+:$LIBRARY_PATH}" ;;
-        esac
-        case ":$LD_LIBRARY_PATH:" in
-            *":$dir:"*) ;;
-            *) export LD_LIBRARY_PATH="${dir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" ;;
-        esac
-    done
-
-    # 3. CPATH (include)
+    # 2. CPATH (include headers for compiling)
     for dir in $(find /opt -mindepth 1 -maxdepth 2 -type d -name include ! -path '/opt/src/*' 2>/dev/null); do
         case ":$CPATH:" in
             *":$dir:"*) ;;
@@ -29,7 +17,7 @@ if [ -d "/opt" ]; then
         esac
     done
 
-    # 4. PKG_CONFIG_PATH (pkgconfig)
+    # 3. PKG_CONFIG_PATH (pkgconfig metadata)
     for dir in $(find /opt -mindepth 1 -maxdepth 3 -type d -name pkgconfig ! -path '/opt/src/*' 2>/dev/null); do
         case ":$PKG_CONFIG_PATH:" in
             *":$dir:"*) ;;
@@ -39,7 +27,7 @@ if [ -d "/opt" ]; then
 
 fi
 
-# Rust Toolchain: Share system-wide compiler components
+# Rust Toolchain: System-wide toolchain location
 export RUSTUP_HOME="/opt/rust/rustup"
 
 # Go Toolchain: Binaries to /opt/go/bin, keep GOPATH separate from GOROOT

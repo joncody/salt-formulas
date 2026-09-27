@@ -1,3 +1,5 @@
+export RUSTUP_HOME ?= /opt/rust/rustup
+
 .DEFAULT_GOAL := help
 
 .PHONY: help check update apply dry-run clean

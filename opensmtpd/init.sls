@@ -56,8 +56,13 @@ smtpf_user:
 opensmtpd_deps:
   pkg.installed:
     - names:
+      - autoconf
+      - automake
+      - bison
+      - build-essential
       - libdb-dev
       - libsqlite3-dev
+      - libtool
       - pkg-config
       - sqlite3
     - require:
@@ -86,6 +91,7 @@ opensmtpd_build:
       - PKG_CONFIG_PATH: "/opt/asr/lib/pkgconfig:/opt/postgresql/lib/pkgconfig"
       - LDFLAGS: "-L/opt/asr/lib -L/opt/postgresql/lib"
       - CPPFLAGS: "-I/opt/asr/include -I/opt/postgresql/include"
+      - LD_LIBRARY_PATH: "/opt/asr/lib:/opt/postgresql/lib"
     - onchanges:
       - git: opensmtpd_git
     - require:

@@ -6,8 +6,11 @@ include:
 czmq_deps:
   pkg.installed:
     - names:
+      - autoconf
+      - automake
       - build-essential
       - liblz4-dev
+      - libtool
       - pkg-config
       - uuid-dev
 
@@ -26,13 +29,14 @@ czmq_build:
     - cwd: /opt/src/czmq
     - name: |
         ./autogen.sh
-        ./configure --prefix={{ czmq.prefix }} --with-gnu-ld --with-libzmq=/opt/zmq --with-uuid --with-liblz4
+        ./configure --prefix={{ czmq.prefix }} --with-gnu-ld --with-libzmq=/opt/zmq --with-libsodium=/opt/sodium --with-uuid --with-liblz4
         make -j{{ grains['num_cpus'] }}
         make install
         make clean
     - env:
-      - PKG_CONFIG_PATH: "/opt/zmq/lib/pkgconfig:/opt/zmq/lib64/pkgconfig"
-      - LDFLAGS: "-L/opt/zmq/lib -L/opt/zmq/lib64"
-      - CPPFLAGS: "-I/opt/zmq/include"
+      - PKG_CONFIG_PATH: "/opt/zmq/lib/pkgconfig:/opt/sodium/lib/pkgconfig"
+      - LDFLAGS: "-L/opt/zmq/lib -L/opt/sodium/lib"
+      - CPPFLAGS: "-I/opt/zmq/include -I/opt/sodium/include"
+      - LD_LIBRARY_PATH: "/opt/zmq/lib:/opt/sodium/lib"
     - onchanges:
       - git: czmq_git

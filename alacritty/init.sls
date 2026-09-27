@@ -38,5 +38,8 @@ alacritty_build:
         cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg 2>/dev/null || true
         desktop-file-install extra/linux/Alacritty.desktop 2>/dev/null || true
         /opt/rust/bin/cargo clean
+    - env:
+        - RUSTUP_HOME: /opt/rust/rustup
+        - CARGO_HOME: /tmp/cargo_alacritty_build
     - onchanges:
       - git: alacritty_git

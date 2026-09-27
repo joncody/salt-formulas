@@ -40,6 +40,9 @@ dovenull_user:
 dovecot_deps:
   pkg.installed:
     - names:
+      - autoconf
+      - automake
+      - build-essential
       - gettext
       - libarchive-dev
       - libbz2-dev
@@ -47,6 +50,7 @@ dovecot_deps:
       - liblz4-dev
       - liblzma-dev
       - libsqlite3-dev
+      - libtool
       - libwrap0-dev
       - pkg-config
       - zlib1g-dev
@@ -77,6 +81,7 @@ dovecot_build:
       - PKG_CONFIG_PATH: "/opt/sodium/lib/pkgconfig:/opt/postgresql/lib/pkgconfig"
       - LDFLAGS: "-L/opt/sodium/lib -L/opt/postgresql/lib"
       - CPPFLAGS: "-I/opt/sodium/include -I/opt/postgresql/include"
+      - LD_LIBRARY_PATH: "/opt/sodium/lib:/opt/postgresql/lib"
     - onchanges:
       - git: dovecot_git
     - require:

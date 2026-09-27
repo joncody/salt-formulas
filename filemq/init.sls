@@ -6,7 +6,10 @@ include:
 filemq_deps:
   pkg.installed:
     - names:
+      - autoconf
+      - automake
       - build-essential
+      - libtool
       - pkg-config
 
 filemq_git:
@@ -33,5 +36,6 @@ filemq_build:
       - PKG_CONFIG_PATH: "/opt/czmq/lib/pkgconfig:/opt/zmq/lib/pkgconfig:/opt/sodium/lib/pkgconfig"
       - LDFLAGS: "-L/opt/czmq/lib -L/opt/zmq/lib -L/opt/sodium/lib"
       - CPPFLAGS: "-I/opt/czmq/include -I/opt/zmq/include -I/opt/sodium/include"
+      - LD_LIBRARY_PATH: "/opt/czmq/lib:/opt/zmq/lib:/opt/sodium/lib"
     - onchanges:
       - git: filemq_git

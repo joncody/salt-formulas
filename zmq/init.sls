@@ -7,8 +7,12 @@ zmq_deps:
   pkg.installed:
     - names:
       - asciidoc
+      - autoconf
+      - automake
+      - build-essential
       - liblz4-dev
       - libpgm-dev
+      - libtool
       - pkg-config
       - uuid-dev
     - require:
@@ -36,5 +40,6 @@ zmq_build:
       - PKG_CONFIG_PATH: "/opt/sodium/lib/pkgconfig:/opt/sodium/lib64/pkgconfig"
       - LDFLAGS: "-L/opt/sodium/lib -L/opt/sodium/lib64"
       - CPPFLAGS: "-I/opt/sodium/include"
+      - LD_LIBRARY_PATH: "/opt/sodium/lib"
     - onchanges:
       - git: zmq_git
