@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 helix_dir:
   file.directory:

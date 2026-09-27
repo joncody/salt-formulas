@@ -1,0 +1,54 @@
+# ==============================================================================
+# Helix System-Wide Configuration (/etc/xdg/helix/config.toml)
+# ==============================================================================
+
+theme = "gruvbox_light"
+
+[editor]
+scrolloff = 5
+mouse = true
+middle-click-paste = true
+scroll-lines = 3
+shell = ["sh", "-c"]
+line-number = "absolute"
+cursorline = true
+cursorcolumn = false
+auto-completion = true
+path-completion = true
+auto-format = true
+idle-timeout = 250
+auto-info = true
+text-width = 80
+insert-final-newline = true
+atomic-save = true
+smart-tab.enable = true
+auto-pairs = false
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]
+center = []
+right = ["diagnostics", "selections", "register", "position", "file-encoding"]
+separator = "│"
+mode.normal = "NOR"
+mode.insert = "INS"
+mode.select = "SEL"
+
+[editor.lsp]
+enable = true
+display-messages = true
+auto-signature-help = true
+display-color-swatches = true
+
+[editor.file-picker]
+hidden = true
+follow-symlinks = true
+git-ignore = true
+
+[editor.search]
+smart-case = true
+wrap-around = true

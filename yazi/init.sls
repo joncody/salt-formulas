@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 yazi_deps:
   pkg.installed:

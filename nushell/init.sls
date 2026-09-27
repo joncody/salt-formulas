@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 nushell_bin_dir:
   file.directory:

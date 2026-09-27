@@ -2,6 +2,7 @@ base:
   '*':
     - optsrc
     - nftables
+    - fonts
     - rust
     - go
     - node

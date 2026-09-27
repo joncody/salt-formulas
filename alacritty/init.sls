@@ -3,6 +3,7 @@
 include:
   - rust
   - optsrc
+  - .conf
 
 alacritty_deps:
   pkg.installed:
@@ -30,7 +31,7 @@ alacritty_build:
   cmd.run:
     - cwd: /opt/src/alacritty
     - name: |
-        RUSTFLAGS="-C target-cpu=native" /opt/rust/bin/cargo build --release
+        RUSTFLAGS="-C target-cpu=native" /opt/rust/bin/cargo build --release --locked
         mkdir -p {{ alacritty.prefix }}/bin
         cp target/release/alacritty {{ alacritty.prefix }}/bin/alacritty
         cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg 2>/dev/null || true

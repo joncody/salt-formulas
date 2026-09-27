@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 zellij_bin_dir:
   file.directory:

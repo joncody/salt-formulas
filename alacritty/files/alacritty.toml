@@ -1,0 +1,89 @@
+# ==============================================================================
+# Alacritty System-Wide Configuration (/etc/alacritty/alacritty.toml)
+# ==============================================================================
+
+[general]
+live_config_reload = true
+ipc_socket = true
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+padding = { x = 3, y = 3 }
+dynamic_padding = true
+decorations = "Full"
+decorations_theme_variant = "Light"
+opacity = 1.0
+startup_mode = "Windowed"
+title = "Alacritty"
+dynamic_title = true
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[font]
+size = 9.0
+builtin_box_drawing = true
+
+[font.normal]
+family = "Hack Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "Hack Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "Hack Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "Hack Nerd Font"
+style = "Bold Italic"
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+unfocused_hollow = true
+
+# ==============================================================================
+# Color Scheme: Gruvbox Light
+# ==============================================================================
+[colors.primary]
+background = "#fbf1c7"
+foreground = "#3c3836"
+
+[colors.cursor]
+text   = "#fbf1c7"
+cursor = "#3c3836"
+
+[colors.selection]
+text       = "#3c3836"
+background = "#ebdbb2"
+
+[colors.normal]
+black   = "#fbf1c7"
+red     = "#cc241d"
+green   = "#98971a"
+yellow  = "#d79921"
+blue    = "#458588"
+magenta = "#b16286"
+cyan    = "#689d6a"
+white   = "#7c6f64"
+
+[colors.bright]
+black   = "#928374"
+red     = "#9d0006"
+green   = "#79740e"
+yellow  = "#b57614"
+blue    = "#076678"
+magenta = "#8f3f71"
+cyan    = "#427b58"
+white   = "#3c3836"
+
+[keyboard]
+bindings = [
+  { key = "Q", mods = "Control|Shift", action = "Quit" },
+  { key = "W", mods = "Control|Shift", action = "Quit" },
+]

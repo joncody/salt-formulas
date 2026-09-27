@@ -115,3 +115,11 @@ file = "pureftpd/map.jinja"
 key = "version"
 type = "github_tag"
 repo = "jedisct1/pure-ftpd"
+
+[[packages]]
+name = "fonts"
+file = "fonts/map.jinja"
+key = "version"
+type = "github_release"
+repo = "ryanoasis/nerd-fonts"
+strip_prefix = "v"
