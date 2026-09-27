@@ -14,6 +14,7 @@ zyre_git:
     - name: {{ zyre.repo }}
     - rev: v{{ zyre.version }}
     - target: /opt/src/zyre
+    - force_reset: True
     - require:
       - cmd: czmq_build
       - pkg: zyre_deps

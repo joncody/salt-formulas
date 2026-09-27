@@ -1,54 +1,344 @@
 # ==============================================================================
-# Helix System-Wide Configuration (/etc/xdg/helix/config.toml)
+# Helix Editor: Complete Default Configuration Reference
 # ==============================================================================
 
+# Theme to use. Run `:theme <TAB>` inside Helix to preview all built-in themes.
+# Defaults to "default". (You set this to "gruvbox_light")
 theme = "gruvbox_light"
 
+# ------------------------------------------------------------------------------
+# [editor] Core Settings
+# ------------------------------------------------------------------------------
 [editor]
+# Number of lines of padding around the edge of the screen when scrolling
 scrolloff = 5
+
+# Mouse support (true/false)
 mouse = true
+
+# Middle click paste support (true/false)
 middle-click-paste = true
+
+# Default register used for yank/paste. Default is '"'
+default-yank-register = '"'
+
+# Number of lines to scroll per scroll wheel step
 scroll-lines = 3
+
+# Shell to use when running external commands (e.g. :sh, :run)
+# Unix: ["sh", "-c"], Windows: ["cmd", "/C"]
 shell = ["sh", "-c"]
+
+# Line number display: "absolute" (1, 2, 3...) or "relative" (distance from cursor)
 line-number = "absolute"
+
+# Highlight the line currently containing the cursor (true/false)
 cursorline = true
+
+# Highlight the column currently containing the cursor (true/false)
 cursorcolumn = false
+
+# Automatically add a line comment token when creating a new line inside a comment
+continue-comments = true
+
+# Enable automatic pop up of completion box (true/false)
 auto-completion = true
+
+# Enable file path auto-completion (relative to opened document or cwd)
 path-completion = true
+
+# Enable automatic formatting on file write (:write)
 auto-format = true
+
+# Idle timeout in milliseconds before idle timers trigger (e.g. hovers, auto-info)
 idle-timeout = 250
+
+# Time in ms after typing a word character before completions are shown (5 for instant)
+completion-timeout = 250
+
+# Apply completion item immediately when selected in menu
+preview-completion-insert = true
+
+# Minimum character length of word under cursor to trigger autocompletion
+completion-trigger-len = 2
+
+# Whether completions replace the whole word or just the prefix before the cursor
+completion-replace = false
+
+# Display informational boxes and helper popups
 auto-info = true
+
+# Override automatic detection of truecolor terminal support (true/false)
+true-color = false
+
+# Override automatic detection of terminal undercurl support (true/false)
+undercurl = false
+
+# Columns at which to draw vertical ruler lines (e.g. [80, 100, 120])
+rulers = []
+
+# Top bufferline display: "never", "always", or "multiple" (only shown if >1 buffer open)
+bufferline = "never"
+
+# Color the statusline mode indicator with distinctive colors per mode
+color-modes = false
+
+# Maximum line length used for :reflow and soft-wrapping
 text-width = 80
+
+# Directories relative to workspace root treated as LSP roots (usually in .helix/config.toml)
+workspace-lsp-roots = []
+
+# Line endings for new files: "native", "lf", "crlf", "ff", "cr", or "nel"
+default-line-ending = "native"
+
+# Automatically insert a trailing newline on save if missing
 insert-final-newline = true
+
+# Use atomic file replacement on save to prevent corruption on sudden power loss
 atomic-save = true
-smart-tab.enable = true
+
+# Automatically remove trailing line-endings at the end of the file on write
+trim-final-newlines = false
+
+# Automatically remove whitespace preceding line endings on write
+trim-trailing-whitespace = false
+
+# Draw border around popups: "none", "menu", or "all"
+popup-border = "none"
+
+# How indentation for new lines is calculated: "hybrid", "tree-sitter", or "simple"
+indent-heuristic = "hybrid"
+
+# Characters used for two-character jump labels
+jump-label-alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+# Minimum severity to render diagnostics at end-of-line: "disable", "hint", "info", "warning", "error"
+end-of-line-diagnostics = "disable"
+
+# Automatic reading of .editorconfig files (true/false)
+editor-config = true
+
+# Clipboard provider: "none", "wayland", "x-clip", "x-sel", "win32yank", "termcode", etc.
+# clipboard-provider = "none"
+
 auto-pairs = false
 
+# ------------------------------------------------------------------------------
+# Cursor Shape per Mode
+# Values: "block", "bar", "underline", or "hidden"
+# ------------------------------------------------------------------------------
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "underline"
 
+# ------------------------------------------------------------------------------
+# Statusline Layout & Elements
+# Available elements:
+#   "mode", "spinner", "file-name", "file-absolute-path", "file-base-name",
+#   "file-modification-indicator", "read-only-indicator", "total-line-numbers",
+#   "file-encoding", "file-line-ending", "file-type", "file-indent-style",
+#   "diagnostics", "workspace-diagnostics", "selections", "primary-selection-length",
+#   "position", "position-percentage", "separator", "spacer", "version-control", "register"
+# ------------------------------------------------------------------------------
 [editor.statusline]
 left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]
 center = []
 right = ["diagnostics", "selections", "register", "position", "file-encoding"]
 separator = "│"
+
+# Text labels for modes
 mode.normal = "NOR"
 mode.insert = "INS"
 mode.select = "SEL"
 
+# Diagnostics severities to display on statusline
+diagnostics = ["warning", "error"]
+workspace-diagnostics = ["warning", "error"]
+
+# ------------------------------------------------------------------------------
+# LSP Integration
+# ------------------------------------------------------------------------------
 [editor.lsp]
+# Master switch for Language Server Protocol
 enable = true
+
+# Display LSP messages below the statusline
 display-messages = true
+
+# Display LSP progress messages below statusline (aside from the spinner)
+display-progress-messages = false
+
+# Enable automatic popup of parameter hints (signature help)
 auto-signature-help = true
+
+# Display inlay hints (e.g. types, parameter names)
+display-inlay-hints = false
+
+# Max length of inlay hints (commented out = unlimited)
+# inlay-hints-length-limit = 20
+
+# Display color swatches next to hex/rgb colors in supported languages
 display-color-swatches = true
 
+# Display documentation under signature help popup
+display-signature-help-docs = true
+
+# Enable snippet completions
+snippets = true
+
+# Include definition / declaration in "goto reference" popup
+goto-reference-include-declaration = true
+
+# ------------------------------------------------------------------------------
+# File Picker & Global Search
+# ------------------------------------------------------------------------------
 [editor.file-picker]
+# Ignore hidden files (files starting with '.')
 hidden = true
+
+# Follow symlinks
 follow-symlinks = true
+
+# Deduplicate symlinks pointing to already-indexed files
+deduplicate-links = true
+
+# Read ignore files from parent directories
+parents = true
+
+# Read .ignore files
+ignore = true
+
+# Read .gitignore files
 git-ignore = true
 
+# Read global .gitignore
+git-global = true
+
+# Read .git/info/exclude
+git-exclude = true
+
+# Maximum directory recursion depth (commented out = unlimited)
+# max-depth = 10
+
+# ------------------------------------------------------------------------------
+# Auto Pairs (Brackets, Quotes)
+# Set to false to disable entirely, or define custom map
+# ------------------------------------------------------------------------------
+# [editor.auto-pairs]
+# '(' = ')'
+# '{' = '}'
+# '[' = ']'
+# '"' = '"'
+# "'" = "'"
+# '`' = '`'
+
+# ------------------------------------------------------------------------------
+# Auto Save Options
+# ------------------------------------------------------------------------------
+[editor.auto-save]
+# Save automatically when the terminal window loses focus
+focus-lost = false
+
+# Save automatically after a delay
+after-delay.enable = false
+after-delay.timeout = 3000
+
+# ------------------------------------------------------------------------------
+# Search Options
+# ------------------------------------------------------------------------------
 [editor.search]
+# Case-insensitive search unless the search term contains uppercase letters
 smart-case = true
+
+# Wrap around to beginning/end of document when searching
 wrap-around = true
+
+# ------------------------------------------------------------------------------
+# Whitespace Rendering
+# ------------------------------------------------------------------------------
+[editor.whitespace]
+# Render mode: "none", "all", or "boundary"
+render = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·"
+
+# ------------------------------------------------------------------------------
+# Indentation Guides
+# ------------------------------------------------------------------------------
+[editor.indent-guides]
+# Render vertical indentation guides (true/false)
+render = false
+
+# Character used to draw the vertical guide
+character = "│"
+
+# Number of initial indentation levels to skip before drawing guides
+skip-levels = 0
+
+# ------------------------------------------------------------------------------
+# Gutters (Left Column Indicators)
+# Default order: ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+# ------------------------------------------------------------------------------
+[editor.gutters]
+layout = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
+
+[editor.gutters.line-numbers]
+# Minimum width in characters for the line number column
+min-width = 3
+
+# ------------------------------------------------------------------------------
+# Soft Wrap (Word Wrapping)
+# ------------------------------------------------------------------------------
+[editor.soft-wrap]
+# Enable soft-wrapping of lines longer than viewport width
+enable = false
+
+# Max free space left at end of line before wrapping
+max-wrap = 20
+
+# Max indentation carried over to the wrapped lines
+max-indent-retain = 40
+
+# Symbol shown before a continuation line
+wrap-indicator = "↪ "
+
+# Wrap at `text-width` instead of viewport edge
+wrap-at-text-width = false
+
+# ------------------------------------------------------------------------------
+# Smart Tab Navigation
+# ------------------------------------------------------------------------------
+[editor.smart-tab]
+# If true, pressing Tab with non-whitespace to the left jumps syntax tree nodes
+enable = true
+
+# Tab commands supersede menu completion navigation
+supersede-menu = false
+
+# ------------------------------------------------------------------------------
+# Inline Diagnostics (Virtual Text Under Code Lines)
+# ------------------------------------------------------------------------------
+[editor.inline-diagnostics]
+# Minimum severity shown on the line with the primary cursor:
+# "disable", "hint", "info", "warning", or "error"
+cursor-line = "disable"
+
+# Minimum severity shown on other lines
+other-lines = "disable"
+
+# Number of '─' characters rendered before diagnostic message
+prefix-len = 1
+
+# Max wrap width for diagnostic messages
+max-wrap = 20
+
+# Max number of diagnostics displayed inline per line
+max-diagnostics = 10

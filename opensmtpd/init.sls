@@ -69,6 +69,7 @@ opensmtpd_git:
     - name: {{ opensmtpd.repo }}
     - rev: {{ opensmtpd.version }}
     - target: /opt/src/opensmtpd
+    - force_reset: True
     - require:
       - pkg: opensmtpd_deps
 

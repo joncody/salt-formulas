@@ -23,6 +23,7 @@ alacritty_git:
     - name: {{ alacritty.repo }}
     - rev: v{{ alacritty.version }}
     - target: /opt/src/alacritty
+    - force_reset: True
     - require:
       - pkg: alacritty_deps
       - cmd: rust_bootstrap

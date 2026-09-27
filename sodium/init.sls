@@ -19,6 +19,7 @@ sodium_git:
     - name: {{ sodium.repo }}
     - rev: {{ sodium.version }}
     - target: /opt/src/libsodium
+    - force_reset: True
     - require:
       - pkg: sodium_deps
 

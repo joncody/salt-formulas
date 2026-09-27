@@ -21,6 +21,7 @@ asr_git:
     - name: {{ asr.repo }}
     - rev: {{ asr.version }}
     - target: /opt/src/libasr
+    - force_reset: True
     - require:
       - pkg: asr_deps
 

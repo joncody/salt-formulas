@@ -26,6 +26,7 @@ conky_git:
     - name: {{ conky.repo }}
     - rev: v{{ conky.version }}
     - target: /opt/src/conky
+    - force_reset: True
     - require:
       - pkg: conky_deps
 

@@ -15,6 +15,7 @@ filemq_git:
     - branch: {{ filemq.branch }}
     - rev: {{ filemq.branch }}
     - target: /opt/src/filemq
+    - force_reset: True
     - require:
       - cmd: czmq_build
       - pkg: filemq_deps

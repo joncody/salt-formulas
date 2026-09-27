@@ -19,6 +19,7 @@ zmq_git:
     - name: {{ zmq.repo }}
     - rev: v{{ zmq.version }}
     - target: /opt/src/libzmq
+    - force_reset: True
     - require:
       - pkg: zmq_deps
 

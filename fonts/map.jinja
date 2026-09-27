@@ -1,6 +1,6 @@
 {% set fonts = salt['grains.filter_by']({
     'Debian': {
-        'version': '3.3.0',
+        'version': '3.5.1',
         'font_dir': '/usr/local/share/fonts/truetype/HackNerdFont',
     },
 }, merge=salt['pillar.get']('fonts:lookup')) %}

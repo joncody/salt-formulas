@@ -60,6 +60,7 @@ dovecot_git:
     - branch: {{ dovecot.branch }}
     - rev: {{ dovecot.branch }}
     - target: /opt/src/dovecot
+    - force_reset: True
     - require:
       - pkg: dovecot_deps
 

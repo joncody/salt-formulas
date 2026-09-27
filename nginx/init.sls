@@ -25,6 +25,7 @@ nginscript_git:
     - name: {{ nginx.njs_repo }}
     - rev: {{ nginx.njs_rev }}
     - target: /opt/src/njs
+    - force_reset: True
     - require:
       - file: optsrc
 
@@ -46,6 +47,7 @@ nginx_git:
     - branch: {{ nginx.branch }}
     - rev: {{ nginx.branch }}
     - target: /opt/src/nginx
+    - force_reset: True
     - require:
       - pkg: nginx_deps
 

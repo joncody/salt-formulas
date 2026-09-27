@@ -1,67 +1,209 @@
 # ==============================================================================
-# Alacritty System-Wide Configuration (/etc/alacritty/alacritty.toml)
+# General Settings
 # ==============================================================================
-
 [general]
+# Import additional configuration files (loaded in order)
+import = []
+
+# Directory the shell is started in ("None" inherits parent working dir)
+working_directory = "None"
+
+# Live config reload (watches config file for changes)
 live_config_reload = true
+
+# Offer IPC using `alacritty msg` (Unix only)
 ipc_socket = true
 
+# ==============================================================================
+# Environment Variables
+# ==============================================================================
+# Key-value pairs added to any process spawned by Alacritty
 [env]
 TERM = "xterm-256color"
+# EXAMPLE: WINIT_X11_SCALE_FACTOR = "1.0"
 
+# ==============================================================================
+# Window Settings
+# ==============================================================================
 [window]
+# Dimensions in columns and lines (0 falls back to window manager recommendation)
+dimensions = { columns = 80, lines = 24 }
+
+# Startup position in pixels ("None" lets window manager place it; no effect on Wayland)
+position = "None"
+
+# [Custom Override] Blank space added around the window in pixels (Default: { x = 0, y = 0 })
 padding = { x = 3, y = 3 }
+
+# [Custom Override] Spread additional padding evenly around terminal content (Default: false)
 dynamic_padding = true
+
+# [Custom Override] Window decorations: "Full", "None", "Transparent" (macOS), "Buttonless" (macOS)
 decorations = "Full"
+
+# [Custom Override] System theme variant: "Dark", "Light", "None" (Default: "None")
 decorations_theme_variant = "Light"
+
+# Background opacity from 0.0 (transparent) to 1.0 (fully opaque)
 opacity = 1.0
+
+# Request compositor to blur content behind transparent windows (macOS / KDE Wayland)
+blur = false
+
+# Startup mode: "Windowed", "Maximized", "Fullscreen", "SimpleFullscreen" (macOS)
 startup_mode = "Windowed"
+
+# Window title
 title = "Alacritty"
+
+# Allow terminal applications to change the window title
 dynamic_title = true
 
+# Window class (Linux/BSD only)
+class = { instance = "Alacritty", general = "Alacritty" }
+
+# Prefer resizing window by discrete steps equal to cell dimensions
+resize_increments = false
+
+# Window z-order level: "Normal" or "AlwaysOnTop"
+level = "Normal"
+
+# Make Option key behave as Alt (macOS only): "OnlyLeft", "OnlyRight", "Both", "None"
+option_as_alt = "None"
+
+# ==============================================================================
+# Scrolling Settings
+# ==============================================================================
 [scrolling]
+# [Custom Override] Maximum lines in scrollback buffer (Default: 10000)
 history = 10000
+
+# [Custom Override] Lines scrolled per scroll wheel increment (Default: 3)
 multiplier = 3
 
+# ==============================================================================
+# Font Configuration
+# ==============================================================================
 [font]
+# [Custom Override] Font size in points (Default: 11.0)
 size = 9.0
+
+# Extra space around each character (x: letter spacing, y: line spacing)
+offset = { x = 0, y = 0 }
+
+# Glyph position offset within cells
+glyph_offset = { x = 0, y = 0 }
+
+# Built-in font for box drawing, powerline, and legacy computing symbols
 builtin_box_drawing = true
 
+# [Custom Override] Normal font (Default: family = "monospace")
 [font.normal]
 family = "Hack Nerd Font"
 style = "Regular"
 
+# [Custom Override] Bold font (Default: family = "monospace")
 [font.bold]
 family = "Hack Nerd Font"
 style = "Bold"
 
+# [Custom Override] Italic font (Default: family = "monospace")
 [font.italic]
 family = "Hack Nerd Font"
 style = "Italic"
 
+# [Custom Override] Bold Italic font (Default: family = "monospace")
 [font.bold_italic]
 family = "Hack Nerd Font"
 style = "Bold Italic"
 
+# ==============================================================================
+# Cursor Settings
+# ==============================================================================
 [cursor]
+# [Custom Override] Normal cursor shape and blinking mode (Default: { shape = "Block", blinking = "Off" })
 style = { shape = "Block", blinking = "On" }
+
+# Vi mode cursor style ("None" falls back to normal cursor style)
+vi_mode_style = { shape = "Block", blinking = "Never" }
+
+# Cursor blinking interval in milliseconds
+blink_interval = 750
+
+# Time after which blinking stops, in seconds (0 disables timeout)
+blink_timeout = 5
+
+# Render cursor as a hollow box when window is not focused
 unfocused_hollow = true
+
+# Thickness of beam/underline cursor relative to cell width (0.0 to 1.0)
+thickness = 0.15
 
 # ==============================================================================
 # Color Scheme: Gruvbox Light
 # ==============================================================================
+[colors]
+# Bold text drawn with bright colors
+draw_bold_text_with_bright_colors = false
+
+# Whether window.opacity applies to all cell backgrounds or only the default
+transparent_background_colors = false
+
+# Custom color palette entries from 16 to 256
+indexed_colors = []
+
+# [Custom Override] Primary colors
 [colors.primary]
 background = "#fbf1c7"
 foreground = "#3c3836"
+# Default: unset (bright_foreground inherits foreground, dim_foreground is auto-calculated)
+# bright_foreground = "#3c3836"
+# dim_foreground = "#7c6f64"
 
+# [Custom Override] Cursor colors
 [colors.cursor]
 text   = "#fbf1c7"
 cursor = "#3c3836"
 
+# Cursor colors when Vi mode is active
+[colors.vi_mode_cursor]
+text   = "CellBackground"
+cursor = "CellForeground"
+
+# [Custom Override] Selection colors
 [colors.selection]
 text       = "#3c3836"
 background = "#ebdbb2"
 
+# Search highlight colors
+[colors.search.matches]
+foreground = "#181818"
+background = "#ac4242"
+
+[colors.search.focused_match]
+foreground = "#181818"
+background = "#f4bf75"
+
+# Hint overlay colors
+[colors.hints.start]
+foreground = "#181818"
+background = "#f4bf75"
+
+[colors.hints.end]
+foreground = "#181818"
+background = "#ac4242"
+
+# Indicator for position in history during search / vi mode
+[colors.line_indicator]
+foreground = "None"
+background = "None"
+
+# Bottom footer bar (used for regex input preview, URI previews, etc.)
+[colors.footer_bar]
+foreground = "#181818"
+background = "#d8d8d8"
+
+# [Custom Override] Normal colors
 [colors.normal]
 black   = "#fbf1c7"
 red     = "#cc241d"
@@ -72,6 +214,7 @@ magenta = "#b16286"
 cyan    = "#689d6a"
 white   = "#7c6f64"
 
+# [Custom Override] Bright colors
 [colors.bright]
 black   = "#928374"
 red     = "#9d0006"
@@ -82,8 +225,118 @@ magenta = "#8f3f71"
 cyan    = "#427b58"
 white   = "#3c3836"
 
+# Dim colors: Default is unset so Alacritty automatically computes them
+# from [colors.normal]. To manually define them, uncomment below:
+# [colors.dim]
+# black   = "#fbf1c7"
+# red     = "#9d0006"
+# green   = "#79740e"
+# yellow  = "#b57614"
+# blue    = "#076678"
+# magenta = "#8f3f71"
+# cyan    = "#427b58"
+# white   = "#7c6f64"
+
+# ==============================================================================
+# Bell Settings
+# ==============================================================================
+[bell]
+# Animation: "Linear", "Ease", "EaseOut", "EaseOutSine", "EaseOutQuad", etc.
+animation = "Linear"
+
+# Flash duration in ms (0 disables visual bell)
+duration = 0
+
+# Flash animation color
+color = "#ffffff"
+
+# Command executed on bell ring ("None" disables)
+command = "None"
+
+# ==============================================================================
+# Selection Settings
+# ==============================================================================
+[selection]
+# Characters separating "semantic words" during double-click selections
+semantic_escape_chars = ",│`|:\\\"' ()[]{}<>\t"
+
+# Copy selected text automatically to primary selection clipboard
+save_to_clipboard = false
+
+# ==============================================================================
+# Terminal Settings
+# ==============================================================================
+[terminal]
+# Controls OSC 52 clipboard access: "Disabled", "OnlyCopy", "OnlyPaste", "CopyPaste"
+osc52 = "OnlyCopy"
+
+# Shell override: Default is unset (executes user's default login $SHELL)
+# [terminal.shell]
+# program = "/bin/bash"
+# args = ["--login"]
+
+# ==============================================================================
+# Mouse Settings
+# ==============================================================================
+[mouse]
+# Temporarily hide mouse cursor when typing
+hide_when_typing = false
+
+# Custom mouse button bindings (Default bindings are handled internally)
+# EXAMPLE:
+# bindings = [
+#   { mouse = "Right", mods = "Control", action = "Paste" },
+# ]
+bindings = []
+
+# ==============================================================================
+# Hints (URL / Regex launcher)
+# ==============================================================================
+[hints]
+# Keys used to select displayed hints
+alphabet = "jfkdls;ahgurieowpq"
+
+# Default URL click / jump hint configuration
+[[hints.enabled]]
+command = "xdg-open" # Use "open" on macOS, "cmd" on Windows
+hyperlinks = true
+post_processing = true
+persist = false
+mouse = { enabled = true }
+binding = { key = "O", mods = "Control|Shift" }
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\\u0000-\\u001F\\u007F-\\u009F<>\"\\s{-}\\^⟨⟩`\\\\]+"
+
+# ==============================================================================
+# Keyboard Bindings
+# ==============================================================================
 [keyboard]
+# [Custom Override] Close window shortcuts (Ctrl+Shift+Q and Ctrl+Shift+W)
 bindings = [
   { key = "Q", mods = "Control|Shift", action = "Quit" },
   { key = "W", mods = "Control|Shift", action = "Quit" },
 ]
+
+# ==============================================================================
+# Debug Options
+# ==============================================================================
+[debug]
+# Display frame draw time in title bar
+render_timer = false
+
+# Keep log file after quitting Alacritty
+persistent_logging = false
+
+# Logging level: "Off", "Error", "Warn", "Info", "Debug", "Trace"
+log_level = "Warn"
+
+# Force renderer: "glsl3", "gles2", "gles2pure", or "None" (auto-detect)
+renderer = "None"
+
+# Log all received window events
+print_events = false
+
+# Highlight window damage rectangles
+highlight_damage = false
+
+# Use EGL as display API if supported (Linux/BSD)
+prefer_egl = false

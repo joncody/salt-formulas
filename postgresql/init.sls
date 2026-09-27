@@ -44,6 +44,7 @@ postgresql_git:
     - branch: {{ postgresql.branch }}
     - rev: {{ postgresql.branch }}
     - target: /opt/src/postgresql
+    - force_reset: True
     - require:
       - pkg: postgresql_deps
 

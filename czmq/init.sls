@@ -16,6 +16,7 @@ czmq_git:
     - name: {{ czmq.repo }}
     - rev: v{{ czmq.version }}
     - target: /opt/src/czmq
+    - force_reset: True
     - require:
       - cmd: zmq_build
       - pkg: czmq_deps

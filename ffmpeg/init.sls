@@ -37,6 +37,7 @@ ffmpeg_git:
     - branch: {{ ffmpeg.branch }}
     - rev: {{ ffmpeg.branch }}
     - target: /opt/src/ffmpeg
+    - force_reset: True
     - require:
       - pkg: ffmpeg_deps
 

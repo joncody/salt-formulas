@@ -54,6 +54,7 @@ pureftpd_git:
     - name: {{ pureftpd.repo }}
     - rev: {{ pureftpd.version }}
     - target: /opt/src/pureftpd
+    - force_reset: True
     - require:
       - pkg: pureftpd_deps
 

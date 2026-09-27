@@ -1,29 +1,58 @@
-salt-formulas
-=============
+# salt-formulas
+
+A deterministic, modular Infrastructure-as-Code repository for provisioning modern Linux developer workstations and server environments.
 
 [![SaltStack](https://img.shields.io/badge/SaltStack-Formula-57BCAD?style=flat&logo=saltstack&logoColor=white)](https://saltproject.io/)
-[![Rust](https://img.shields.io/badge/Updater-Rust-orange?style=flat&logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![Platform: Linux](https://img.shields.io/badge/Platform-Linux-FCC624?style=flat&logo=linux&logoColor=black)](https://www.kernel.org/)
+[![Platform: Linux](https://img.shields.io/badge/Platform-Ubuntu%20%7C%20Debian-FCC624?style=flat&logo=linux&logoColor=black)](https://www.kernel.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A high-performance, deterministic SaltStack repository for provisioning workstations and server infrastructure.
+---
 
-### Architecture Highlights
-- **Prefix Isolation:** Software installs under dedicated `/opt/<tool>` hierarchies.
-- **Dual-Shell Dynamic Environment:** Dynamic path discovery for POSIX shells (`/etc/profile.d/opt_env.sh`) and Nushell (`/etc/nushell/env.nu`).
-- **Deterministic & Fast:** Salt formulas pin versions in `map.jinja`. Highstates finish in seconds with zero network probing.
-- **Automated GitOps Upgrades:** Bundled with `salt-bump`, an asynchronous Rust CLI that checks upstream APIs and bumps `map.jinja` files in-place.
+## Architecture
 
-### Checking for Updates
+- **Prefix Isolation:** All software compiles or extracts into dedicated `/opt/<tool>` hierarchies.
+- **Dynamic Dual Shell:** Global PATH and tool discovery for POSIX shells (`/etc/profile.d/opt_env.sh`) and Nushell (`/etc/nushell/env.nu`).
+- **Zero-Dotfile Customization:** Workstation tools are configured at the system level via `<app>/conf.sls` with Gruvbox Light defaults.
+- **Self-Updating GitOps:** Pinned versions in `map.jinja` are checked and bumped via the bundled `updater/` CLI tool.
+
+---
+
+## Software Inventory
+
+| Category | Tools | Method |
+| :--- | :--- | :--- |
+| **Terminal & Shell** | Alacritty, Nushell, Zellij | Cargo Build & Pre-compiled Binaries |
+| **Editor & Files** | Helix, Yazi | Pre-compiled Tarballs + System Config |
+| **Fonts** | Hack Nerd Font | GitHub Release Archive (`fc-cache`) |
+| **Language Toolchains**| Rust (`rustup`), Go, Node.js | Official Toolchains & Runtimes |
+| **Server Daemons** | Nginx (`+njs`), PostgreSQL, Dovecot, OpenSMTPD, Pure-FTPd | Source (`./configure && make`) |
+| **Media & Messaging** | FFmpeg, Libsodium, ZeroMQ Stack (`zmq`, `czmq`, `zyre`, `filemq`) | Source (`make`) |
+| **Containers & Net** | Docker CE, Host Firewall (`nftables`) | Official APT Repo & Syntax-Checked Rules |
+
+---
+
+## Quickstart
+
 ```bash
-# Check upstream releases across all formulas
-cargo run --manifest-path updater/Cargo.toml -- check
+# Clone to the local Salt root
+sudo git clone https://github.com/joncody/salt-formulas.git /srv/salt
+cd /srv/salt
 
-# Update map.jinja files in-place
-cargo run --manifest-path updater/Cargo.toml -- update
+# Run a dry-run test
+make dry-run
 
-# Inspect diff, commit, and apply
-git diff
-git commit -am "chore: bump formulas"
-sudo salt-call --local state.apply
+# Provision the entire machine
+make apply
+```
+
+### Granular Targeting
+
+```bash
+# Apply a single formula (installs tool + config)
+sudo salt-call --local state.apply helix
+
+# Apply only configuration changes (skips builds/installs)
+sudo salt-call --local state.apply helix.conf
+sudo salt-call --local state.apply nftables.conf
+sudo salt-call --local state.apply nginx.conf
 ```
