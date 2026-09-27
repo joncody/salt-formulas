@@ -18,6 +18,7 @@ go_archive:
     - skip_verify: True
     - archive_format: tar
     - options: "--strip-components=1"
+    - enforce_toplevel: False
     - enforce_ownership_on: {{ go.prefix }}
     - creates: {{ go.prefix }}/bin/go
     - require:

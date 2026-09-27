@@ -1,6 +1,7 @@
 base:
   '*':
     - optsrc
+    - nftables
     - rust
     - go
     - node

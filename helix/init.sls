@@ -18,6 +18,7 @@ helix_archive:
     - skip_verify: True
     - archive_format: tar
     - options: "--strip-components=1"
+    - enforce_toplevel: False
     - enforce_ownership_on: {{ helix.prefix }}
     - creates: {{ helix.prefix }}/hx
     - require:

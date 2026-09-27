@@ -3,6 +3,10 @@
 include:
   - optsrc
 
+yazi_deps:
+  pkg.installed:
+    - name: unzip
+
 yazi_bin_dir:
   file.directory:
     - name: {{ yazi.prefix }}/bin
@@ -18,7 +22,9 @@ yazi_archive:
     - skip_verify: True
     - archive_format: zip
     - options: "-j"
+    - enforce_toplevel: False
     - enforce_ownership_on: {{ yazi.prefix }}/bin
     - creates: {{ yazi.prefix }}/bin/yazi
     - require:
       - file: yazi_bin_dir
+      - pkg: yazi_deps

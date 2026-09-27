@@ -18,6 +18,7 @@ nushell_archive:
     - skip_verify: True
     - archive_format: tar
     - options: "--strip-components=1"
+    - enforce_toplevel: False
     - enforce_ownership_on: {{ nushell.prefix }}/bin
     - creates: {{ nushell.prefix }}/bin/nu
     - require:
