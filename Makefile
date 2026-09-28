@@ -3,10 +3,13 @@ export PATH := /opt/rust/bin:$(PATH)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help check update apply dry-run clean
+.PHONY: help bootstrap check update apply dry-run clean
 
 help: ## Show this help menu
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+
+bootstrap: ## Install SaltStack and baseline prerequisites on a fresh machine
+	@sudo ./bootstrap.sh
 
 check: ## Check for newer upstream versions across all formulas
 	@cargo run --manifest-path updater/Cargo.toml -- check

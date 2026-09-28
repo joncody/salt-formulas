@@ -31,17 +31,20 @@ A deterministic, modular Infrastructure-as-Code repository for provisioning mode
 
 ---
 
-## Quickstart
+## Quickstart (Fresh Machine / VM)
 
 ```bash
-# Clone to the local Salt root
+# 1. Clone repository to Salt root
 sudo git clone https://github.com/joncody/salt-formulas.git /srv/salt
 cd /srv/salt
 
-# Run a dry-run test
+# 2. Bootstrap SaltStack (installs masterless salt-minion)
+make bootstrap
+
+# 3. Dry-run test
 make dry-run
 
-# Provision the entire machine
+# 4. Provision the entire workstation
 make apply
 ```
 
