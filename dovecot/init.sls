@@ -98,12 +98,26 @@ dovecot_build:
   cmd.run:
     - cwd: /opt/src/dovecot
     - name: |
-        ./autogen.sh
-        ./configure --prefix={{ dovecot.prefix }} --with-shadow --with-pam --with-sql=yes --with-pgsql --with-sqlite --with-sodium --with-zlib --with-bzlib --with-lzma --with-lz4 --with-ssl=openssl --with-gnu-ld
+        set -e
+        NOCONFIGURE=1 ./autogen.sh
+        PANDOC=false ./configure --prefix={{ dovecot.prefix }} \
+          --with-shadow \
+          --with-pam \
+          --with-sql=yes \
+          --with-pgsql \
+          --with-sqlite \
+          --with-sodium \
+          --with-zlib \
+          --with-bzlib \
+          --with-lzma \
+          --with-lz4 \
+          --with-ssl=openssl \
+          --with-gnu-ld
         make -j{{ grains['num_cpus'] }}
         make install
         make clean
     - env:
+      - PANDOC: "false"
       - PKG_CONFIG_PATH: "/opt/sodium/lib/pkgconfig:/opt/postgresql/lib/pkgconfig"
       - LDFLAGS: "-L/opt/sodium/lib -L/opt/postgresql/lib"
       - CPPFLAGS: "-I/opt/sodium/include -I/opt/postgresql/include"
