@@ -14,7 +14,7 @@ docker_keyring_dir:
 
 docker_gpg_key:
   cmd.run:
-    - name: curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc
+    - name: curl -fsSL https://download.docker.com/linux/{{ grains['os']|lower }}/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc
     - creates: /etc/apt/keyrings/docker.asc
     - require:
       - file: docker_keyring_dir
@@ -22,7 +22,7 @@ docker_gpg_key:
 
 docker_repo:
   pkgrepo.managed:
-    - name: deb [arch={{ grains['osarch'] }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ grains['oscodename'] }} stable
+    - name: deb [arch={{ grains['osarch'] }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ grains['os']|lower }} {{ grains['oscodename'] }} stable
     - file: /etc/apt/sources.list.d/docker.list
     - clean_file: True
     - require:

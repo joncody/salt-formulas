@@ -41,13 +41,19 @@ cd /srv/salt
 # 2. Bootstrap SaltStack (installs masterless salt-minion)
 make bootstrap
 
-# 3. Run a dry-run test
+# 3. Optional: Provision Rust toolchain early
+#    Required if you want to run 'make check' or 'make update' before provisioning the whole system:
+sudo salt-call --local state.apply rust
+#    Or use the Makefile shortcut:
+make rust
+
+# 4. Run a dry-run test
 make dry-run
 
-# 4. Provision the entire machine
+# 5. Provision the entire machine
 make apply
 
-# 5. Initialize current user workspace (safely copies Helix & Nushell templates)
+# 6. Initialize current user workspace (safely copies Helix & Nushell templates)
 make init-user
 ```
 
@@ -55,6 +61,7 @@ make init-user
 
 ```bash
 # Apply a single formula (installs tool + config)
+sudo salt-call --local state.apply rust
 sudo salt-call --local state.apply helix
 sudo salt-call --local state.apply tla
 
@@ -76,10 +83,12 @@ This repository includes a standalone GitOps updater tool written in Rust (`upda
 
 > **Prerequisite:** The updater tool requires **Cargo and Rust**.
 >
-> On a brand-new installation, `make check` and `make update` will not work until Rust is available. Provision the system Rust toolchain first:
+> On a brand-new machine, `make check` and `make update` will fail until the Rust toolchain is compiled/installed. Provision the system Rust toolchain first:
 >
 > ```bash
 > sudo salt-call --local state.apply rust
+> # or:
+> make rust
 > ```
 
 ### Workflows

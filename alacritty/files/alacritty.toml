@@ -99,22 +99,22 @@ builtin_box_drawing = true
 
 # [Custom Override] Normal font (Default: family = "monospace")
 [font.normal]
-family = "Hack Nerd Font"
+family = "Hack Nerd Font Mono"
 style = "Regular"
 
 # [Custom Override] Bold font (Default: family = "monospace")
 [font.bold]
-family = "Hack Nerd Font"
+family = "Hack Nerd Font Mono"
 style = "Bold"
 
 # [Custom Override] Italic font (Default: family = "monospace")
 [font.italic]
-family = "Hack Nerd Font"
+family = "Hack Nerd Font Mono"
 style = "Italic"
 
 # [Custom Override] Bold Italic font (Default: family = "monospace")
 [font.bold_italic]
-family = "Hack Nerd Font"
+family = "Hack Nerd Font Mono"
 style = "Bold Italic"
 
 # ==============================================================================

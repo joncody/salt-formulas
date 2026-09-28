@@ -1,30 +1,41 @@
 base:
   '*':
+    # --- Base System & Container / Network Infrastructure ---
     - optsrc
+    - shell_env
     - nftables
-    - fonts
+    - docker
+
+    # --- Core Language Toolchains ---
     - rust
     - go
     - node
-    - docker
-    - shell_env
+
+    # --- Cryptographic & C Messaging Stack ---
+    - sodium
+    - zmq
+    - czmq
+    - zyre
+    - filemq
+    - asr
+
+    # --- Storage & Server Daemons ---
+    - postgresql
+    - nginx
+    - opensmtpd
+    - dovecot
+    - pureftpd
+
+    # --- Terminal & Interactive Workspace ---
+    - fonts
     - alacritty
     - helix
     - nushell
     - yazi
     - zellij
+
+    # --- Desktop Utilities & Formal Verification ---
+    - conky
+    - ffmpeg
     - ytdlp
     - tla
-    - asr
-    - conky
-    - czmq
-    - dovecot
-    - ffmpeg
-    - filemq
-    - nginx
-    - opensmtpd
-    - postgresql
-    - pureftpd
-    - sodium
-    - zmq
-    - zyre

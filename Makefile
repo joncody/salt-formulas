@@ -3,13 +3,16 @@ export PATH := /opt/rust/bin:$(PATH)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap check update apply dry-run init-user clean
+.PHONY: help bootstrap rust check update apply dry-run init-user clean
 
 help: ## Show this help menu
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 bootstrap: ## Install SaltStack and baseline prerequisites on a fresh machine
 	@sudo ./bootstrap.sh
+
+rust: ## Provision the system Rust toolchain (prerequisite for updater)
+	@sudo salt-call --local state.apply rust
 
 check: ## Check for newer upstream versions across all formulas
 	@cargo run --manifest-path updater/Cargo.toml -- check

@@ -20,6 +20,16 @@ nginx_user:
     - require:
       - group: nginx_group
 
+nginx_webroot:
+  file.directory:
+    - name: {{ nginx.webroot }}
+    - user: {{ nginx.user }}
+    - group: {{ nginx.group }}
+    - mode: '0755'
+    - makedirs: True
+    - require:
+      - user: nginx_user
+
 nginscript_git:
   git.latest:
     - name: {{ nginx.njs_repo }}

@@ -49,6 +49,7 @@ opensmtpd-domains:
     - user: root
     - group: root
     - mode: '0644'
+    - contents: ""
     - replace: False
     - require:
       - file: opensmtpd-conf
@@ -60,6 +61,19 @@ opensmtpd-vusers:
     - user: root
     - group: root
     - mode: '0644'
+    - contents: ""
+    - replace: False
+    - require:
+      - file: opensmtpd-conf
+
+opensmtpd-passwd:
+  file.managed:
+    - name: /opt/opensmtpd/etc/passwd
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: '0600'
+    - contents: ""
     - replace: False
     - require:
       - file: opensmtpd-conf

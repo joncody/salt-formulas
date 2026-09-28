@@ -110,6 +110,13 @@ type = "github_tag"
 repo = "OpenSMTPD/OpenSMTPD"
 
 [[packages]]
+name = "asr"
+file = "asr/map.jinja"
+key = "version"
+type = "github_tag"
+repo = "OpenSMTPD/libasr"
+
+[[packages]]
 name = "pureftpd"
 file = "pureftpd/map.jinja"
 key = "version"
@@ -122,7 +129,6 @@ file = "fonts/map.jinja"
 key = "version"
 type = "github_release"
 repo = "ryanoasis/nerd-fonts"
-strip_prefix = "v"
 
 [[packages]]
 name = "tla"
