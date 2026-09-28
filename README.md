@@ -11,9 +11,9 @@ A deterministic, modular Infrastructure-as-Code repository for provisioning mode
 ## Architecture
 
 - **Prefix Isolation:** All software compiles or extracts into dedicated `/opt/<tool>` hierarchies.
-- **Dynamic Dual Shell:** Global PATH and tool discovery for POSIX shells (`/etc/profile.d/opt_env.sh`) and Nushell (`/etc/nushell/env.nu`).
+- **Dynamic Dual Shell:** Global PATH and tool discovery for POSIX shells (`/etc/profile.d/opt_env.sh`, `/etc/bash.bashrc`) and Nushell (`/etc/nushell/env.nu`).
 - **Zero-Dotfile Customization:** Workstation tools are configured at the system level via `<app>/conf.sls` with Gruvbox Light defaults.
-- **Self-Updating GitOps:** Pinned versions in `map.jinja` are checked and bumped via the bundled `updater/` CLI tool.
+- **Self-Updating GitOps:** Pinned versions in `map.jinja` are checked and bumped via the bundled `updater/` CLI tool (`salt-bump`).
 
 ---
 
@@ -24,9 +24,9 @@ A deterministic, modular Infrastructure-as-Code repository for provisioning mode
 | **Terminal & Shell** | Alacritty, Nushell, Zellij | Cargo Build & Pre-compiled Binaries |
 | **Editor & Files** | Helix, Yazi | Pre-compiled Tarballs + System Config |
 | **Fonts** | Hack Nerd Font | GitHub Release Archive (`fc-cache`) |
-| **Language Toolchains**| Rust (`rustup`), Go, Node.js | Official Toolchains & Runtimes |
+| **Language Toolchains**| Rust (`rustup`), Go, Node.js, TLA+ | Official Toolchains & Runtimes (`/opt/tla`) |
 | **Server Daemons** | Nginx (`+njs`), PostgreSQL, Dovecot, OpenSMTPD, Pure-FTPd | Source (`./configure && make`) |
-| **Media & Messaging** | FFmpeg, Libsodium, ZeroMQ Stack (`zmq`, `czmq`, `zyre`, `filemq`) | Source (`make`) |
+| **Media & Messaging** | FFmpeg, Libsodium, yt-dlp, ZeroMQ Stack (`zmq`, `czmq`, `zyre`, `filemq`) | Source & Standalone Binaries |
 | **Containers & Net** | Docker CE, Host Firewall (`nftables`) | Official APT Repo & Syntax-Checked Rules |
 
 ---
@@ -41,10 +41,10 @@ cd /srv/salt
 # 2. Bootstrap SaltStack (installs masterless salt-minion)
 make bootstrap
 
-# 3. Dry-run test
+# 3. Run a dry-run test
 make dry-run
 
-# 4. Provision the entire workstation
+# 4. Provision the entire machine
 make apply
 ```
 
@@ -53,9 +53,60 @@ make apply
 ```bash
 # Apply a single formula (installs tool + config)
 sudo salt-call --local state.apply helix
+sudo salt-call --local state.apply tla
 
 # Apply only configuration changes (skips builds/installs)
 sudo salt-call --local state.apply helix.conf
 sudo salt-call --local state.apply nftables.conf
 sudo salt-call --local state.apply nginx.conf
+sudo salt-call --local state.apply shell_env
+```
+
+---
+
+## Upstream Version Management (`salt-bump`)
+
+This repository includes a standalone GitOps updater tool written in Rust (`updater/`):
+
+- `make check`: Scans GitHub tags, release redirects, and upstream APIs in parallel with zero API rate limits to check for newer versions across all packages.
+- `make update`: Updates all `map.jinja` files in-place with latest versions and reconciles any version drift.
+
+> **Prerequisite:** The updater tool requires **Cargo and Rust**.
+>
+> On a brand-new installation, `make check` and `make update` will not work until Rust is available. Provision the system Rust toolchain first:
+>
+> ```bash
+> sudo salt-call --local state.apply rust
+> ```
+
+### Workflows
+
+#### 1. Local Machine Upgrades (No Commit Access Required)
+If you clone or fork this repository for personal workstation or server provisioning, you do not need write access to upstream. You can fetch and compile the newest upstream releases on your local machine at any time:
+
+```bash
+# 1. Check for newer software versions
+make check
+
+# 2. Update local map.jinja files to latest upstream releases
+make update
+
+# 3. Apply state changes to build and deploy the new versions
+make apply
+```
+
+#### 2. Contributing Version Bumps
+If you would like to submit updated formulas back upstream:
+
+```bash
+# 1. Update map.jinja definitions
+make update
+
+# 2. Review version diffs
+git diff
+
+# 3. Commit to your fork and submit a Pull Request
+git checkout -b chore/bump-upstream-versions
+git commit -am "chore: bump upstream formula versions"
+git push origin chore/bump-upstream-versions
 ```
