@@ -37,6 +37,10 @@ for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.deno/bin"; do
     fi
 done
 
+# Default System Editor
+export EDITOR="hx"
+export VISUAL="hx"
+
 # Rust Toolchain
 export RUSTUP_HOME="/opt/rust/rustup"
 

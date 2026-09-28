@@ -2,6 +2,10 @@
 # Nushell System Environment Setup (/etc/nushell/env.nu)
 # ==============================================================================
 
+# Default System Editor
+$env.EDITOR = "hx"
+$env.VISUAL = "hx"
+
 # Rust & Go Toolchain configuration
 $env.RUSTUP_HOME = "/opt/rust/rustup"
 $env.GOBIN = "/opt/go/bin"

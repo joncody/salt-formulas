@@ -2,6 +2,7 @@
 
 include:
   - optsrc
+  - .conf
 
 conky_deps:
   pkg.installed:

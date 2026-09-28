@@ -41,3 +41,19 @@ helix_symlink:
     - require:
       - archive: helix_archive
       - file: helix_bin_dir
+
+helix_editor_alternative:
+  alternatives.install:
+    - name: editor
+    - link: /usr/bin/editor
+    - path: {{ helix.prefix }}/bin/hx
+    - priority: 100
+    - require:
+      - file: helix_symlink
+
+helix_set_editor:
+  alternatives.set:
+    - name: editor
+    - path: {{ helix.prefix }}/bin/hx
+    - require:
+      - alternatives: helix_editor_alternative
