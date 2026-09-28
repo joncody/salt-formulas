@@ -1,0 +1,7 @@
+{% set tla = salt['grains.filter_by']({
+    'Debian': {
+        'repo': 'https://github.com/tlaplus/tlaplus',
+        'version': '1.7.4',
+        'prefix': '/opt/tla',
+    },
+}, merge=salt['pillar.get']('tla:lookup')) %}

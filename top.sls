@@ -14,6 +14,7 @@ base:
     - yazi
     - zellij
     - ytdlp
+    - tla
     - asr
     - conky
     - czmq

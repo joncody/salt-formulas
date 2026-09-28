@@ -37,22 +37,17 @@ for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.deno/bin"; do
     fi
 done
 
-# Rust Toolchain: System-wide toolchain location
+# Rust Toolchain
 export RUSTUP_HOME="/opt/rust/rustup"
 
-# Go Toolchain: Binaries to /opt/go/bin, keep GOPATH separate from GOROOT
+# Go Toolchain
 export GOBIN="/opt/go/bin"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 
-# Helix Editor: Ensure runtime path points to prefix rather than /opt/src
+# Helix Editor Runtime
 export HELIX_RUNTIME="/opt/helix/runtime"
 
 # GnuPG Hardware Wallet
 if [ -d "$HOME/.gnupg/trezor" ]; then
     export GNUPGHOME="$HOME/.gnupg/trezor"
 fi
-
-# TLA+ CLI Tools
-alias tlc="java -cp ~/.tla/tla2tools.jar tlc2.TLC"
-alias sany="java -cp ~/.tla/tla2tools.jar tla2sany.SANY"
-alias pcal="java -cp ~/.tla/tla2tools.jar pcal.trans"

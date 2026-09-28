@@ -29,8 +29,3 @@ def --env y [...args] {
     }
     rm -fp $tmp
 }
-
-# 4. Migrated Tools & Aliases (TLA+ CLI)
-alias tlc = java -cp ~/.tla/tla2tools.jar tlc2.TLC
-alias sany = java -cp ~/.tla/tla2tools.jar tla2sany.SANY
-alias pcal = java -cp ~/.tla/tla2tools.jar pcal.trans

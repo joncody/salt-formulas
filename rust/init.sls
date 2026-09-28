@@ -1,5 +1,3 @@
-{% from "rust/map.jinja" import rust with context %}
-
 include:
   - optsrc
 
@@ -23,25 +21,26 @@ rust_bootstrap:
           --default-toolchain stable \
           --component clippy,rust-analyzer
     - env:
-      - RUSTUP_HOME: {{ rust.prefix }}/rustup
-      - CARGO_HOME: {{ rust.prefix }}
-    - creates: {{ rust.prefix }}/bin/rustup
+      - RUSTUP_HOME: /opt/rust/rustup
+      - CARGO_HOME: /opt/rust
+    - creates: /opt/rust/bin/rustup
     - require:
       - pkg: rust_deps
 
 rust_components:
   cmd.run:
-    - name: {{ rust.prefix }}/bin/rustup component add clippy rust-analyzer
+    - name: /opt/rust/bin/rustup component add clippy rust-analyzer
     - env:
-      - RUSTUP_HOME: {{ rust.prefix }}/rustup
-      - CARGO_HOME: {{ rust.prefix }}
-    - creates: {{ rust.prefix }}/bin/rust-analyzer
+      - RUSTUP_HOME: /opt/rust/rustup
+      - CARGO_HOME: /opt/rust
+      - PATH: "/opt/rust/bin:{{ salt['environ.get']('PATH', '/usr/bin:/bin') }}"
+    - creates: /opt/rust/bin/rust-analyzer
     - require:
       - cmd: rust_bootstrap
 
 rust_perms:
   file.directory:
-    - name: {{ rust.prefix }}
+    - name: /opt/rust
     - user: root
     - group: root
     - dir_mode: '0755'

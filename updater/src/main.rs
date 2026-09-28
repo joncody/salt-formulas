@@ -42,13 +42,21 @@ struct PackageConfig {
     repo: Option<String>,
 }
 
+#[derive(PartialEq)]
+enum VersionStatus {
+    UpToDate,
+    Outdated,
+    Ahead,
+    Error(String),
+}
+
 struct PackageStatus {
     name: String,
     file: String,
     key: String,
     current: String,
     latest: String,
-    outdated: bool,
+    status: VersionStatus,
 }
 
 #[tokio::main]
@@ -78,20 +86,39 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 }
 
-                if status.outdated {
-                    if let Err(e) = update_file(&status.file, &status.key, &status.latest) {
-                        eprintln!("{}: Failed to update {}: {}", "Error".red(), status.file, e);
-                    } else {
-                        println!(
-                            "{} {} ({}) -> {}",
-                            "[+] Updated".green().bold(),
-                            status.name.bold(),
-                            status.current.yellow(),
-                            status.latest.green().bold()
-                        );
+                match status.status {
+                    VersionStatus::Outdated => {
+                        if let Err(e) = update_file(&status.file, &status.key, &status.latest) {
+                            eprintln!("{}: Failed to update {}: {}", "Error".red(), status.file, e);
+                        } else {
+                            println!(
+                                "{} {} ({}) -> {}",
+                                "[+] Bumped".green().bold(),
+                                status.name.bold(),
+                                status.current.yellow(),
+                                status.latest.green().bold()
+                            );
+                        }
                     }
-                } else {
-                    println!("[-] {} is up to date ({})", status.name, status.current);
+                    VersionStatus::Ahead => {
+                        if let Err(e) = update_file(&status.file, &status.key, &status.latest) {
+                            eprintln!("{}: Failed to reconcile {}: {}", "Error".red(), status.file, e);
+                        } else {
+                            println!(
+                                "{} {} ({}) -> {}",
+                                "[~] Reconciled".cyan().bold(),
+                                status.name.bold(),
+                                status.current.cyan(),
+                                status.latest.green().bold()
+                            );
+                        }
+                    }
+                    VersionStatus::UpToDate => {
+                        println!("[-] {} is up to date ({})", status.name, status.current);
+                    }
+                    VersionStatus::Error(e) => {
+                        eprintln!("{}: {} - {}", "Error".red(), status.name, e);
+                    }
                 }
             }
             println!("\nRun {} to review changes before committing.", "git diff".cyan().bold());
@@ -111,7 +138,6 @@ async fn check_all(client: &reqwest::Client, packages: &[PackageConfig]) -> Vec<
             let current_raw = extract_current_version(&pkg.file, &pkg.key).unwrap_or_else(|_| "missing".to_string());
             let mut latest = fetch_latest(&client, &pkg).await.unwrap_or_else(|e| format!("error: {}", e));
 
-            // Standardize: If it's a version (not a branch), strip any leading 'v'
             if !latest.starts_with("error") && !pkg.key.contains("branch") {
                 latest = latest.trim_start_matches(['v', 'V']).to_string();
             }
@@ -122,7 +148,21 @@ async fn check_all(client: &reqwest::Client, packages: &[PackageConfig]) -> Vec<
                 current_raw.clone()
             };
 
-            let outdated = current_raw != "missing" && !latest.starts_with("error") && current_cmp != latest;
+            let status = if current_raw == "missing" || latest.starts_with("error") {
+                VersionStatus::Error(latest.clone())
+            } else if pkg.key.contains("branch") {
+                if current_cmp == latest {
+                    VersionStatus::UpToDate
+                } else {
+                    VersionStatus::Outdated
+                }
+            } else {
+                match natural_cmp(&latest, &current_cmp) {
+                    std::cmp::Ordering::Greater => VersionStatus::Outdated,
+                    std::cmp::Ordering::Less => VersionStatus::Ahead,
+                    std::cmp::Ordering::Equal => VersionStatus::UpToDate,
+                }
+            };
 
             PackageStatus {
                 name: pkg.name,
@@ -130,7 +170,7 @@ async fn check_all(client: &reqwest::Client, packages: &[PackageConfig]) -> Vec<
                 key: pkg.key,
                 current: current_raw,
                 latest,
-                outdated,
+                status,
             }
         }));
     }
@@ -187,7 +227,6 @@ fn natural_cmp(a: &str, b: &str) -> std::cmp::Ordering {
 async fn fetch_latest(client: &reqwest::Client, pkg: &PackageConfig) -> Result<String, Box<dyn std::error::Error>> {
     match pkg.source_type.as_str() {
         "github_release" => {
-            // Uses public web redirect: zero API rate limits
             let repo = pkg.repo.as_ref().ok_or("repo required")?;
             let url = format!("https://github.com/{}/releases/latest", repo);
             let resp = client.get(&url).send().await?;
@@ -199,7 +238,6 @@ async fn fetch_latest(client: &reqwest::Client, pkg: &PackageConfig) -> Result<S
             Err("No release redirect found".into())
         }
         "github_tag" => {
-            // Uses git ls-remote: zero API rate limits
             let repo = pkg.repo.as_ref().ok_or("repo required")?;
             let output = Command::new("git")
                 .args(["ls-remote", "--tags", &format!("https://github.com/{}", repo)])
@@ -232,7 +270,6 @@ async fn fetch_latest(client: &reqwest::Client, pkg: &PackageConfig) -> Result<S
             Ok(ver.trim_start_matches('v').to_string())
         }
         "nginx_branch" => {
-            // Uses git ls-remote: zero API rate limits
             let output = Command::new("git")
                 .args(["ls-remote", "--heads", "https://github.com/nginx/nginx"])
                 .output()
@@ -245,7 +282,7 @@ async fn fetch_latest(client: &reqwest::Client, pkg: &PackageConfig) -> Result<S
                 .filter(|name| {
                     if let Some(rest) = name.strip_prefix("stable-1.") {
                         if let Ok(minor) = rest.split('.').next().unwrap_or("").parse::<u32>() {
-                            return minor % 2 == 0; // Even minor version = stable branch
+                            return minor % 2 == 0;
                         }
                     }
                     false
@@ -257,7 +294,6 @@ async fn fetch_latest(client: &reqwest::Client, pkg: &PackageConfig) -> Result<S
             stable.into_iter().last().ok_or("No stable Nginx branch found".into())
         }
         "postgres_branch" => {
-            // Uses git ls-remote: zero API rate limits
             let output = Command::new("git")
                 .args(["ls-remote", "--heads", "https://github.com/postgres/postgres"])
                 .output()
@@ -275,7 +311,6 @@ async fn fetch_latest(client: &reqwest::Client, pkg: &PackageConfig) -> Result<S
             stable.into_iter().last().ok_or("No stable Postgres branch found".into())
         }
         "ffmpeg_branch" => {
-            // Uses git ls-remote: zero API rate limits
             let output = Command::new("git")
                 .args(["ls-remote", "--heads", "https://github.com/FFmpeg/FFmpeg"])
                 .output()
@@ -300,12 +335,11 @@ fn print_table(statuses: &[PackageStatus]) {
     println!("\n{:<15} {:<18} {:<18} {}", "Package".bold(), "Current".bold(), "Latest".bold(), "Status".bold());
     println!("{}", "─".repeat(60));
     for s in statuses {
-        let status_colored = if s.outdated {
-            "Outdated".yellow().bold()
-        } else if s.current.trim_start_matches(['v', 'V']) == s.latest {
-            "Up to date".green()
-        } else {
-            "Error".red()
+        let status_colored = match &s.status {
+            VersionStatus::Outdated => "Outdated".yellow().bold(),
+            VersionStatus::Ahead => "Ahead".cyan().bold(),
+            VersionStatus::UpToDate => "Up to date".green(),
+            VersionStatus::Error(_) => "Error".red(),
         };
         println!("{:<15} {:<18} {:<18} {}", s.name, s.current, s.latest, status_colored);
     }

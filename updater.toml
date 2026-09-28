@@ -123,3 +123,10 @@ key = "version"
 type = "github_release"
 repo = "ryanoasis/nerd-fonts"
 strip_prefix = "v"
+
+[[packages]]
+name = "tla"
+file = "tla/map.jinja"
+key = "version"
+type = "github_release"
+repo = "tlaplus/tlaplus"
