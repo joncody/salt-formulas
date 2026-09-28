@@ -17,7 +17,7 @@ if command -v salt-call >/dev/null 2>&1; then
 else
     echo -e "\033[36m[*] Bootstrapping SaltStack in masterless mode...\033[0m"
     TMP_BOOTSTRAP=$(mktemp /tmp/install_salt.XXXXXX.sh)
-    curl -fsSL https://bootstrap.saltproject.io -o "$TMP_BOOTSTRAP"
+    curl -fsSL https://github.com/saltstack/salt-bootstrap/releases/latest/download/bootstrap-salt.sh -o "$TMP_BOOTSTRAP"
     
     # Flags:
     #   -P: allow onedir/pip package installation
