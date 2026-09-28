@@ -20,13 +20,24 @@ rust_bootstrap:
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
           --no-modify-path \
           --profile default \
-          --default-toolchain stable
+          --default-toolchain stable \
+          --component clippy,rust-analyzer
     - env:
       - RUSTUP_HOME: {{ rust.prefix }}/rustup
       - CARGO_HOME: {{ rust.prefix }}
     - creates: {{ rust.prefix }}/bin/rustup
     - require:
       - pkg: rust_deps
+
+rust_components:
+  cmd.run:
+    - name: {{ rust.prefix }}/bin/rustup component add clippy rust-analyzer
+    - env:
+      - RUSTUP_HOME: {{ rust.prefix }}/rustup
+      - CARGO_HOME: {{ rust.prefix }}
+    - creates: {{ rust.prefix }}/bin/rust-analyzer
+    - require:
+      - cmd: rust_bootstrap
 
 rust_perms:
   file.directory:
@@ -38,4 +49,4 @@ rust_perms:
     - recurse:
         - mode
     - require:
-      - cmd: rust_bootstrap
+      - cmd: rust_components

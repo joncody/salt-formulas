@@ -1,4 +1,5 @@
 export RUSTUP_HOME ?= /opt/rust/rustup
+export PATH := /opt/rust/bin:$(PATH)
 
 .DEFAULT_GOAL := help
 

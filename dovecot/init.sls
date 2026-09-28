@@ -37,6 +37,32 @@ dovenull_user:
     - require:
       - group: dovenull_group
 
+vmail_group:
+  group.present:
+    - name: vmail
+    - system: True
+
+vmail_user:
+  user.present:
+    - name: vmail
+    - gid: vmail
+    - system: True
+    - home: /var/vmail
+    - createhome: True
+    - shell: /usr/sbin/nologin
+    - require:
+      - group: vmail_group
+
+vmail_dir:
+  file.directory:
+    - name: /var/vmail
+    - user: vmail
+    - group: vmail
+    - mode: '0770'
+    - makedirs: True
+    - require:
+      - user: vmail_user
+
 dovecot_deps:
   pkg.installed:
     - names:
@@ -87,3 +113,4 @@ dovecot_build:
     - require:
       - user: dovecot_user
       - user: dovenull_user
+      - user: vmail_user

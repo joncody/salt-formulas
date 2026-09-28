@@ -1,11 +1,11 @@
 # Dynamic environment setup for tools installed in /opt
 if [ -d "/opt" ]; then
 
-    # 1. PATH (bin & sbin)
+    # 1. PATH (bin & sbin) - Prepend so isolated /opt tools take precedence
     for dir in $(find /opt -mindepth 1 -maxdepth 2 -type d \( -name bin -o -name sbin \) ! -path '/opt/src/*' 2>/dev/null); do
         case ":$PATH:" in
             *":$dir:"*) ;;
-            *) export PATH="${PATH:+$PATH:}$dir" ;;
+            *) export PATH="$dir:$PATH" ;;
         esac
     done
 
@@ -27,6 +27,16 @@ if [ -d "/opt" ]; then
 
 fi
 
+# Dynamic user binary catch-all (explicitly avoid globbing ~/.cargo/bin)
+for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.deno/bin"; do
+    if [ -d "$dir" ]; then
+        case ":$PATH:" in
+            *":$dir:"*) ;;
+            *) export PATH="$dir:$PATH" ;;
+        esac
+    fi
+done
+
 # Rust Toolchain: System-wide toolchain location
 export RUSTUP_HOME="/opt/rust/rustup"
 
@@ -34,7 +44,15 @@ export RUSTUP_HOME="/opt/rust/rustup"
 export GOBIN="/opt/go/bin"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 
-case ":$PATH:" in
-    *":/opt/go/bin:"*) ;;
-    *) export PATH="/opt/go/bin:$PATH" ;;
-esac
+# Helix Editor: Ensure runtime path points to prefix rather than /opt/src
+export HELIX_RUNTIME="/opt/helix/runtime"
+
+# GnuPG Hardware Wallet
+if [ -d "$HOME/.gnupg/trezor" ]; then
+    export GNUPGHOME="$HOME/.gnupg/trezor"
+fi
+
+# TLA+ CLI Tools
+alias tlc="java -cp ~/.tla/tla2tools.jar tlc2.TLC"
+alias sany="java -cp ~/.tla/tla2tools.jar tla2sany.SANY"
+alias pcal="java -cp ~/.tla/tla2tools.jar pcal.trans"

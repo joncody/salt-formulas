@@ -33,12 +33,33 @@ opensmtpd-aliases:
   file.managed:
     - name: /opt/opensmtpd/etc/aliases
     - makedirs: True
-    - create: True
     - user: root
     - group: root
     - mode: '0644'
-    - contents:
-      - vmail:    /dev/null
-      - root:     root
+    - contents: |
+        vmail:    /dev/null
+        root:     root
     - require:
       - cmd: opensmtpd-ssl
+
+opensmtpd-domains:
+  file.managed:
+    - name: /opt/opensmtpd/etc/domains
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: '0644'
+    - replace: False
+    - require:
+      - file: opensmtpd-conf
+
+opensmtpd-vusers:
+  file.managed:
+    - name: /opt/opensmtpd/etc/vusers
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: '0644'
+    - replace: False
+    - require:
+      - file: opensmtpd-conf

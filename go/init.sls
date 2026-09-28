@@ -23,3 +23,16 @@ go_archive:
     - creates: {{ go.prefix }}/bin/go
     - require:
       - file: go_dir
+
+go_tools:
+  cmd.run:
+    - name: |
+        go install golang.org/x/tools/cmd/goimports@latest
+        go install golang.org/x/tools/gopls@latest
+    - env:
+      - PATH: "{{ go.prefix }}/bin:{{ salt['environ.get']('PATH', '/usr/local/bin:/usr/bin:/bin') }}"
+      - GOBIN: {{ go.prefix }}/bin
+      - GOPATH: /tmp/go_bootstrap
+    - creates: {{ go.prefix }}/bin/goimports
+    - require:
+      - archive: go_archive

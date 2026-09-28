@@ -32,14 +32,18 @@ alacritty_build:
   cmd.run:
     - cwd: /opt/src/alacritty
     - name: |
-        RUSTFLAGS="-C target-cpu=native" /opt/rust/bin/cargo build --release --locked
+        set -e
+        RUSTFLAGS="-C target-cpu=native" cargo build --release --locked
         mkdir -p {{ alacritty.prefix }}/bin
         cp target/release/alacritty {{ alacritty.prefix }}/bin/alacritty
         cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg 2>/dev/null || true
         desktop-file-install extra/linux/Alacritty.desktop 2>/dev/null || true
-        /opt/rust/bin/cargo clean
+        mkdir -p /etc/bash_completion.d
+        cp extra/completions/alacritty.bash /etc/bash_completion.d/alacritty 2>/dev/null || true
+        cargo clean
     - env:
-        - RUSTUP_HOME: /opt/rust/rustup
-        - CARGO_HOME: /tmp/cargo_alacritty_build
+      - PATH: "/opt/rust/bin:{{ salt['environ.get']('PATH', '/usr/local/bin:/usr/bin:/bin') }}"
+      - RUSTUP_HOME: /opt/rust/rustup
+      - CARGO_HOME: /tmp/cargo_alacritty_build
     - onchanges:
       - git: alacritty_git

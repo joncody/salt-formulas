@@ -1,34 +1,36 @@
 # ==============================================================================
-# Nushell System Configuration (/etc/nushell/config.nu)
+# Nushell System Runtime Configuration (/etc/nushell/config.nu)
 # ==============================================================================
 
-# 1. Minimal prompt
+# 1. Clean, minimalist prompt (Gruvbox Light palette)
 def create_left_prompt [] {
-    let dir = match (do --ignore-shell-errors { $env.PWD | path relative-to $nu.home-path }) {
+    let dir = match (do -i { $env.PWD | path relative-to $nu.home-dir }) {
         null => $env.PWD
         '' => '~'
-        $d => [ '~' $d ] | path join
+        $d => $"~/($d)"
     }
-    $"([ansi cyan_bold]($dir)[ansi reset]) \n([ansi green_bold]❯[ansi reset]) "
+    $"(ansi cyan_bold)($dir)(ansi reset)\n(ansi green_bold)>(ansi reset) "
 }
+
 $env.PROMPT_COMMAND = {|| create_left_prompt }
 $env.PROMPT_COMMAND_RIGHT = {|| "" }
 
 # 2. General settings
 $env.config.show_banner = false
+$env.config.edit_mode = "emacs"
 
-# 3. Yazi shell wrapper ('y' changes directory on exit, 'Q' cancels)
+# 3. Yazi directory switching wrapper (integrates navigation via 'y' command)
 def --env y [...args] {
     let tmp = (mktemp -t "yazi-cwd.XXXXXX")
-    ^yazi ...$args --cwd-file $tmp
-    let cwd = (open $tmp)
+    yazi ...$args --cwd-file $tmp
+    let cwd = (open $tmp | str trim)
     if $cwd != "" and $cwd != $env.PWD {
         cd $cwd
     }
     rm -fp $tmp
 }
 
-# 4. Standard system aliases
-alias h = hx
-alias z = zellij
-alias code = cd ~/code
+# 4. Migrated Tools & Aliases (TLA+ CLI)
+alias tlc = java -cp ~/.tla/tla2tools.jar tlc2.TLC
+alias sany = java -cp ~/.tla/tla2tools.jar tla2sany.SANY
+alias pcal = java -cp ~/.tla/tla2tools.jar pcal.trans

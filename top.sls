@@ -13,6 +13,7 @@ base:
     - nushell
     - yazi
     - zellij
+    - ytdlp
     - asr
     - conky
     - czmq

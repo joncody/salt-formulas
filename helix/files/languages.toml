@@ -1,0 +1,14 @@
+# ==============================================================================
+# Helix System Language Configuration (/etc/xdg/helix/languages.toml)
+# ==============================================================================
+
+[[language]]
+name = "go"
+auto-format = true
+formatter = { command = "goimports" }
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[language-server.rust-analyzer.config.cargo]
+features = "all"

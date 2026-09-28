@@ -1,3 +1,4 @@
+# 1. POSIX login environment
 opt_profile_env:
   file.managed:
     - name: /etc/profile.d/opt_env.sh
@@ -6,25 +7,7 @@ opt_profile_env:
     - group: root
     - mode: '0644'
 
-opt_nushell_env_dir:
-  file.directory:
-    - name: /etc/nushell
-    - user: root
-    - group: root
-    - mode: '0755'
-    - makedirs: True
-
-opt_nushell_env:
-  file.managed:
-    - name: /etc/nushell/env.nu
-    - source: salt://shell_env/files/env.nu
-    - user: root
-    - group: root
-    - mode: '0644'
-    - require:
-      - file: opt_nushell_env_dir
-
-# Teach the Linux dynamic linker where all /opt shared libraries live
+# 2. System-wide shared library registration (replaces LD_LIBRARY_PATH)
 opt_ld_conf:
   file.managed:
     - name: /etc/ld.so.conf.d/opt.conf

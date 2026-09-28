@@ -1,24 +1,38 @@
 # ==============================================================================
-# Nushell System Environment (/etc/nushell/env.nu)
+# Nushell System Environment Setup (/etc/nushell/env.nu)
 # ==============================================================================
 
-# 1. Dynamic /opt discovery for PATH
-if ('/opt' | path exists) {
-    let opt_bins = (glob /opt/*/{bin,sbin} | where ($it | path type) == 'dir' and not ($it starts-with '/opt/src/'))
-    $env.PATH = ($env.PATH | split row (char esep) | prepend $opt_bins | uniq)
-}
-
-# 2. System-wide toolchain variables
+# Rust & Go Toolchain configuration
 $env.RUSTUP_HOME = "/opt/rust/rustup"
 $env.GOBIN = "/opt/go/bin"
-$env.GOPATH = $"($env.HOME)/.local/share/go"
-$env.EDITOR = "hx"
-$env.VISUAL = "hx"
+$env.GOPATH = (
+    if "XDG_DATA_HOME" in $env {
+        [$env.XDG_DATA_HOME "go"] | path join
+    } else {
+        [$env.HOME ".local" "share" "go"] | path join
+    }
+)
+$env.HELIX_RUNTIME = "/opt/helix/runtime"
 
-# 3. Add user ZFS datasets and local bin paths to PATH
-let user_paths = [
-    $"($env.HOME)/bin"
-    $"($env.HOME)/.cargo/bin"
-    $"($env.HOME)/.local/bin"
-]
-$env.PATH = ($env.PATH | prepend ($user_paths | where ($it | path exists)) | uniq)
+# Dynamic /opt binary discovery
+let opt_bins = if ("/opt" | path exists) {
+    glob /opt/*/bin | append (glob /opt/*/sbin) | where { |p| not ($p | str starts-with "/opt/src") }
+} else {
+    []
+}
+
+# Explicit user binary directories (excludes ~/.cargo/bin so /opt/rust takes precedence)
+let user_bins = [
+    ([$env.HOME "bin"] | path join)
+    ([$env.HOME ".local" "bin"] | path join)
+    ([$env.HOME ".deno" "bin"] | path join)
+] | where { |p| $p | path exists }
+
+# Prepend /opt tools and user directories to PATH
+$env.PATH = (
+    $env.PATH
+    | split row (char esep)
+    | prepend $user_bins
+    | prepend $opt_bins
+    | uniq
+)
