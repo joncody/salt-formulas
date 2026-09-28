@@ -1,31 +1,92 @@
 # ==============================================================================
-# Rust / Cargo Artifacts
+# Rust / Cargo Artifacts (Updater CLI)
 # ==============================================================================
 **/target/
 **/*.rs.bk
 Cargo.lock.bak
 
 # ==============================================================================
+# Python / SaltStack Runtime Artifacts
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Salt local run caches / minion artifacts
+.salt/
+.pki/
+
+# ==============================================================================
+# Security, Certificates & Secrets (Public Repo Protection)
+# ==============================================================================
+# Never commit private keys, certs, or credentials
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*.csr
+*.cer
+
+# Password and secret files
+*.passwd
+*.htpasswd
+*.env
+*.env.*
+*.gpg
+*.kdbx
+!*.example
+!*.sample
+
+# Local uncommitted Pillar overrides
+pillar/local/
+*.local.sls
+
+# ==============================================================================
+# TLA+ Verification Artifacts
+# ==============================================================================
+# TLC state exploration directories and dumps
+states/
+.tlacache/
+MC.tla
+MC.cfg
+MC.out
+*.out
+
+# ==============================================================================
+# Databases & Local State
+# ==============================================================================
+*.sqlite
+*.sqlite3
+*.db
+*.pdb
+
+# ==============================================================================
 # Editor / IDE Files
 # ==============================================================================
-# Vim / Helix / Emacs swap & backup files
 .*.sw[a-p]
 *.swp
 *.swo
 *~
 .#*
-
-# VS Code / JetBrains / Sublime
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
 # ==============================================================================
-# OS Files
+# OS & Virtualization Artifacts
 # ==============================================================================
 .DS_Store
 Thumbs.db
+*.qcow2
+*.img
+*.iso
+.vagrant/
 
 # ==============================================================================
 # Temporary / Patch Files

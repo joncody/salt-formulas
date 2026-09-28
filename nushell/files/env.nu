@@ -14,6 +14,12 @@ $env.GOPATH = (
 )
 $env.HELIX_RUNTIME = "/opt/helix/runtime"
 
+# GnuPG Hardware Wallet (Trezor)
+let trezor_gpg = $"($env.HOME)/.gnupg/trezor"
+if ($trezor_gpg | path exists) {
+    $env.GNUPGHOME = $trezor_gpg
+}
+
 # Dynamic /opt binary discovery
 let opt_bins = if ("/opt" | path exists) {
     glob /opt/*/bin | append (glob /opt/*/sbin) | where not ($it | str starts-with "/opt/src")

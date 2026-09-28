@@ -1,6 +1,5 @@
 {% set opensmtpd = salt['grains.filter_by']({
     'Debian': {
-        'iface': 'eth0',
         'repo': 'https://github.com/OpenSMTPD/OpenSMTPD',
         'version': '7.9.0p0',
         'prefix': '/opt/opensmtpd',
