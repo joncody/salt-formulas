@@ -18,6 +18,8 @@ $env.GOPATH = (
 )
 $env.HELIX_RUNTIME = "/opt/helix/runtime"
 
+$env.ZELLIJ_CONFIG_DIR = "/etc/zellij"
+
 # GnuPG Hardware Wallet (Trezor)
 let trezor_gpg = $"($env.HOME)/.gnupg/trezor"
 if ($trezor_gpg | path exists) {

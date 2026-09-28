@@ -50,6 +50,7 @@ export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 
 # Helix Editor Runtime
 export HELIX_RUNTIME="/opt/helix/runtime"
+export ZELLIJ_CONFIG_DIR="/etc/zellij"
 
 # GnuPG Hardware Wallet
 if [ -d "$HOME/.gnupg/trezor" ]; then
