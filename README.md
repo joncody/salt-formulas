@@ -46,6 +46,9 @@ make dry-run
 
 # 4. Provision the entire machine
 make apply
+
+# 5. Initialize current user workspace (safely copies Helix & Nushell templates)
+make init-user
 ```
 
 ### Granular Targeting

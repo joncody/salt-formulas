@@ -3,7 +3,7 @@ export PATH := /opt/rust/bin:$(PATH)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help bootstrap check update apply dry-run clean
+.PHONY: help bootstrap check update apply dry-run init-user clean
 
 help: ## Show this help menu
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -23,6 +23,12 @@ dry-run: ## Run Salt in test mode without making changes
 
 apply: ## Apply all Salt states to the machine
 	@sudo salt-call --local state.apply
+
+init-user: ## Safely copy default configs into current user's ~/.config (helix, nushell)
+	@mkdir -p $$HOME/.config/helix $$HOME/.config/nushell
+	@cp -rn /etc/xdg/helix/* $$HOME/.config/helix/ 2>/dev/null || true
+	@cp -rn /etc/nushell/* $$HOME/.config/nushell/ 2>/dev/null || true
+	@echo "\033[32m[+] User configurations initialized in $$HOME/.config\033[0m"
 
 clean: ## Clean up Cargo build artifacts from the updater
 	@cargo clean --manifest-path updater/Cargo.toml
