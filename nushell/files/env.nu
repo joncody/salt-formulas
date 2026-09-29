@@ -33,6 +33,10 @@ let opt_bins = if ("/opt" | path exists) {
     []
 }
 
+if ("/snap/bin" | path exists) {
+    $env.PATH = ($env.PATH | split row (char esep) | append "/snap/bin")
+}
+
 # Explicit user binary directories (excludes ~/.cargo/bin so /opt/rust takes precedence)
 let user_bins = [
     $"($env.HOME)/bin"

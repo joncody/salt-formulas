@@ -27,6 +27,14 @@ if [ -d "/opt" ]; then
 
 fi
 
+# Ensure /snap/bin is included if snapd is present
+if [ -d "/snap/bin" ]; then
+    case ":$PATH:" in
+        *":/snap/bin:"*) ;;
+        *) export PATH="$PATH:/snap/bin" ;;
+    esac
+fi
+
 # Dynamic user binary catch-all (explicitly avoid globbing ~/.cargo/bin)
 for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.deno/bin"; do
     if [ -d "$dir" ]; then
@@ -40,6 +48,9 @@ done
 # Default System Editor
 export EDITOR="hx"
 export VISUAL="hx"
+
+# bat configuration
+export BAT_CONFIG_PATH="/etc/bat/config"
 
 # Rust Toolchain
 export RUSTUP_HOME="/opt/rust/rustup"

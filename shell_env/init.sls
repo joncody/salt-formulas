@@ -38,3 +38,41 @@ opt_ldconfig:
     - name: ldconfig
     - onchanges:
       - file: opt_ld_conf
+
+# 3. Modern CLI Tools (bat, eza, fd)
+modern_cli_pkgs:
+  pkg.installed:
+    - names:
+      - bat
+      - eza
+      - fd-find
+
+# Symlinks to restore upstream binary names on Debian/Ubuntu
+bat_symlink:
+  file.symlink:
+    - name: /usr/local/bin/bat
+    - target: /usr/bin/batcat
+    - onlyif: test -f /usr/bin/batcat
+    - require:
+      - pkg: modern_cli_pkgs
+
+fd_symlink:
+  file.symlink:
+    - name: /usr/local/bin/fd
+    - target: /usr/bin/fdfind
+    - onlyif: test -f /usr/bin/fdfind
+    - require:
+      - pkg: modern_cli_pkgs
+
+# Global bat configuration (Gruvbox Light Workstation)
+bat_system_config:
+  file.managed:
+    - name: /etc/bat/config
+    - contents: |
+        --theme="gruvbox-light"
+        --style="numbers,changes"
+        --paging=never
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: '0644'
