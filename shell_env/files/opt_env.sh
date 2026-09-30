@@ -35,8 +35,8 @@ if [ -d "/snap/bin" ]; then
     esac
 fi
 
-# Dynamic user binary catch-all (explicitly avoid globbing ~/.cargo/bin)
-for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.deno/bin"; do
+# Dynamic user binary catch-all
+for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.deno/bin"; do
     if [ -d "$dir" ]; then
         case ":$PATH:" in
             *":$dir:"*) ;;
