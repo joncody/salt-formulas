@@ -65,8 +65,7 @@ $env.EDITOR = "hx"
 $env.VISUAL = "hx"
 $env.BAT_CONFIG_PATH = "/etc/bat/config"
 
-# Language Toolchains & Runtimes
-$env.RUSTUP_HOME = "/opt/rust/rustup"
+# Go Toolchain
 $env.GOBIN = "/opt/go/bin"
 let xdg_data = ($env.XDG_DATA_HOME? | default ($env.HOME | path join ".local" "share"))
 $env.GOPATH = ($xdg_data | path join "go")

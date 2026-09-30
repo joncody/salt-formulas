@@ -35,7 +35,7 @@ if [ -d "/snap/bin" ]; then
     esac
 fi
 
-# Dynamic user binary catch-all
+# Dynamic user binary catch-all (user binaries take precedence over /opt)
 for dir in "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.deno/bin"; do
     if [ -d "$dir" ]; then
         case ":$PATH:" in
@@ -51,9 +51,6 @@ export VISUAL="hx"
 
 # bat configuration
 export BAT_CONFIG_PATH="/etc/bat/config"
-
-# Rust Toolchain
-export RUSTUP_HOME="/opt/rust/rustup"
 
 # Go Toolchain
 export GOBIN="/opt/go/bin"
